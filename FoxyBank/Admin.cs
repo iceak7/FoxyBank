@@ -11,6 +11,7 @@ namespace FoxyBank
             this.FirstName = "Admin";
             this.LastName = "Admin";
             this.PassWord = "Hemlis";
+            this.UserId = 1001;
         }
         public Admin(string firstName, string lastName, string passWord)
         {
@@ -20,9 +21,15 @@ namespace FoxyBank
 
 
         }
-        public void RegisterNewUser()
+        public void RegisterNewUser(Bank bank)
         {
+            //First user = 2001
             //Register user
+            //Generate ID - check if ID already exists
+            //bank.Persons.Add(new User())
+
+            //bank.Persons
+
         }
     }
 }

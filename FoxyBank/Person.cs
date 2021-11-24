@@ -9,6 +9,6 @@ namespace FoxyBank
         public string FirstName { get; set; }
         public string LastName { get; set; }
         protected string PassWord { get; set; }
-        private int UserId { get; set; }
+        protected int UserId { get; set; }
     }
 }

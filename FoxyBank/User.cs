@@ -9,11 +9,13 @@ namespace FoxyBank
 
         List<Account> Account = new List<Account>();
 
-        public User(string firstName, string lastName, string passWord)
+
+        public User(string firstName, string lastName, string passWord, int userId)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
             this.PassWord = passWord;
+            this.UserId = userId;
 
 
         }
