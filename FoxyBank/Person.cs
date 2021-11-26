@@ -8,7 +8,18 @@ namespace FoxyBank
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        protected string PassWord { get; set; } //ändrade till public för att få tillgång hos admin
-        public int UserId { get; set; } //ändrade till public för att få tillgång hos admin
+        protected string PassWord { get; set; }
+        protected int UserId { get; set; }
+        public bool Authentication(string password,int userid)
+        {
+            if(password == this.PassWord && userid == this.UserId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
