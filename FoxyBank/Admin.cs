@@ -6,6 +6,7 @@ namespace FoxyBank
 {
     class Admin:Person
     {
+        
         public Admin()
         {
             this.FirstName = "Admin";
@@ -23,13 +24,12 @@ namespace FoxyBank
         }
         public void RegisterNewUser(Bank bank)
         {
-            //First user = 2001
+           //First user = 2001
             //Register user
             //Generate ID - check if ID already exists
             //bank.Persons.Add(new User())
 
             //bank.Persons
-
         }
 
         bool isRunning = true;
@@ -69,5 +69,6 @@ namespace FoxyBank
             }
             while (isRunning != false);
         }
+
     }
 }
