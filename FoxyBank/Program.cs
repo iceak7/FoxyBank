@@ -6,9 +6,9 @@ namespace FoxyBank
     {
         static void Main(string[] args)
         {
+
             Bank ourBank = new Bank();
             ourBank.Persons.Add(new Admin());
-
 
             ourBank.Persons.Add(new User("Isak", "Jensen", "Hemlis123", 2001));
             ourBank.Persons.Add(new User("Edwin", "Westerberg", "Hemlis1234", 2002));

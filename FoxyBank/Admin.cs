@@ -6,6 +6,7 @@ namespace FoxyBank
 {
     class Admin:Person
     {
+        
         public Admin()
         {
             this.FirstName = "Admin";
@@ -30,6 +31,5 @@ namespace FoxyBank
 
             //bank.Persons
 
-        }
     }
 }
