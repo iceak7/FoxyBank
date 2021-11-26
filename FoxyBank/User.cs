@@ -19,9 +19,32 @@ namespace FoxyBank
 
 
         }
-        public void DisplayAllAccount()
+        public void DisplayAllAccounts()
         {
 
+        }
+
+        public void CreateAccount()
+        {
+            Console.WriteLine("Vad vill du öppna för konto?");
+            Console.WriteLine("1.Sparkonto");
+            Console.WriteLine("2.Personkonto");
+
+            string answer = Console.ReadLine();
+
+            if (answer == "1")
+            {
+
+            }
+
+            else if (answer == "2")
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }
