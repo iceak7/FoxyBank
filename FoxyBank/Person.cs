@@ -10,6 +10,7 @@ namespace FoxyBank
         public string LastName { get; set; }
         protected string PassWord { get; set; }
         protected int UserId { get; set; }
+
         public bool Authentication(string password,int userid)
         {
             if(password == this.PassWord && userid == this.UserId)
@@ -21,5 +22,8 @@ namespace FoxyBank
                 return false;
             }
         }
+
     }
+
+
 }
