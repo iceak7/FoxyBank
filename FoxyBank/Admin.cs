@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class Admin:Person
+    public class Admin:Person
     {
         
         public Admin()
@@ -49,16 +49,16 @@ namespace FoxyBank
                 switch (menuChoice)
                 {
                     case "1":
-                        RegisterNewUser();
+                        //RegisterNewUser();
                         break;
 
 
                     case "2":
-                        updateExchangeRate();
+                        //updateExchangeRate();
                         break;
 
                     case "3":
-                        LogOut();
+                        //LogOut();
                         isRunning = false;
                         break;
 

@@ -4,8 +4,13 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class SavingAccount : Account
+    public class SavingAccount : Account
     {
         public decimal Interest { get; set;}
+
+        public SavingAccount(int accountNr)
+        {
+            this.AccountNr = accountNr;
+        }
     }
 }

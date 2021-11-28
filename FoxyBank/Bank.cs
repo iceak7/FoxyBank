@@ -11,10 +11,12 @@ namespace FoxyBank
         static int idCount = 2000;
 
         public List<Person> Persons { get; set; }
+        public Dictionary<int, int> Accounts { get; set; }
 
         public Bank()
         {
             this.Persons = new List<Person>();
+            this.Accounts = new Dictionary<int, int>();
         }
         public void StartApplication()
         {
@@ -28,7 +30,7 @@ namespace FoxyBank
             }
             else
             {
-                Console.WriteLine("Your now logged in!");
+                Console.WriteLine("You are now logged in!");
             }
 
 
@@ -40,11 +42,11 @@ namespace FoxyBank
             Console.WriteLine("Write user id.");
             int AnId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter password.");
-            string AnPassword = Console.ReadLine();
+            string APassword = Console.ReadLine();
 
             foreach (Person A1 in Persons)
             {
-                if(A1.Authentication(AnPassword, AnId))
+                if(A1.Authentication(APassword, AnId))
                 {
                     return A1;
                 } 
@@ -68,8 +70,6 @@ namespace FoxyBank
         public void RegisterNewUser()
         {
             
-
-
 
             Console.WriteLine("Please type in the first name of the new user");
             string Firstnameinput = Console.ReadLine();
@@ -99,7 +99,63 @@ namespace FoxyBank
 
         }
 
+        public void CreateAccount(User user)
+        {
+            int accountNr=0;
 
+            Random rand = new Random();
+            int randomizedAccNr = rand.Next(10000, 11000);
+
+            if (!Accounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
+            else
+            {
+                bool foundId = false;
+                while (!foundId)
+                {
+                    randomizedAccNr = rand.Next(10000, 11000);
+                    if (!Accounts.ContainsKey(randomizedAccNr)) 
+                    { 
+                        accountNr = randomizedAccNr;
+                        foundId = true;
+                    }
+                }
+            }
+
+            Account createdAccount = null;
+
+            Console.WriteLine("\nVad vill du öppna för konto?");
+            do
+            {
+                Console.WriteLine("\n1.Sparkonto");
+                Console.WriteLine("2.Personkonto\n");
+
+                string answer = Console.ReadLine();
+
+
+                if (answer == "1")
+                {
+                    createdAccount = new SavingAccount(accountNr);
+                    user.Accounts.Add(createdAccount);
+                    this.Accounts.Add(createdAccount.AccountNr, user.UserId);
+
+                }
+
+                else if (answer == "2")
+                {
+                    createdAccount = new PersonalAccount(accountNr);
+                    user.Accounts.Add(createdAccount);
+                    this.Accounts.Add(createdAccount.AccountNr, user.UserId);
+                   
+                }
+                else
+                {
+                    Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Svara ett nummer från menyn.");
+                }
+
+            } while (createdAccount==null);
+
+            Console.WriteLine($"\nGrattis! Du skapade ett {((createdAccount is PersonalAccount)? "Personkonto" : "Sparkonto" )} med kontonumret " + createdAccount.AccountNr);
+        }
 
 
     }
