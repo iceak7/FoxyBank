@@ -33,11 +33,11 @@ namespace FoxyBank
 
                 if (firstDigit == '1')
                 {
-                    RunAdminMenu();
+                    RunAdminMenu(loggedInPerson);
                 }
                 else
                 {
-                    RunUserMenu();
+                    RunUserMenu(loggedInPerson);
                 }
             }
         }
@@ -56,7 +56,6 @@ namespace FoxyBank
                 {
                     return A1;
                 }
-
             }
             return null;
 
@@ -66,16 +65,19 @@ namespace FoxyBank
 
         }
 
-        public void RunAdminMenu()
+        public void RunAdminMenu(Person loggedInPerson)
         {
             bool isRunning = true;
 
             do
             {
-                Console.WriteLine($"Användarmeny för administrator:");
-                Console.WriteLine("1. Skapa ny bankkund" +
+                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+
+                Console.WriteLine("Användarmeny för administrator:" +
+                            "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
-                            "\n3. Logga ut");
+                            "\n3. Ändra sparränta" +
+                            "\n4 Logga ut");
 
                 string menuChoice = Console.ReadLine();
 
@@ -85,10 +87,14 @@ namespace FoxyBank
                         RegisterNewUser();
                         break;
                     case "2":
-                        //UpdateExchangeRate();
+                        //ExchangeRate();
                         break;
 
                     case "3":
+                        //InterestRate();
+                        break;
+
+                    case "4":
                         //LogOut();
                         isRunning = false;
                         break;
@@ -101,14 +107,13 @@ namespace FoxyBank
             while (isRunning != false);
         }
 
-
-        public void RunUserMenu()
+        public void RunUserMenu(Person loggedInPerson)
         {
             bool isRunning = true;
 
             do
             {
-                Console.WriteLine($"Användarmeny för bankkund:");
+                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
                 Console.WriteLine("1. Se dina konton och saldo" +
                         "\n2. Överföring mellan egna konton" +
                         "\n3. Överföring till andra användares konton" +
