@@ -4,10 +4,11 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class User : Person
+
+    public class User:Person
     {
 
-        List<Account> Account = new List<Account>();
+        public List<Account> Accounts { get; set; }
 
 
         public User(string firstName, string lastName, string passWord, int userId)
@@ -16,34 +17,13 @@ namespace FoxyBank
             this.LastName = lastName;
             this.PassWord = passWord;
             this.UserId = userId;
+            this.Accounts = new List<Account>();
         }
         public void DisplayAllAccounts()
         {
 
         }
-
-        public void CreateAccount()
-        {
-            Console.WriteLine("Vad vill du öppna för konto?");
-            Console.WriteLine("1.Sparkonto");
-            Console.WriteLine("2.Personkonto");
-
-            string answer = Console.ReadLine();
-
-            if (answer == "1")
-            {
-
-            }
-
-            else if (answer == "2")
-            {
-
-            }
-            else
-            {
-
-            }
-        }
+       
 
     }
 }

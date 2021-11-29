@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    abstract class Account
+    public abstract class Account
     {
         protected decimal Balance { get; set; }
         public int AccountNr { get; set; }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class Admin:Person
+    public class Admin:Person
     {
         
         public Admin()
@@ -19,7 +19,6 @@ namespace FoxyBank
             this.FirstName = firstName;
             this.LastName = lastName;
             this.PassWord = passWord;
-
 
         }
         public void RegisterNewUser(Bank bank)
