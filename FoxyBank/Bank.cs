@@ -20,7 +20,6 @@ namespace FoxyBank
         }
         public void StartApplication()
         {
-            Person LoggedInPerson;
             byte Tries = 3;
             Console.WriteLine("Hej välkommen till Foxy Bank.");
             do
