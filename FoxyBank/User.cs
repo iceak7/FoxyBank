@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class User:Person
+    class User : Person
     {
 
         List<Account> Account = new List<Account>();
@@ -44,5 +44,6 @@ namespace FoxyBank
 
             }
         }
+
     }
 }

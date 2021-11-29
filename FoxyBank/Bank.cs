@@ -11,25 +11,30 @@ namespace FoxyBank
         static int idCount = 2000;
 
         public List<Person> Persons { get; set; }
+        public Dictionary<int, int> Accounts { get; set; }
 
         public Bank()
         {
             this.Persons = new List<Person>();
+            this.Accounts = new Dictionary<int, int>();
         }
         public void StartApplication()
         {
+            byte Tries = 3;
             Console.WriteLine("Hej välkommen till Foxy Bank.");
-
-            Person loggedInPerson = Login();
-            if (loggedInPerson == null)
+          
+            do
             {
-                Console.WriteLine("Failed.");
-
-            }
-            else
-            {
-                Console.WriteLine("Your now logged in!");
-                char firstDigit = loggedInPerson.UserId.ToString()[0];
+                Person loggedInPerson = Login();
+                if (loggedInPerson == null)
+                {
+                    Console.WriteLine("Failed.");
+                    Tries--;
+                }
+                else
+                {
+                    Console.WriteLine("Your now logged in!");
+                    char firstDigit = loggedInPerson.UserId.ToString()[0];
 
                 if (firstDigit == '1')
                 {
@@ -39,12 +44,14 @@ namespace FoxyBank
                 {
                     RunUserMenu(loggedInPerson);
                 }
-            }
+                    break;
+                }
+            } while (Tries > 0);
+            
         }
 
         public Person Login()
-        {
-
+        {       
             Console.WriteLine("Write user id.");
             int AnId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter password.");
