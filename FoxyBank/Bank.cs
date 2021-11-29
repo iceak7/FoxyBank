@@ -11,50 +11,52 @@ namespace FoxyBank
         static int idCount = 2000;
 
         public List<Person> Persons { get; set; }
+        public Dictionary<int, int> Accounts { get; set; }
 
         public Bank()
         {
             this.Persons = new List<Person>();
+            this.Accounts = new Dictionary<int, int>();
         }
         public void StartApplication()
         {
+            Person LoggedInPerson;
+            byte Tries = 3;
             Console.WriteLine("Hej välkommen till Foxy Bank.");
-
-            Person loggedInPerson = Login();
-            if(loggedInPerson == null)
+            do
             {
-                Console.WriteLine("Failed.");
-
-            }
-            else
-            {
-                Console.WriteLine("Your now logged in!");
-            }
-
-
+                Person loggedInPerson = Login();
+                if (loggedInPerson == null)
+                {
+                    Console.WriteLine("Failed.");
+                    Tries--;
+                }
+                else
+                {
+                    Console.WriteLine("Your now logged in!");
+                    break;
+                }
+            } while (Tries > 0);
+            
         }
 
         public Person Login()
         {
-            
-            Console.WriteLine("Write user id.");
-            int AnId = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter password.");
-            string AnPassword = Console.ReadLine();
-
-            foreach (Person A1 in Persons)
-            {
-                if(A1.Authentication(AnPassword, AnId))
+                Console.WriteLine("Write user id.");
+                int AnId = int.Parse(Console.ReadLine());
+                Console.WriteLine("Enter password.");
+                string AnPassword = Console.ReadLine();
+                foreach (Person A1 in Persons)
                 {
-                    return A1;
-                } 
-                
-            }return null;
+                    if (A1.Authentication(AnPassword, AnId))
+                    {
+                        return A1;
+                    }
+                } return null;
             
             //Fråga efter userid och lösen.
             //Kolla i listan om den användaren finns och uppgifterna är korrekta
-            //Returnera användaren som loggade in och null om den inte fanns
-            
+            //Returnera användaren som loggade in och null om den inte fanns     
         }
 
 
