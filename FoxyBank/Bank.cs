@@ -6,12 +6,6 @@ namespace FoxyBank
 {
     public class Bank 
     {
-        
-        
-        //Fields för generateIDmethod
-
-        static int idCount = 2000;
-
 
         public List<Person> Persons { get; set; }
         
@@ -59,34 +53,42 @@ namespace FoxyBank
             }
             return null;
 
-            //Fråga efter userid och lösen.
-            //Kolla i listan om den användaren finns och uppgifterna är korrekta
-            //Returnera användaren som loggade in och null om den inte fanns
+           
 
         }
 
-        
-        
+
+
         public int GenerateUserID()
         {
-            idCount++;
-            return idCount;
+            Random random = new Random();           
+            int randomID = random.Next(2000,3000);
+            return randomID;
+
            
         }
         public void RegisterNewUser()
         {
+
             Console.WriteLine("Please type in the first name of the new user");
             string Firstnameinput = Console.ReadLine();
             Console.WriteLine("Please type in the last name of the new user");
             string Lastnameinput = Console.ReadLine();
-            User newBankUser = new User(Firstnameinput, Lastnameinput, "hemlis123", GenerateUserID());
+
+            
+            User newBankUser = new User(Firstnameinput,Lastnameinput,"hemlis123",GenerateUserID());
+
+
+
 
               
             foreach (var item in Persons)
             {
                 if (newBankUser.UserId == item.UserId)
                 {
-                    idCount++;
+
+                    GenerateUserID();
+
                 }
                 else
                 {

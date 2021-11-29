@@ -44,6 +44,7 @@ namespace FoxyBank
 
             }
 
+
             //public void UserRunMenu()
             //{
             //    bool isRunning = true;
@@ -90,6 +91,7 @@ namespace FoxyBank
             //    while (isRunning != false);
 
             //}
+
         }
     }
 }

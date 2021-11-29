@@ -62,6 +62,7 @@ namespace FoxyBank
         //                isRunning = false;
         //                break;
 
+
         //            default:
         //                Console.WriteLine("Ogiltigt val.");
         //                break;
