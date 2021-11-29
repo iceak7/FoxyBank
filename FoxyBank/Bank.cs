@@ -15,22 +15,20 @@ namespace FoxyBank
             this.Accounts = new Dictionary<int, int>();
         }
         public void StartApplication()
-        {
-            byte Tries = 3;
+        {   
             Console.WriteLine("Hej välkommen till Foxy Bank.");
-          
+            byte Tries = 3;
             do
             {
-
                 Person loggedInPerson = Login();
                 if (loggedInPerson == null)
                 {
-                    Console.WriteLine("Failed.");
+                    Console.WriteLine("Misslyckad inloggning.");
                     Tries--;
                 }
                 else
                 {
-                    Console.WriteLine("Your now logged in!");
+                    Console.WriteLine("Du är inloggad.");
                     char firstDigit = loggedInPerson.UserId.ToString()[0];
                 
                 if (firstDigit == '1')
@@ -43,15 +41,26 @@ namespace FoxyBank
                 }
                     break;
                 }
-            } while (Tries > 0);
-            
+            } while (Tries > 0);   
         }
 
         public Person Login()
-        {       
-            Console.WriteLine("Write user id.");
-            int AnId = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter password.");
+        {
+           
+            bool Answear;
+            int AnId;
+            do {
+
+                Console.WriteLine("Skriv kontonummer");
+                Answear = int.TryParse(Console.ReadLine(), out AnId);
+                if (Answear == false)
+                {
+                    Console.Clear();
+                    return null;
+
+                }
+            } while (Answear == false);
+            Console.WriteLine("Skriv in lösenord");
             string AnPassword = Console.ReadLine();
 
             foreach (Person A1 in Persons)
@@ -142,6 +151,7 @@ namespace FoxyBank
                         //ExternalTransfer();
                         break;
                     case "4":
+                        CreateAccount((User)loggedInPerson);
                         //CreateAccount();
                         break;
 
