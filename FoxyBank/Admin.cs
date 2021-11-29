@@ -20,7 +20,6 @@ namespace FoxyBank
             this.LastName = lastName;
             this.PassWord = passWord;
 
-
         }
         public void RegisterNewUser(Bank bank)
         {
@@ -30,44 +29,6 @@ namespace FoxyBank
             //bank.Persons.Add(new User())
 
             //bank.Persons
-        }
-
-        bool isRunning = true;
-        public void AdminRunMenu()
-        {
-
-            Console.WriteLine($"Välkommen {this.FirstName} {this.LastName}");
-
-            do
-            {
-                Console.WriteLine("1. Skapa ny bankkund" +
-                                "\n2. Ändra valutakurs" +
-                                "\n3. Logga ut");
-
-                string menuChoice = Console.ReadLine();
-
-                switch (menuChoice)
-                {
-                    case "1":
-                        //RegisterNewUser();
-                        break;
-
-
-                    case "2":
-                        //updateExchangeRate();
-                        break;
-
-                    case "3":
-                        //LogOut();
-                        isRunning = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Ogiltigt val.");
-                        break;
-                }
-            }
-            while (isRunning != false);
         }
 
     }

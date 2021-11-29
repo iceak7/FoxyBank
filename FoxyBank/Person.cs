@@ -11,7 +11,6 @@ namespace FoxyBank
         protected string PassWord { get; set; }
         public int UserId { get; protected set; }
 
-
         public bool Authentication(string password,int userid)
         {
             if(password == this.PassWord && userid == this.UserId)
