@@ -18,7 +18,7 @@ namespace FoxyBank
         {
             byte Tries = 3;
             Console.WriteLine("Hej välkommen till Foxy Bank.");
-          
+
             do
             {
 
@@ -32,23 +32,23 @@ namespace FoxyBank
                 {
                     Console.WriteLine("Your now logged in!");
                     char firstDigit = loggedInPerson.UserId.ToString()[0];
-                
-                if (firstDigit == '1')
-                {
-                    RunAdminMenu(loggedInPerson);
-                }
-                else
-                {
-                    RunUserMenu(loggedInPerson);
-                }
+
+                    if (firstDigit == '1')
+                    {
+                        RunAdminMenu(loggedInPerson);
+                    }
+                    else
+                    {
+                        RunUserMenu(loggedInPerson);
+                    }
                     break;
                 }
             } while (Tries > 0);
-            
+
         }
 
         public Person Login()
-        {       
+        {
             Console.WriteLine("Write user id.");
             int AnId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter password.");
@@ -67,9 +67,30 @@ namespace FoxyBank
 
         public int GenerateUserID()
         {
-            Random random = new Random();           
-            int randomID = random.Next(2000,3000);
-            return randomID;
+            bool IDCheck = true;
+            Random random = new Random();
+            int randomizeID = 0;
+            do
+            {
+                IDCheck = true;
+                randomizeID = random.Next(2000, 3000);
+                foreach (var item in Persons)
+                {
+                    if (randomizeID == item.UserId)
+                    {
+
+                        IDCheck = false;
+                    }
+                    
+                }
+            }
+            while (IDCheck == false);
+            
+            return randomizeID;
+
+
+
+
         }
         public void RunAdminMenu(Person loggedInPerson)
         {
@@ -112,7 +133,7 @@ namespace FoxyBank
             }
             while (isRunning != false);
         }
-      
+
         public void RunUserMenu(Person loggedInPerson)
         {
             bool isRunning = true;
@@ -142,7 +163,7 @@ namespace FoxyBank
                         //ExternalTransfer();
                         break;
                     case "4":
-                        //CreateAccount();
+                        CreateAccount((User)loggedInPerson);
                         break;
 
                     case "5":
@@ -160,36 +181,32 @@ namespace FoxyBank
 
         public void RegisterNewUser()
         {
-            Console.WriteLine("Please type in the first name of the new user");
-            string Firstnameinput = Console.ReadLine();
-            Console.WriteLine("Please type in the last name of the new user");
-            string Lastnameinput = Console.ReadLine();
-            
-            User newBankUser = new User(Firstnameinput,Lastnameinput,"hemlis123",GenerateUserID());
+
+
+            Console.WriteLine("Var god skriv in användarens förnamn");
+            string firstNameInput = Console.ReadLine();
+            Console.WriteLine("Var god skriv in användarens efternamn");
+            string lastNameInput = Console.ReadLine();
+            Console.WriteLine("Var god skriv in användarens lösenord");
+            string passWordInput = Console.ReadLine();
+            User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
 
 
             this.Persons.Add(newBankUser);
-            foreach (var item in Persons)
-            {
+            Console.WriteLine("Ny användare tillagd.");
+            Console.WriteLine("Användarinfo");
+            Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
+            Console.WriteLine("Lösenord : {0}",newBankUser.PassWord);
+            Console.WriteLine("ID : {0}", newBankUser.UserId);
+            Console.ReadKey();
 
-                if (newBankUser.UserId == item.UserId)
-                {
-                    GenerateUserID();
-                }
-                else
-                {
-                    this.Persons.Add(newBankUser);
-                    Console.WriteLine("User added to list");
-                    Console.WriteLine("User information ");
-                    Console.WriteLine("Name : {0} {1}", item.FirstName, item.LastName);
-                    Console.WriteLine("ID : {0}", item.UserId);
-                }               
-            }
+
+
         }
 
         public void CreateAccount(User user)
         {
-            int accountNr=0;
+            int accountNr = 0;
 
             Random rand = new Random();
             int randomizedAccNr = rand.Next(10000, 11000);
@@ -201,8 +218,8 @@ namespace FoxyBank
                 while (!foundId)
                 {
                     randomizedAccNr = rand.Next(10000, 11000);
-                    if (!Accounts.ContainsKey(randomizedAccNr)) 
-                    { 
+                    if (!Accounts.ContainsKey(randomizedAccNr))
+                    {
                         accountNr = randomizedAccNr;
                         foundId = true;
                     }
@@ -233,16 +250,16 @@ namespace FoxyBank
                     createdAccount = new PersonalAccount(accountNr);
                     user.Accounts.Add(createdAccount);
                     this.Accounts.Add(createdAccount.AccountNr, user.UserId);
-                   
+
                 }
                 else
                 {
                     Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Svara ett nummer från menyn.");
                 }
 
-            } while (createdAccount==null);
+            } while (createdAccount == null);
 
-            Console.WriteLine($"\nGrattis! Du skapade ett {((createdAccount is PersonalAccount)? "Personkonto" : "Sparkonto" )} med kontonumret " + createdAccount.AccountNr);
+            Console.WriteLine($"\nGrattis! Du skapade ett {((createdAccount is PersonalAccount) ? "Personkonto" : "Sparkonto")} med kontonumret " + createdAccount.AccountNr);
         }
     }
 }
