@@ -33,13 +33,13 @@ namespace FoxyBank
                     Console.WriteLine("Your now logged in!");
                     char firstDigit = loggedInPerson.UserId.ToString()[0];
                 
-                if (firstDigit == '1')
+                if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
                 {
-                    RunAdminMenu(loggedInPerson);
+                    RunAdminMenu((Admin)loggedInPerson);
                 }
                 else
                 {
-                    RunUserMenu(loggedInPerson);
+                    RunUserMenu((User)loggedInPerson);
                 }
                     break;
                 }
@@ -64,22 +64,21 @@ namespace FoxyBank
             return null;
         }
 
-
         public int GenerateUserID()
         {
             Random random = new Random();           
             int randomID = random.Next(2000,3000);
             return randomID;
         }
-        public void RunAdminMenu(Person loggedInPerson)
+        public void RunAdminMenu(Admin loggedInPerson)
         {
             bool isRunning = true;
 
             do
             {
-                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+                Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
 
-                Console.WriteLine("Användarmeny för administrator:" +
+                Console.WriteLine("\nAnvändarmeny för administrator:" +
                             "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
                             "\n3. Ändra sparränta" +
@@ -113,14 +112,14 @@ namespace FoxyBank
             while (isRunning != false);
         }
       
-        public void RunUserMenu(Person loggedInPerson)
+        public void RunUserMenu(User loggedInPerson)
         {
             bool isRunning = true;
 
             do
             {
-                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
-                Console.WriteLine("1. Se dina konton och saldo" +
+                Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
+                Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överföring mellan egna konton" +
                         "\n3. Överföring till andra användares konton" +
                         "\n4. Skapa nytt bankkonto" +
@@ -142,7 +141,7 @@ namespace FoxyBank
                         //ExternalTransfer();
                         break;
                     case "4":
-                        //CreateAccount();
+                        CreateAccount(loggedInPerson);
                         break;
 
                     case "5":
@@ -151,7 +150,7 @@ namespace FoxyBank
                         break;
 
                     default:
-                        Console.WriteLine("Ogiltigt val.");
+                        Console.WriteLine("\nOgiltigt val.");
                         break;
                 }
             }
@@ -167,7 +166,6 @@ namespace FoxyBank
             
             User newBankUser = new User(Firstnameinput,Lastnameinput,"hemlis123",GenerateUserID());
 
-
             this.Persons.Add(newBankUser);
             foreach (var item in Persons)
             {
@@ -181,8 +179,8 @@ namespace FoxyBank
                     this.Persons.Add(newBankUser);
                     Console.WriteLine("User added to list");
                     Console.WriteLine("User information ");
-                    Console.WriteLine("Name : {0} {1}", item.FirstName, item.LastName);
-                    Console.WriteLine("ID : {0}", item.UserId);
+                    Console.WriteLine("Name : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
+                    Console.WriteLine("ID : {0}", newBankUser.UserId);
                 }               
             }
         }
