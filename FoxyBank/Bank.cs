@@ -6,10 +6,6 @@ namespace FoxyBank
 {
     public class Bank
     {
-        //Fields för generateIDmethod
-
-        static int idCount = 2000;
-
         public List<Person> Persons { get; set; }
         public Dictionary<int, int> Accounts { get; set; }
 
@@ -65,13 +61,15 @@ namespace FoxyBank
                 }
             }
             return null;
-
-            //Fråga efter userid och lösen.
-            //Kolla i listan om den användaren finns och uppgifterna är korrekta
-            //Returnera användaren som loggade in och null om den inte fanns
-
         }
 
+
+        public int GenerateUserID()
+        {
+            Random random = new Random();           
+            int randomID = random.Next(2000,3000);
+            return randomID;
+        }
         public void RunAdminMenu(Person loggedInPerson)
         {
             bool isRunning = true;
@@ -159,14 +157,6 @@ namespace FoxyBank
             while (isRunning != false);
         }
 
-
-        //Metod som genererar ett id till User, börjar från 2001
-        public int GenerateUserID()
-        {
-            idCount++;
-
-            return idCount;
-        }
         public void RegisterNewUser()
         {
 
@@ -174,26 +164,28 @@ namespace FoxyBank
             string Firstnameinput = Console.ReadLine();
             Console.WriteLine("Please type in the last name of the new user");
             string Lastnameinput = Console.ReadLine();
-
-            User newBankUser = new User(Firstnameinput, Lastnameinput, "hemlis123", GenerateUserID());
-
+            
+            User newBankUser = new User(Firstnameinput,Lastnameinput,"hemlis123",GenerateUserID());
 
 
             this.Persons.Add(newBankUser);
             foreach (var item in Persons)
             {
-                Console.WriteLine("User added to list");
-                Console.WriteLine("User information ");
-                Console.WriteLine("Name : {0} {1}", item.FirstName, item.LastName);
-                Console.WriteLine("ID : {0}", item.UserId);
+
+                if (newBankUser.UserId == item.UserId)
+                {
+                    GenerateUserID();
+                }
+                else
+                {
+                    this.Persons.Add(newBankUser);
+                    Console.WriteLine("User added to list");
+                    Console.WriteLine("User information ");
+                    Console.WriteLine("Name : {0} {1}", item.FirstName, item.LastName);
+                    Console.WriteLine("ID : {0}", item.UserId);
+                }               
+
             }
-
-            //First user = 2001
-            //Register user
-            //Generate ID - check if ID already exists
-            //bank.Persons.Add(new User())
-
-            //bank.Persons
 
         }
     }
