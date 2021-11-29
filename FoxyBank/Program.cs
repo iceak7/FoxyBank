@@ -15,7 +15,7 @@ namespace FoxyBank
             ourBank.Persons.Add(new User("Mattias", "Kokkonen", "Hemlis12345", 2003));
             ourBank.Persons.Add(new User("Jenny", "Lund-Kallberg", "Hemlis123456", 2005));
 
-            ourBank.StartApplication();           
+            ourBank.StartApplication();
 
         }
     }

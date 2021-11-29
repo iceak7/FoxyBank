@@ -8,7 +8,7 @@ namespace FoxyBank
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        protected string PassWord { get; set; }
+        public string PassWord { get; protected set; }
         public int UserId { get; protected set; }
 
         public bool Authentication(string password,int userid)
