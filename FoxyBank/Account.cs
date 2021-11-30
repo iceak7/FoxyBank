@@ -4,37 +4,10 @@ using System.Text;
 
 namespace FoxyBank
 {
-    public abstract class BankAccount
+    public abstract class Account
     {
         protected decimal Balance { get; set; }
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
-
-        public decimal GetBalance()
-        {
-            return Balance;
-        }
-
-        public void AddBalance(decimal sumToAdd)
-        {
-            Balance += sumToAdd;
-        }
-
-        public bool SubstractBalance(decimal sumToSubstract)
-        {
-            if (this.Balance >= sumToSubstract)
-            {
-                Balance -= sumToSubstract;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
-
-
     }
 }

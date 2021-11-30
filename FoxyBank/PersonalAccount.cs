@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    public class PersonalAccount : BankAccount
+    public class PersonalAccount : Account
     {
         public PersonalAccount(int accountNr)
         {

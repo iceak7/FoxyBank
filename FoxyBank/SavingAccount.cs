@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoxyBank
 {
-    public class SavingAccount : BankAccount
+    public class SavingAccount : Account
     {
         public decimal Interest { get; set;}
 
