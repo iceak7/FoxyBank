@@ -43,7 +43,7 @@ namespace FoxyBank
                     if(Tries == 0)
                     {
                     Console.Clear();
-                    Console.WriteLine("Misslyckad inloggning.");
+                    Console.WriteLine("Misslyckad inloggning."); 
 
                     return null;
                     }
