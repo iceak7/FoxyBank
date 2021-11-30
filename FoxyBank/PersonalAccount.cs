@@ -4,15 +4,12 @@ using System.Text;
 
 namespace FoxyBank
 {
-    public class PersonalAccount : Account
+    public class PersonalAccount : BankAccount
     {
         public PersonalAccount(int accountNr)
         {
             this.Balance = 0;
             this.AccountNr = accountNr;
-
         }
-
-
     }
 }
