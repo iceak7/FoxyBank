@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 
 
@@ -236,7 +237,8 @@ namespace FoxyBank
             string passWordInput;
             bool PassHasDigit;
             string passWordCheck;
-            do {
+            do
+            {
                 do
                 {
                     Console.WriteLine("Var god skriv in användarens lösenord, Lösenordet måste minst ha 8 bokstäver och ett nummer.");
@@ -257,7 +259,7 @@ namespace FoxyBank
 
                 Console.WriteLine("Type in password agian");
                 passWordCheck = Console.ReadLine();
-                if(passWordCheck != passWordInput)
+                if (passWordCheck != passWordInput)
                 {
                     Console.WriteLine("Lösenordet är inte samma");
                 }
@@ -273,32 +275,6 @@ namespace FoxyBank
             Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
             Console.WriteLine("ID : {0}", newBankUser.UserId);
             Console.ReadKey();
-
-
-        } while (passWordInput.Length < 8 || PassHasDigit == false);
-                passWordCheck = passWordInput;
-
-
-                Console.WriteLine("Type in password agian");
-                passWordCheck = Console.ReadLine();
-                if(passWordCheck != passWordInput)
-                {
-                    Console.WriteLine("Lösenordet är inte samma");
-                }
-            } while (passWordCheck != passWordInput);
-
-
-            User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
-
-            this.Persons.Add(newBankUser);
-            Console.WriteLine("Ny användare tillagd.");
-            Console.WriteLine("Användarinfo");
-            Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
-            Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
-            Console.WriteLine("ID : {0}", newBankUser.UserId);
-            Console.ReadKey();
-
-
 
 
         }
