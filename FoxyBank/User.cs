@@ -22,8 +22,6 @@ namespace FoxyBank
         public void DisplayAllAccounts()
         {
 
-        }
-       
-
+        }       
     }
 }

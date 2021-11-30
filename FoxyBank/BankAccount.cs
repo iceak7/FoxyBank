@@ -31,10 +31,6 @@ namespace FoxyBank
             {
                 return false;
             }
-
         }
-
-
-
     }
 }

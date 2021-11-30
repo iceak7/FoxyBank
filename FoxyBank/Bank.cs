@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Linq;
+
+
 
 namespace FoxyBank
 {
@@ -15,26 +16,26 @@ namespace FoxyBank
             this.Persons = new List<Person>();
             this.BankAccounts = new Dictionary<int, int>();
         }
-        public void StartApplication()
+       public void StartApplication()
         {
             Console.Clear();
             Console.WriteLine("Hej välkommen till Foxy Bank."); 
             Person loggedInPerson = Login();
 
-
         }
+        
 
         public Person Login()
         {
             byte Tries = 3;
-            bool Answear= false ;
+            bool Answer= false ;
             int AnId;
             do
             {
                     do {
                     Console.WriteLine("Skriv användarID");
-                    Answear = int.TryParse(Console.ReadLine(), out AnId);
-                    if (Answear == false && Tries != 0)
+                    Answer = int.TryParse(Console.ReadLine(), out AnId);
+                    if (Answer == false && Tries != 0)
                     {
                         Console.Clear();
                         Console.WriteLine("Ogiltigt användarID, försök igen.");
@@ -47,12 +48,12 @@ namespace FoxyBank
 
                     return null;
                     }
-                  
-                 } while (Answear == false && Tries !=0);
+
+                 } while (Answer == false && Tries !=0);
 
                     Console.WriteLine("Skriv in lösenord");
                     string AnPassword = Console.ReadLine();
-            
+
                 foreach (Person A1 in Persons)
                 {
                     if (A1.Authentication(AnPassword, AnId))
@@ -77,7 +78,30 @@ namespace FoxyBank
             } while (Tries != 0);
                 return null;
         }
+        public string HidePassWord()
+        {
+            string password = string.Empty;
+            ConsoleKey key;
+            do
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key;
+                if (key == ConsoleKey.Backspace && password.Length > 0)
+                {
+                    Console.Write("\b \b");
+                    password = password[0..^1];
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    Console.Write("*");
+                    password += keyInfo.KeyChar;
+                }
 
+            } while (key != ConsoleKey.Enter);
+
+            return password;
+
+        }
         public int GenerateUserID()
         {
             bool IDCheck = true;
@@ -138,6 +162,7 @@ namespace FoxyBank
                         //LogOut();
                         isRunning = false;
                         StartApplication();
+                        
                         break;
 
                     default:
@@ -179,6 +204,7 @@ namespace FoxyBank
                         //ExternalTransfer();
                         break;
                     case "4":
+                    
 
 
                         CreateAccount(loggedInPerson);
@@ -186,7 +212,7 @@ namespace FoxyBank
                         break;
 
                     case "5":
-                        //LogOut();
+                        
                         isRunning = false;
                         StartApplication();
                         break;
@@ -226,6 +252,30 @@ namespace FoxyBank
                     }
 
                 } while (passWordInput.Length < 8 || PassHasDigit == false);
+                passWordCheck = passWordInput;
+
+
+                Console.WriteLine("Type in password agian");
+                passWordCheck = Console.ReadLine();
+                if(passWordCheck != passWordInput)
+                {
+                    Console.WriteLine("Lösenordet är inte samma");
+                }
+            } while (passWordCheck != passWordInput);
+
+
+            User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
+
+            this.Persons.Add(newBankUser);
+            Console.WriteLine("Ny användare tillagd.");
+            Console.WriteLine("Användarinfo");
+            Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
+            Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
+            Console.WriteLine("ID : {0}", newBankUser.UserId);
+            Console.ReadKey();
+
+
+        } while (passWordInput.Length < 8 || PassHasDigit == false);
                 passWordCheck = passWordInput;
 
 
