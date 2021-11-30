@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 
+
+
 namespace FoxyBank
 {
     public class Bank
     {
         public List<Person> Persons { get; set; }
-        public Dictionary<int, int> Accounts { get; set; }
+        public Dictionary<int, int> BankAccounts { get; set; }
 
         public Bank()
         {
             this.Persons = new List<Person>();
-            this.Accounts = new Dictionary<int, int>();
+            this.BankAccounts = new Dictionary<int, int>();
         }
         public void StartApplication()
-        {   
+        {
             Console.WriteLine("Hej välkommen till Foxy Bank.");
 
             byte Tries = 3;
@@ -33,30 +35,31 @@ namespace FoxyBank
                     Console.WriteLine("Du är inloggad.");
                     char firstDigit = loggedInPerson.UserId.ToString()[0];
 
-                
-                if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
-                {
-                    RunAdminMenu((Admin)loggedInPerson);
-                }
-                else
-                {
-                    RunUserMenu((User)loggedInPerson);
-                }
+
+                    if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
+                    {
+                        RunAdminMenu((Admin)loggedInPerson);
+                    }
+                    else
+                    {
+                        RunUserMenu((User)loggedInPerson);
+                    }
 
                     break;
                 }
 
-            } while (Tries > 0);   
+            } while (Tries > 0);
 
         }
 
         public Person Login()
         {
 
-           
+
             bool Answear;
             int AnId;
-            do {
+            do
+            {
 
                 Console.WriteLine("Skriv användarID");
                 Answear = int.TryParse(Console.ReadLine(), out AnId);
@@ -80,7 +83,30 @@ namespace FoxyBank
             }
             return null;
         }
+        public string HidePassWord()
+        {
+            string password = string.Empty;
+            ConsoleKey key;
+            do
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key;
+                if (key == ConsoleKey.Backspace && password.Length > 0)
+                {
+                    Console.Write("\b \b");
+                    password = password[0..^1];
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    Console.Write("*");
+                    password += keyInfo.KeyChar;
+                }
 
+            } while (key != ConsoleKey.Enter);
+
+            return password;
+
+        }
         public int GenerateUserID()
         {
             bool IDCheck = true;
@@ -97,11 +123,11 @@ namespace FoxyBank
 
                         IDCheck = false;
                     }
-                    
+
                 }
             }
             while (IDCheck == false);
-            
+
             return randomizeID;
 
 
@@ -150,7 +176,7 @@ namespace FoxyBank
             while (isRunning != false);
         }
 
-      
+
         public void RunUserMenu(User loggedInPerson)
 
         {
@@ -209,14 +235,14 @@ namespace FoxyBank
             Console.WriteLine("Var god skriv in användarens efternamn");
             string lastNameInput = Console.ReadLine();
             Console.WriteLine("Var god skriv in användarens lösenord");
-            string passWordInput = Console.ReadLine();
+            string passWordInput = Console.ReadLine();      
             User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
 
             this.Persons.Add(newBankUser);
             Console.WriteLine("Ny användare tillagd.");
             Console.WriteLine("Användarinfo");
             Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
-            Console.WriteLine("Lösenord : {0}",newBankUser.PassWord);
+            Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
             Console.WriteLine("ID : {0}", newBankUser.UserId);
             Console.ReadKey();
 
@@ -232,14 +258,14 @@ namespace FoxyBank
             Random rand = new Random();
             int randomizedAccNr = rand.Next(10000, 11000);
 
-            if (!Accounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
+            if (!BankAccounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
             else
             {
                 bool foundId = false;
                 while (!foundId)
                 {
                     randomizedAccNr = rand.Next(10000, 11000);
-                    if (!Accounts.ContainsKey(randomizedAccNr))
+                    if (!BankAccounts.ContainsKey(randomizedAccNr))
                     {
                         accountNr = randomizedAccNr;
                         foundId = true;
@@ -247,7 +273,7 @@ namespace FoxyBank
                 }
             }
 
-            Account createdAccount = null;
+            BankAccount createdAccount = null;
 
             Console.WriteLine("\nVad vill du öppna för konto?");
             do
@@ -261,16 +287,16 @@ namespace FoxyBank
                 if (answer == "1")
                 {
                     createdAccount = new SavingAccount(accountNr);
-                    user.Accounts.Add(createdAccount);
-                    this.Accounts.Add(createdAccount.AccountNr, user.UserId);
+                    user.BankAccounts.Add(createdAccount);
+                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
 
                 }
 
                 else if (answer == "2")
                 {
                     createdAccount = new PersonalAccount(accountNr);
-                    user.Accounts.Add(createdAccount);
-                    this.Accounts.Add(createdAccount.AccountNr, user.UserId);
+                    user.BankAccounts.Add(createdAccount);
+                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
 
                 }
                 else
