@@ -10,9 +10,6 @@ namespace FoxyBank
         {
             this.Balance = 0;
             this.AccountNr = accountNr;
-
         }
-
-
     }
 }

@@ -24,7 +24,7 @@ namespace FoxyBank
         {
             if (this.Balance >= sumToSubstract)
             {
-                Balance -= sumToSubstract;
+                Balance-=sumToSubstract;
                 return true;
             }
             else

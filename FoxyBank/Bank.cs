@@ -183,7 +183,7 @@ namespace FoxyBank
             {
                 Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
                 Console.WriteLine("\n1. Se dina konton och saldo" +
-                        "\n2. Överföring mellan egna konton" +
+                        "\n2. Överför pengar" +
                         "\n3. Överföring till andra användares konton" +
                         "\n4. Skapa nytt bankkonto" +
                         "\n5. Logga ut");
@@ -197,7 +197,7 @@ namespace FoxyBank
                         break;
 
                     case "2":
-                        //InternalTransfer();
+                        TransferMoney(loggedInPerson);
                         break;
 
                     case "3":
@@ -303,7 +303,7 @@ namespace FoxyBank
 
         }
 
-        public void CreateAccount(User user)
+        public int GenerateAccountNr()
         {
             int accountNr = 0;
 
@@ -324,7 +324,10 @@ namespace FoxyBank
                     }
                 }
             }
-
+            return accountNr;
+        }
+        public void CreateAccount(User user)
+        {
             BankAccount createdAccount = null;
 
             Console.WriteLine("\nVad vill du öppna för konto?");
@@ -338,7 +341,8 @@ namespace FoxyBank
 
                 if (answer == "1")
                 {
-                    createdAccount = new SavingAccount(accountNr);
+                    createdAccount = new SavingAccount(GenerateAccountNr());
+
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
 
@@ -346,7 +350,7 @@ namespace FoxyBank
 
                 else if (answer == "2")
                 {
-                    createdAccount = new PersonalAccount(accountNr);
+                    createdAccount = new PersonalAccount(GenerateAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
 
@@ -359,6 +363,93 @@ namespace FoxyBank
             } while (createdAccount == null);
 
             Console.WriteLine($"\nGrattis! Du skapade ett {((createdAccount is PersonalAccount) ? "Personkonto" : "Sparkonto")} med kontonumret " + createdAccount.AccountNr);
+        }
+
+        public void TransferMoney(User user)
+        {
+            int transferFromAcc = 0;
+            user.DisplayAllAccounts();
+
+            Console.WriteLine("\nVilket konto vill du överföra pengar ifrån? Skriv kontonumret.");
+            do
+            {
+                int inputAcc = 0;
+                if (int.TryParse(Console.ReadLine(), out inputAcc))
+                {
+                    BankAccount foundAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
+                    if (foundAcc != null )
+                    {
+                        if (foundAcc.GetBalance() > 0)
+                        {
+                            transferFromAcc = foundAcc.AccountNr;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Konto du valde har inte tillräckligt högt saldo. Vänligen välj ett annat konto.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                }
+            } while (transferFromAcc == 0);
+
+
+            int transferToAcc = 0;
+            Console.WriteLine("\nVilket konto vill du överföra pengar till? Skriv kontonumret.");
+            do
+            {
+                int inputAcc = 0;
+                if (int.TryParse(Console.ReadLine(), out inputAcc))
+                {
+
+                    if (transferFromAcc == inputAcc)
+                    {
+                        Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
+                    }
+                    else if (this.BankAccounts.ContainsKey(inputAcc))
+                    {
+                        
+                        if (this.BankAccounts[inputAcc]!=user.UserId)
+                        {
+                            User transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
+
+                            Console.WriteLine($"Kontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}. \nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka bara vidare annars för att skriva in kontonumret på nytt.");
+
+                            if (Console.ReadLine().ToUpper() == "JA")
+                            {
+                                transferToAcc = inputAcc;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Vänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                            }
+                        }
+                        else
+                        {
+                            transferToAcc = inputAcc;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                }
+            } while (transferToAcc == 0);
+
+            Console.WriteLine(transferToAcc);
+
+
+
         }
     }
 }
