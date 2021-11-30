@@ -16,72 +16,67 @@ namespace FoxyBank
             this.Persons = new List<Person>();
             this.BankAccounts = new Dictionary<int, int>();
         }
-        public void StartApplication()
+       public void StartApplication()
         {
-            Console.WriteLine("Hej välkommen till Foxy Bank.");
-
-            byte Tries = 3;
-
-            do
-            {
-                Person loggedInPerson = Login();
-                if (loggedInPerson == null)
-                {
-                    Console.WriteLine("Misslyckad inloggning.");
-                    Tries--;
-                }
-                else
-                {
-                    Console.WriteLine("Du är inloggad.");
-                    char firstDigit = loggedInPerson.UserId.ToString()[0];
-
-
-                    if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
-                    {
-                        RunAdminMenu((Admin)loggedInPerson);
-                    }
-                    else
-                    {
-                        RunUserMenu((User)loggedInPerson);
-                    }
-
-                    break;
-                }
-
-            } while (Tries > 0);
+            Console.Clear();
+            Console.WriteLine("Hej välkommen till Foxy Bank."); 
+            Person loggedInPerson = Login();
 
         }
+        
 
         public Person Login()
         {
-
-
-            bool Answear;
+            byte Tries = 3;
+            bool Answer= false ;
             int AnId;
             do
             {
-
-                Console.WriteLine("Skriv användarID");
-                Answear = int.TryParse(Console.ReadLine(), out AnId);
-                if (Answear == false)
-                {
+                    do {
+                    Console.WriteLine("Skriv användarID");
+                    Answer = int.TryParse(Console.ReadLine(), out AnId);
+                    if (Answer == false && Tries != 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Ogiltigt användarID, försök igen.");
+                        Tries--;
+                    }
+                    if(Tries == 0)
+                    {
                     Console.Clear();
+                    Console.WriteLine("Misslyckad inloggning."); 
+
                     return null;
+                    }
 
-                }
-            } while (Answear == false);
-            Console.WriteLine("Skriv in lösenord");
+                 } while (Answer == false && Tries !=0);
 
-            string AnPassword = Console.ReadLine();
+                    Console.WriteLine("Skriv in lösenord");
+                    string AnPassword = Console.ReadLine();
 
-            foreach (Person A1 in Persons)
-            {
-                if (A1.Authentication(AnPassword, AnId))
+                foreach (Person A1 in Persons)
                 {
-                    return A1;
+                    if (A1.Authentication(AnPassword, AnId))
+                    {
+                        Console.WriteLine("Du är inloggad.");
+                        char firstDigit = A1.UserId.ToString()[0];
+                        if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
+                        {
+
+                            RunAdminMenu((Admin)A1);
+                            return null;
+                        }
+                        else
+                        {
+                            RunUserMenu((User)A1);
+                            return null;
+                        }
+                    }
                 }
-            }
-            return null;
+                Tries--;
+                Console.WriteLine("Misslyckad inloggning.");
+            } while (Tries != 0);
+                return null;
         }
         public string HidePassWord()
         {
@@ -166,6 +161,8 @@ namespace FoxyBank
                     case "4":
                         //LogOut();
                         isRunning = false;
+                        StartApplication();
+                        
                         break;
 
                     default:
@@ -207,6 +204,7 @@ namespace FoxyBank
                         //ExternalTransfer();
                         break;
                     case "4":
+                    
 
 
                         CreateAccount(loggedInPerson);
@@ -214,8 +212,9 @@ namespace FoxyBank
                         break;
 
                     case "5":
-                        //LogOut();
+                        
                         isRunning = false;
+                        StartApplication();
                         break;
 
                     default:
@@ -234,8 +233,61 @@ namespace FoxyBank
             string firstNameInput = Console.ReadLine();
             Console.WriteLine("Var god skriv in användarens efternamn");
             string lastNameInput = Console.ReadLine();
-            Console.WriteLine("Var god skriv in användarens lösenord");
-            string passWordInput = Console.ReadLine();      
+            string passWordInput;
+            bool PassHasDigit;
+            string passWordCheck;
+            do {
+                do
+                {
+                    Console.WriteLine("Var god skriv in användarens lösenord, Lösenordet måste minst ha 8 bokstäver och ett nummer.");
+                    passWordInput = Console.ReadLine();
+                    PassHasDigit = passWordInput.Any(char.IsDigit);
+                    if (PassHasDigit == false)
+                    {
+                        Console.WriteLine("Lösenordet behöver minst ett nummer.");
+                    }
+                    if (passWordInput.Length < 8)
+                    {
+                        Console.WriteLine("Lösenordet är för kort.");
+                    }
+
+                } while (passWordInput.Length < 8 || PassHasDigit == false);
+                passWordCheck = passWordInput;
+
+
+                Console.WriteLine("Type in password agian");
+                passWordCheck = Console.ReadLine();
+                if(passWordCheck != passWordInput)
+                {
+                    Console.WriteLine("Lösenordet är inte samma");
+                }
+            } while (passWordCheck != passWordInput);
+
+
+            User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
+
+            this.Persons.Add(newBankUser);
+            Console.WriteLine("Ny användare tillagd.");
+            Console.WriteLine("Användarinfo");
+            Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
+            Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
+            Console.WriteLine("ID : {0}", newBankUser.UserId);
+            Console.ReadKey();
+
+
+        } while (passWordInput.Length < 8 || PassHasDigit == false);
+                passWordCheck = passWordInput;
+
+
+                Console.WriteLine("Type in password agian");
+                passWordCheck = Console.ReadLine();
+                if(passWordCheck != passWordInput)
+                {
+                    Console.WriteLine("Lösenordet är inte samma");
+                }
+            } while (passWordCheck != passWordInput);
+
+
             User newBankUser = new User(firstNameInput, lastNameInput, passWordInput, GenerateUserID());
 
             this.Persons.Add(newBankUser);

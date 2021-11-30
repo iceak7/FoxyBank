@@ -14,6 +14,7 @@ namespace FoxyBank
         {
             return Balance;
         }
+
         public void AddBalance(decimal sumToAdd)
         {
             Balance += sumToAdd;
