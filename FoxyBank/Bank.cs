@@ -18,7 +18,7 @@ namespace FoxyBank
         public void StartApplication()
         {
             Console.Clear();
-            Console.WriteLine("Hej välkommen till Foxy Bank.");
+            Console.WriteLine("Hej välkommen till Foxy Bank."); 
             Person loggedInPerson = Login();
 
 
