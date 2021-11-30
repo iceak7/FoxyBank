@@ -8,7 +8,7 @@ namespace FoxyBank
     public class User:Person
     {
 
-        public List<Account> Accounts { get; set; }
+        public List<BankAccount> BankAccounts { get; set; }
 
 
         public User(string firstName, string lastName, string passWord, int userId)
@@ -17,7 +17,7 @@ namespace FoxyBank
             this.LastName = lastName;
             this.PassWord = passWord;
             this.UserId = userId;
-            this.Accounts = new List<Account>();
+            this.BankAccounts = new List<BankAccount>();
         }
         public void DisplayAllAccounts()
         {
