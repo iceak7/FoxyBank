@@ -21,15 +21,5 @@ namespace FoxyBank
             this.PassWord = passWord;
 
         }
-        public void RegisterNewUser(Bank bank)
-        {
-           //First user = 2001
-            //Register user
-            //Generate ID - check if ID already exists
-            //bank.Persons.Add(new User())
-
-            //bank.Persons
-        }
-
     }
 }
