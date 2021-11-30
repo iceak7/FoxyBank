@@ -126,9 +126,6 @@ namespace FoxyBank
 
             return randomizeID;
 
-
-
-
         }
         public void RunAdminMenu(Admin loggedInPerson)
         {
@@ -142,7 +139,8 @@ namespace FoxyBank
                             "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
                             "\n3. Ändra sparränta" +
-                            "\n4 Logga ut");
+                            "\n4. Logga ut" +
+                            "\n5. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
@@ -160,12 +158,13 @@ namespace FoxyBank
                         break;
 
                     case "4":
-                        //LogOut();
                         isRunning = false;
-                        StartApplication();
-                        
+                        StartApplication();                        
                         break;
 
+                    case "5":
+                        isRunning = false;
+                        break;
                     default:
                         Console.WriteLine("Ogiltigt val.");
                         break;
@@ -173,7 +172,6 @@ namespace FoxyBank
             }
             while (isRunning != false);
         }
-
 
         public void RunUserMenu(User loggedInPerson)
 
@@ -187,14 +185,15 @@ namespace FoxyBank
                         "\n2. Överför pengar" +
                         "\n3. Överföring till andra användares konton" +
                         "\n4. Skapa nytt bankkonto" +
-                        "\n5. Logga ut");
+                        "\n5. Logga ut" +
+                        "\n6. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
                 {
                     case "1":
-                        //DisplayAllAccounts();
+                        loggedInPerson.DisplayAllAccounts();
                         break;
 
                     case "2":
@@ -206,16 +205,16 @@ namespace FoxyBank
                         break;
                     case "4":
                     
-
-
                         CreateAccount(loggedInPerson);
-
                         break;
 
                     case "5":
-                        
                         isRunning = false;
                         StartApplication();
+                        break;
+
+                    case "6":
+                        isRunning = false;
                         break;
 
                     default:
@@ -318,10 +317,10 @@ namespace FoxyBank
                 if (answer == "1")
                 {
                     createdAccount = new SavingAccount(GenerateAccountNr());
-
+                                        
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-
+                    createdAccount.AccountName = "Sparkonto";
                 }
 
                 else if (answer == "2")
@@ -329,7 +328,7 @@ namespace FoxyBank
                     createdAccount = new PersonalAccount(GenerateAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-
+                    createdAccount.AccountName = "Personkonto";
                 }
                 else
                 {

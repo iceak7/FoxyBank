@@ -19,11 +19,17 @@ namespace FoxyBank
             this.UserId = userId;
             this.BankAccounts = new List<BankAccount>();
         }
+               
         public void DisplayAllAccounts()
         {
-
-
-        }       
+            foreach (BankAccount created in BankAccounts)
+            {
+                Console.WriteLine($"Kontonamn: {created.AccountName} " +
+                                $"\nKontonummer: {created.AccountNr} " +
+                                $"\nTillgängligt belopp: {created.GetBalance()}" +
+                                $"\n");
+            }
+        }
 
     }
 }
