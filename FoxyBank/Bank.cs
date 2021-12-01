@@ -185,7 +185,6 @@ namespace FoxyBank
                 Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
                 Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överför pengar" +
-                        "\n3. Överföring till andra användares konton" +
                         "\n4. Skapa nytt bankkonto" +
                         "\n5. Logga ut");
 
@@ -201,9 +200,6 @@ namespace FoxyBank
                         TransferMoney(loggedInPerson);
                         break;
 
-                    case "3":
-                        //ExternalTransfer();
-                        break;
                     case "4":
                         CreateAccount(loggedInPerson);
                         break;
