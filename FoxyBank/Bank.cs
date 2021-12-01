@@ -17,24 +17,23 @@ namespace FoxyBank
             this.Persons = new List<Person>();
             this.BankAccounts = new Dictionary<int, int>();
         }
-       public void StartApplication()
+        public void StartApplication()
         {
             Console.Clear();
-            Console.WriteLine("Hej välkommen till Foxy Bank."); 
+            Console.WriteLine("Hej välkommen till Foxy Bank.");
             Person loggedInPerson = Login();
 
         }
-        
-
         public Person Login()
         {
             byte Tries = 3;
-            bool Answer= false ;
+            bool Answer = false;
             int AnId;
             do
             {
-                    do {
-                    Console.WriteLine("Skriv användarID");
+                do
+                {
+                    Console.WriteLine("\nSkriv användarID");
                     Answer = int.TryParse(Console.ReadLine(), out AnId);
                     if (Answer == false && Tries != 0)
                     {
@@ -42,17 +41,17 @@ namespace FoxyBank
                         Console.WriteLine("Ogiltigt användarID, försök igen.");
                         Tries--;
                     }
-                    if(Tries == 0)
+                    if (Tries == 0)
                     {
-                    Console.Clear();
-                    Console.WriteLine("Misslyckad inloggning."); 
+                        Console.Clear();
+                        Console.WriteLine("Misslyckad inloggning.");
 
-                    return null;
+                        return null;
                     }
 
-                 } while (Answer == false && Tries !=0);
+                } while (Answer == false && Tries != 0);
 
-                    Console.WriteLine("Skriv in lösenord");
+                Console.WriteLine("Skriv in lösenord");
                 string AnPassword = HidePassWord();
 
                 foreach (Person A1 in Persons)
@@ -77,7 +76,7 @@ namespace FoxyBank
                 Tries--;
                 Console.WriteLine("\nMisslyckad inloggning.");
             } while (Tries != 0);
-                return null;
+            return null;
         }
         public string HidePassWord()
         {
@@ -126,9 +125,6 @@ namespace FoxyBank
 
             return randomizeID;
 
-
-
-
         }
         public void RunAdminMenu(Admin loggedInPerson)
         {
@@ -142,7 +138,8 @@ namespace FoxyBank
                             "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
                             "\n3. Ändra sparränta" +
-                            "\n4 Logga ut");
+                            "\n4. Logga ut" +
+                            "\n5. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
@@ -160,12 +157,15 @@ namespace FoxyBank
                         break;
 
                     case "4":
-                        //LogOut();
                         isRunning = false;
-                        StartApplication();
-                        
+
+                        StartApplication();                        
+
                         break;
 
+                    case "5":
+                        isRunning = false;
+                        break;
                     default:
                         Console.WriteLine("Ogiltigt val.");
                         break;
@@ -173,8 +173,6 @@ namespace FoxyBank
             }
             while (isRunning != false);
         }
-
-
         public void RunUserMenu(User loggedInPerson)
 
         {
@@ -185,29 +183,33 @@ namespace FoxyBank
                 Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
                 Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överför pengar" +
-                        "\n4. Skapa nytt bankkonto" +
-                        "\n5. Logga ut");
+                        "\n3. Skapa nytt bankkonto" +
+                        "\n4. Logga ut" +
+                        "\n5. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
                 {
                     case "1":
-                        //DisplayAllAccounts();
+                        loggedInPerson.DisplayAllAccounts();
                         break;
 
                     case "2":
                         TransferMoney(loggedInPerson);
                         break;
 
-                    case "4":
+                    case "3":
                         CreateAccount(loggedInPerson);
                         break;
 
-                    case "5":
-                        
+                    case "4":
                         isRunning = false;
                         StartApplication();
+                        break;
+
+                    case "5":
+                        isRunning = false;
                         break;
 
                     default:
@@ -217,7 +219,6 @@ namespace FoxyBank
             }
             while (isRunning != false);
         }
-
         public void RegisterNewUser()
         {
 
@@ -233,7 +234,8 @@ namespace FoxyBank
             {
                 do
                 {
-                    Console.WriteLine("Var god skriv in användarens lösenord, Lösenordet måste minst ha 8 bokstäver och ett nummer.");
+                    Console.WriteLine("\nVar god skriv in användarens lösenord, Lösenordet måste minst ha 8 bokstäver och ett nummer.");
+
                     passWordInput = HidePassWord();
                     PassHasDigit = passWordInput.Any(char.IsDigit);
                     if (PassHasDigit == false)
@@ -254,6 +256,7 @@ namespace FoxyBank
                 if (passWordCheck != passWordInput)
                 {
                     Console.WriteLine("\nLösenordet är inte samma.");
+
                 }
             } while (passWordCheck != passWordInput);
 
@@ -271,7 +274,6 @@ namespace FoxyBank
 
 
         }
-
         public int GenerateAccountNr()
         {
             int accountNr = 0;
@@ -312,10 +314,10 @@ namespace FoxyBank
                 if (answer == "1")
                 {
                     createdAccount = new SavingAccount(GenerateAccountNr());
-
+                                        
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-
+                    createdAccount.AccountName = "Sparkonto";
                 }
 
                 else if (answer == "2")
@@ -323,7 +325,7 @@ namespace FoxyBank
                     createdAccount = new PersonalAccount(GenerateAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-
+                    createdAccount.AccountName = "Personkonto";
                 }
                 else
                 {
@@ -338,7 +340,6 @@ namespace FoxyBank
             Console.ReadKey();
             Console.Clear();
         }
-
         public void TransferMoney(User user)
         {
             int transferFromAcc = 0;
@@ -352,7 +353,7 @@ namespace FoxyBank
                 if (int.TryParse(Console.ReadLine(), out inputAcc))
                 {
                     BankAccount foundAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
-                    if (foundAcc != null )
+                    if (foundAcc != null)
                     {
                         if (foundAcc.GetBalance() > 0)
                         {
@@ -390,8 +391,8 @@ namespace FoxyBank
                     }
                     else if (this.BankAccounts.ContainsKey(inputAcc))
                     {
-                        
-                        if (this.BankAccounts[inputAcc]!=user.UserId)
+
+                        if (this.BankAccounts[inputAcc] != user.UserId)
                         {
                             transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
 
