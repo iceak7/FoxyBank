@@ -202,8 +202,7 @@ namespace FoxyBank
                         break;
 
                     case "3":
-                        //ExternalTransfer();
-                        break;
+                        
                     case "4":
                         CreateAccount(loggedInPerson);
                         break;

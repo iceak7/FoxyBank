@@ -22,14 +22,21 @@ namespace FoxyBank
                
         public void DisplayAllAccounts()
         {
-            foreach (BankAccount created in BankAccounts)
+            if (BankAccounts.Count == 0)
             {
-                Console.WriteLine($"Kontonamn: {created.AccountName} " +
-                                $"\nKontonummer: {created.AccountNr} " +
-                                $"\nTillgängligt belopp: {created.GetBalance()}" +
-                                $"\n");
+                Console.WriteLine("Inga tillgängliga konton.");
+            }
+            else
+            {
+                foreach (BankAccount created in BankAccounts)
+                {
+                    Console.WriteLine($"Kontonamn: {created.AccountName} " +
+                                    $"\nKontonummer: {created.AccountNr} " +
+                                    $"\nTillgängligt belopp: {created.GetBalance()}" +
+                                    $"\n");
+                }
             }
         }
-
+        
     }
 }

@@ -9,6 +9,7 @@ namespace FoxyBank
         protected decimal Balance { get; set; }
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
+        public decimal Currency { get; set; }
 
         public decimal GetBalance()
         {
