@@ -14,10 +14,16 @@ namespace FoxyBank
             user.BankAccounts.Add(new PersonalAccount(10000));
             ourBank.BankAccounts.Add(10000, 2001);
             user.BankAccounts[0].AddBalance(10000);
+            
 
             user.BankAccounts.Add(new PersonalAccount(10001));
             ourBank.BankAccounts.Add(10001, 2001);
             user.BankAccounts[1].AddBalance(10000);
+            ourBank.Persons.Add(user);
+
+            user.BankAccounts.Add(new ForeignAccount(30003));
+            ourBank.BankAccounts.Add(30003, 2001);
+            user.BankAccounts[0].AddBalance(10000);
             ourBank.Persons.Add(user);
 
             User user2 = new User("Edwin", "Westerberg", "Hemlis1234", 2002);

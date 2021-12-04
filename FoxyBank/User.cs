@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace FoxyBank
 {
@@ -32,11 +33,10 @@ namespace FoxyBank
                 {
                     Console.WriteLine($"Kontonamn: {created.AccountName} " +
                                     $"\nKontonummer: {created.AccountNr} " +
-                                    $"\nTillgängligt belopp: {created.GetBalance()}" +
+                                    $"\nTillgängligt belopp: {created.GetBalance()} {created.CurrencySign}" +
                                     $"\n");
                 }
             }
-        }
-        
+        }        
     }
 }

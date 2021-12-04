@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-
-
 namespace FoxyBank
 {
     public class Bank
@@ -159,7 +157,7 @@ namespace FoxyBank
                     case "4":
                         isRunning = false;
 
-                        StartApplication();                        
+                        StartApplication();
 
                         break;
 
@@ -200,7 +198,6 @@ namespace FoxyBank
                         break;
 
                     case "3":
-                        
                         CreateAccount(loggedInPerson);
                         break;
 
@@ -275,7 +272,7 @@ namespace FoxyBank
 
 
         }
-        public int GenerateAccountNr()
+        public int GenerateSavingAccountNr()
         {
             int accountNr = 0;
 
@@ -297,7 +294,57 @@ namespace FoxyBank
                 }
             }
             return accountNr;
+
         }
+
+        public int GeneratePersonalAccountNr()
+        {
+            int accountNr = 0;
+
+            Random rand = new Random();
+            int randomizedAccNr = rand.Next(20000, 21000);
+
+            if (!BankAccounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
+            else
+            {
+                bool foundId = false;
+                while (!foundId)
+                {
+                    randomizedAccNr = rand.Next(10000, 11000);
+                    if (!BankAccounts.ContainsKey(randomizedAccNr))
+                    {
+                        accountNr = randomizedAccNr;
+                        foundId = true;
+                    }
+                }
+            }
+            return accountNr;
+        }
+
+        public int GenerateForeignAccountNr()
+        {
+            int accountNr = 0;
+
+            Random rand = new Random();
+            int randomizedAccNr = rand.Next(30000, 33000);
+
+            if (!BankAccounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
+            else
+            {
+                bool foundId = false;
+                while (!foundId)
+                {
+                    randomizedAccNr = rand.Next(10000, 11000);
+                    if (!BankAccounts.ContainsKey(randomizedAccNr))
+                    {
+                        accountNr = randomizedAccNr;
+                        foundId = true;
+                    }
+                }
+            }
+            return accountNr;
+        }
+
         public void CreateAccount(User user)
         {
             BankAccount createdAccount = null;
@@ -306,27 +353,39 @@ namespace FoxyBank
             Console.WriteLine("\nVad vill du öppna för konto?");
             do
             {
-                Console.WriteLine("\n1.Sparkonto");
-                Console.WriteLine("2.Personkonto\n");
+                Console.WriteLine("\n1. Sparkonto");
+                Console.WriteLine("\n2. Personkonto");
+                Console.WriteLine("\n3. Konto i Amerikanska dollar\n");
 
                 string answer = Console.ReadLine();
 
 
                 if (answer == "1")
                 {
-                    createdAccount = new SavingAccount(GenerateAccountNr());
-                                        
+                    createdAccount = new SavingAccount(GenerateSavingAccountNr());
+
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Sparkonto";
+                    createdAccount.CurrencySign = " kr";
                 }
 
                 else if (answer == "2")
                 {
-                    createdAccount = new PersonalAccount(GenerateAccountNr());
+                    createdAccount = new PersonalAccount(GeneratePersonalAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Personkonto";
+                    createdAccount.CurrencySign = " kr";
+                }
+
+                else if (answer == "3")
+                {
+                    createdAccount = new ForeignAccount(GenerateForeignAccountNr());
+                    user.BankAccounts.Add(createdAccount);
+                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
+                    createdAccount.AccountName = "Konto i Amerikanska dollar";
+                    createdAccount.CurrencySign = "$";
                 }
                 else
                 {
@@ -335,7 +394,7 @@ namespace FoxyBank
 
             } while (createdAccount == null);
 
-            Console.WriteLine($"\nGrattis! Du skapade ett {((createdAccount is PersonalAccount) ? "Personkonto" : "Sparkonto")} med kontonumret " + createdAccount.AccountNr);
+            Console.WriteLine($"\nGrattis! Du skapade ett {createdAccount.AccountName} med kontonumret " + createdAccount.AccountNr);
 
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
@@ -343,165 +402,238 @@ namespace FoxyBank
         }
         public void TransferMoney(User user)
         {
+            string inputTransAcc = "";
+            bool transEx = false;  //If transfering account is in a different currency
+            bool recEx = false;    //If reciving account is in a different currency
             int transferFromAcc = 0;
             Console.Clear();
-            user.DisplayAllAccounts();
 
-            Console.WriteLine("\nVilket konto vill du överföra pengar ifrån? Skriv kontonumret.");
-            do
+            if (user.BankAccounts.Count != 0)
             {
-                int inputAcc = 0;
-                if (int.TryParse(Console.ReadLine(), out inputAcc))
+                user.DisplayAllAccounts();
+
+                Console.WriteLine("\nVilket konto vill du överföra pengar ifrån? Skriv kontonumret.");
+                do
                 {
-                    BankAccount foundAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
-                    if (foundAcc != null)
+                    int inputAcc = 0;
+
+                    inputTransAcc = Console.ReadLine();
+                    transEx = inputTransAcc.StartsWith("3"); //To check if the chosen account is a Foreign account.
+                                                             //The initial number of a Foreign ccount is "3".
+
+                    if (int.TryParse(inputTransAcc, out inputAcc))
                     {
-                        if (foundAcc.GetBalance() > 0)
+                        BankAccount foundAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
+                        if (foundAcc != null)
                         {
-                            transferFromAcc = foundAcc.AccountNr;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Konto du valde har inte tillräckligt högt saldo. Vänligen välj ett annat konto.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
-                }
-            } while (transferFromAcc == 0);
-
-
-            int transferToAcc = 0;
-            User transferToUser = null;
-            Console.WriteLine("\nVilket konto vill du överföra pengar till? Skriv kontonumret.");
-            do
-            {
-                int inputAcc = 0;
-                if (int.TryParse(Console.ReadLine(), out inputAcc))
-                {
-
-                    if (transferFromAcc == inputAcc)
-                    {
-                        Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
-                    }
-                    else if (this.BankAccounts.ContainsKey(inputAcc))
-                    {
-
-                        if (this.BankAccounts[inputAcc] != user.UserId)
-                        {
-                            transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
-
-                            Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}. \nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
-
-                            if (Console.ReadLine().ToUpper() == "JA")
+                            if (foundAcc.GetBalance() > 0)
                             {
-                                transferToAcc = inputAcc;
+                                transferFromAcc = foundAcc.AccountNr;
                             }
                             else
                             {
-                                Console.WriteLine("Vänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                                Console.WriteLine("Konto du valde har inte tillräckligt högt saldo. Vänligen välj ett annat konto.");
                             }
                         }
                         else
                         {
-                            transferToAcc = inputAcc;
-                            transferToUser = user;
+                            Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                        Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
                     }
+                } while (transferFromAcc == 0);
+
+
+                int transferToAcc = 0;
+                User transferToUser = null;
+                Console.WriteLine("\nVilket konto vill du överföra pengar till? Skriv kontonumret.");
+
+                inputTransAcc = Console.ReadLine();
+
+                recEx = inputTransAcc.StartsWith("3");
+                do
+                {
+                    int inputAcc = 0;
+                    if (int.TryParse(inputTransAcc, out inputAcc))
+                    {
+
+                        if (transferFromAcc == inputAcc)
+                        {
+                            Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
+                        }
+                        else if (this.BankAccounts.ContainsKey(inputAcc))
+                        {
+
+                            if (this.BankAccounts[inputAcc] != user.UserId)
+                            {
+                                transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
+
+                                Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}." +
+                                    $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
+
+                                if (Console.ReadLine().ToUpper() == "JA")
+                                {
+                                    transferToAcc = inputAcc;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Vänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                                }
+                            }
+                            else
+                            {
+                                transferToAcc = inputAcc;
+                                transferToUser = user;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                    }
+                } while (transferToAcc == 0);
+
+
+                decimal amountOfMoneyToTransfer = 0;
+
+                int indexOfTransferFromAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == transferFromAcc));
+
+                if (transEx)
+                {
+                    Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
+                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} tillgänligt.");
                 }
                 else
                 {
-                    Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                    Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
+                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgänligt.");
                 }
-            } while (transferToAcc == 0);
-
-
-            decimal amountOfMoneyToTransfer = 0;
-
-            int indexOfTransferFromAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == transferFromAcc));
-
-            Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgänligt.");
-            do
-            {
-                decimal inputAmount = 0;
-                if(decimal.TryParse(Console.ReadLine(),out inputAmount))
+                do
                 {
-                    if (inputAmount > 0 & user.BankAccounts[indexOfTransferFromAcc].GetBalance() >= inputAmount)
+                    decimal inputAmount = 0;
+                    if (decimal.TryParse(Console.ReadLine(), out inputAmount))
                     {
-                        amountOfMoneyToTransfer = inputAmount;
-                        
+                        if (inputAmount > 0 & user.BankAccounts[indexOfTransferFromAcc].GetBalance() >= inputAmount)
+                        {
+                            amountOfMoneyToTransfer = inputAmount;
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Vänligen mata in en summa som är giltig att överföra. Skriv summan som ska överföras igen.");
+                        }
                     }
                     else
                     {
                         Console.WriteLine("Vänligen mata in en summa som är giltig att överföra. Skriv summan som ska överföras igen.");
                     }
+
+                } while (amountOfMoneyToTransfer == 0);
+
+                int triesLeft = 3;
+                bool succesfulTransaction = false;
+
+                if (transEx)
+                {
+                    Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
+                        $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
                 else
                 {
-                    Console.WriteLine("Vänligen mata in en summa som är giltig att överföra. Skriv summan som ska överföras igen.");
+                    Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
+                      $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
-                
-            } while (amountOfMoneyToTransfer==0);
-
-            int triesLeft = 3;
-            bool succesfulTransaction = false;
-            Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med  kontonummer {transferFromAcc} till {transferToAcc}. \nVänligen mata in ditt lösenord för att genomföra transaktionen.");
-            do
-            {
-                string input = HidePassWord(); ;
-
-                if(user.Authentication(input, user.UserId))
+                do
                 {
-                    user.BankAccounts[indexOfTransferFromAcc].SubstractBalance(amountOfMoneyToTransfer);
+                    string input = HidePassWord(); ;
 
-                    if (user.UserId == transferToUser.UserId)
+                    if (user.Authentication(input, user.UserId))
                     {
-                        int indexOfTransferToAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == transferToAcc));
+                        user.BankAccounts[indexOfTransferFromAcc].SubstractBalance(amountOfMoneyToTransfer);
 
-                        user.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
-                        Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                        if (user.UserId == transferToUser.UserId)
+                        {
+                            if (transEx && !recEx) // An account with $ transfers to an account with kr
+                            {
+                                int indexOfTransferToAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == transferToAcc));
 
-                        Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                        Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr och ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+                                user.BankAccounts[indexOfTransferToAcc].BalanceExFromUSD(amountOfMoneyToTransfer); //Exchanges the transfer amount from $ to kr and adds it to the balance
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
 
-                        succesfulTransaction = true;
+                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} " +
+                                    $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+
+                                succesfulTransaction = true;
+                            }
+
+                            else if (recEx && !transEx)// An account with $ recieves from an account with kr
+                            {
+                                int indexOfTransferToAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == transferToAcc));
+
+                                user.BankAccounts[indexOfTransferToAcc].BalanceExToUSD(amountOfMoneyToTransfer); //Exchanges the transfer amount from kr to $ and adds it to the balance
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+
+                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr " +
+                                    $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är $ {user.BankAccounts[indexOfTransferToAcc].GetBalance()}.");
+
+                                succesfulTransaction = true;
+                            }
+                            else if (recEx && transEx) //An account with $ recieves from an account with $
+                            {
+                                int indexOfTransferToAcc = transferToUser.BankAccounts.IndexOf(transferToUser.BankAccounts.Find(x => x.AccountNr == transferToAcc));
+
+                                transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
+
+                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} " +
+                                    $"och ditt nya saldo på kontot med kontonummer { transferToAcc} är { user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+
+                                succesfulTransaction = true;
+                            }
+
+                            else //An account with kr recieves from an account with kr
+                            {
+                                int indexOfTransferToAcc = transferToUser.BankAccounts.IndexOf(transferToUser.BankAccounts.Find(x => x.AccountNr == transferToAcc));
+
+                                transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
+
+                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot med  kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr "+
+                                $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+                                succesfulTransaction = true;
+                            }
+                        }
                     }
                     else
                     {
-                        int indexOfTransferToAcc = transferToUser.BankAccounts.IndexOf(transferToUser.BankAccounts.Find(x => x.AccountNr == transferToAcc));
-
-                        transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
-                        Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                        Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
-
-                        Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                        Console.WriteLine($"Ditt nya saldo på kontot med  kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr.");
-
-                        succesfulTransaction = true;
+                        triesLeft--;
+                        Console.WriteLine(triesLeft > 0 ? "\nFel lösenord. Försök igen." : "\nTransaktion misslyckades. Du skrev fel lösenord för många gånger.");
                     }
-                }
-                else
-                {
-                    triesLeft--;
-                    Console.WriteLine(triesLeft > 0 ? "\nFel lösenord. Försök igen." : "\nTransaktion misslyckades. Du skrev fel lösenord för många gånger.");
-                }
 
-            } while (triesLeft>3 | !succesfulTransaction);
 
+                } while (triesLeft > 3 | !succesfulTransaction);
+
+            }
+            else
+            {
+                user.DisplayAllAccounts();
+            }
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
-
 
         }
     }

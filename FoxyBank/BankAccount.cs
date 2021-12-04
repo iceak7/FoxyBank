@@ -9,7 +9,7 @@ namespace FoxyBank
         protected decimal Balance { get; set; }
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
-        public decimal Currency { get; set; }
+        public string CurrencySign { get; set; }
 
         public decimal GetBalance()
         {
@@ -17,6 +17,16 @@ namespace FoxyBank
         }
 
         public void AddBalance(decimal sumToAdd)
+        {
+            Balance += sumToAdd;
+        }
+
+        public virtual void BalanceExFromUSD(decimal sumToAdd) ////FUNKAR INTE ATT OVERRIDE, VARFÖR???????
+        {
+            Balance += sumToAdd;
+        }
+
+        public virtual void BalanceExToUSD(decimal sumToAdd)
         {
             Balance += sumToAdd;
         }
