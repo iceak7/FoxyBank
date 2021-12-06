@@ -10,9 +10,7 @@ namespace FoxyBank
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
         public string CurrencySign { get; set; }
-        public decimal RateSEKtoUSD { get; set; }
-        public decimal RateUSDtoSEK { get; set; }
-
+        
         public decimal GetBalance()
         {
             return Balance;
@@ -21,19 +19,6 @@ namespace FoxyBank
         public void AddBalance(decimal sumToAdd)
         {
             Balance += sumToAdd;
-        }
-
-        public virtual decimal BalanceExFromUSD(decimal sumToAdd) ////FUNKAR INTE ATT OVERRIDE, VARFÖR???????
-        {
-            this.RateUSDtoSEK = 9.14m; //Necessary to add the rate here to make the function work, because of problem with override
-            Balance += sumToAdd * RateUSDtoSEK;
-            return Balance;
-        }
-
-        public virtual decimal BalanceExToUSD(decimal sumToAdd)
-        {
-            Balance += sumToAdd;
-            return Balance;
         }
 
         public bool SubstractBalance(decimal sumToSubstract)
