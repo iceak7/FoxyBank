@@ -23,7 +23,7 @@ namespace FoxyBank
 
             user.BankAccounts.Add(new ForeignAccount(30003));
             ourBank.BankAccounts.Add(30003, 2001);
-            user.BankAccounts[0].AddBalance(10000);
+            user.BankAccounts[2].AddBalance(10000);
             ourBank.Persons.Add(user);
 
             User user2 = new User("Edwin", "Westerberg", "Hemlis1234", 2002);

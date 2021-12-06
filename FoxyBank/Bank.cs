@@ -272,7 +272,7 @@ namespace FoxyBank
 
 
         }
-        public int GenerateSavingAccountNr()
+        public int GenerateAccountNr()
         {
             int accountNr = 0;
 
@@ -294,57 +294,9 @@ namespace FoxyBank
                 }
             }
             return accountNr;
-
         }
 
-        public int GeneratePersonalAccountNr()
-        {
-            int accountNr = 0;
-
-            Random rand = new Random();
-            int randomizedAccNr = rand.Next(20000, 21000);
-
-            if (!BankAccounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
-            else
-            {
-                bool foundId = false;
-                while (!foundId)
-                {
-                    randomizedAccNr = rand.Next(10000, 11000);
-                    if (!BankAccounts.ContainsKey(randomizedAccNr))
-                    {
-                        accountNr = randomizedAccNr;
-                        foundId = true;
-                    }
-                }
-            }
-            return accountNr;
-        }
-
-        public int GenerateForeignAccountNr()
-        {
-            int accountNr = 0;
-
-            Random rand = new Random();
-            int randomizedAccNr = rand.Next(30000, 33000);
-
-            if (!BankAccounts.ContainsKey(randomizedAccNr)) { accountNr = randomizedAccNr; }
-            else
-            {
-                bool foundId = false;
-                while (!foundId)
-                {
-                    randomizedAccNr = rand.Next(10000, 11000);
-                    if (!BankAccounts.ContainsKey(randomizedAccNr))
-                    {
-                        accountNr = randomizedAccNr;
-                        foundId = true;
-                    }
-                }
-            }
-            return accountNr;
-        }
-
+        
         public void CreateAccount(User user)
         {
             BankAccount createdAccount = null;
@@ -362,7 +314,7 @@ namespace FoxyBank
 
                 if (answer == "1")
                 {
-                    createdAccount = new SavingAccount(GenerateSavingAccountNr());
+                    createdAccount = new SavingAccount(GenerateAccountNr());
 
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
@@ -372,7 +324,7 @@ namespace FoxyBank
 
                 else if (answer == "2")
                 {
-                    createdAccount = new PersonalAccount(GeneratePersonalAccountNr());
+                    createdAccount = new PersonalAccount(GenerateAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Personkonto";
@@ -381,12 +333,21 @@ namespace FoxyBank
 
                 else if (answer == "3")
                 {
-                    createdAccount = new ForeignAccount(GenerateForeignAccountNr());
+                    createdAccount = new LoanAccount(GenerateAccountNr());
+                    user.BankAccounts.Add(createdAccount);
+                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
+                    createdAccount.AccountName = "Lånekonto";
+                }
+
+                else if (answer == "4")
+                {
+                    createdAccount = new ForeignAccount(GenerateAccountNr());
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Konto i Amerikanska dollar";
                     createdAccount.CurrencySign = "$";
                 }
+
                 else
                 {
                     Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Svara ett nummer från menyn.");
@@ -394,7 +355,18 @@ namespace FoxyBank
 
             } while (createdAccount == null);
 
-            Console.WriteLine($"\nGrattis! Du skapade ett {createdAccount.AccountName} med kontonumret " + createdAccount.AccountNr);
+            if (createdAccount is LoanAccount)
+            {
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+            }
+            else if (createdAccount is PersonalAccount)
+            {
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+            }
+            else if (createdAccount is SavingAccount)
+            {
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+            }
 
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
@@ -508,12 +480,12 @@ namespace FoxyBank
                 if (transEx)
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} tillgänligt.");
+                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} tillgängligt.");
                 }
                 else
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgänligt.");
+                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgängligt.");
                 }
                 do
                 {
@@ -569,7 +541,7 @@ namespace FoxyBank
 
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} " +
-                                    $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+                                    $"\noch ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
 
                                 succesfulTransaction = true;
                             }
@@ -583,7 +555,7 @@ namespace FoxyBank
 
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr " +
-                                    $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är $ {user.BankAccounts[indexOfTransferToAcc].GetBalance()}.");
+                                    $"\noch ditt nya saldo på kontot med kontonummer {transferToAcc} är $ {user.BankAccounts[indexOfTransferToAcc].GetBalance()}.");
 
                                 succesfulTransaction = true;
                             }
@@ -597,7 +569,7 @@ namespace FoxyBank
 
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} " +
-                                    $"och ditt nya saldo på kontot med kontonummer { transferToAcc} är { user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+                                    $"\noch ditt nya saldo på kontot med kontonummer { transferToAcc} är { user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
 
                                 succesfulTransaction = true;
                             }
@@ -611,8 +583,8 @@ namespace FoxyBank
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
 
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                                Console.WriteLine($"Ditt nya saldo på kontot med  kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr "+
-                                $"och ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
+                                Console.WriteLine($"Ditt nya saldo på kontot med  kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr " +
+                                $"\noch ditt nya saldo på kontot med kontonummer {transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance()} kr.");
                                 succesfulTransaction = true;
                             }
                         }

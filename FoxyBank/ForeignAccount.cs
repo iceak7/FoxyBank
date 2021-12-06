@@ -6,25 +6,24 @@ namespace FoxyBank
 {
     public class ForeignAccount : BankAccount
     {
-
-        public decimal rateSEKtoUSD = 0.11m;
-        public decimal rateUSDtoSEK = 9.14m;
-
-
         public ForeignAccount(int accountNr)
         {
+            this.Balance = 0;
             this.AccountNr = accountNr;
-            this.Balance = (0 * rateSEKtoUSD);
+            this.RateSEKtoUSD = 0.11m;
+            this.RateUSDtoSEK = 9.14m;
         }
 
-        public override void BalanceExToUSD(decimal sumToAdd)
+        public override decimal BalanceExToUSD(decimal sumToAdd)
         {
-            Balance += sumToAdd * rateSEKtoUSD;
+            Balance += sumToAdd * RateSEKtoUSD;                    
+            return Balance;
         }
 
-        public override void BalanceExFromUSD(decimal sumToAdd)
+        public override decimal BalanceExFromUSD(decimal sumToAdd)
         {
-            Balance += sumToAdd * rateUSDtoSEK;
+            Balance += sumToAdd * RateUSDtoSEK;
+            return Balance;
         }
 
     }
