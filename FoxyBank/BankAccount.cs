@@ -10,7 +10,7 @@ namespace FoxyBank
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
         public string CurrencySign { get; set; }
-        
+     
         public decimal GetBalance()
         {
             return Balance;

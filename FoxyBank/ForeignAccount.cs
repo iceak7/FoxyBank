@@ -11,18 +11,5 @@ namespace FoxyBank
             this.Balance = 0;
             this.AccountNr = accountNr;
         }
-
-        //public decimal BalanceExToUSD(decimal sumToAdd)
-        //{
-        //    Balance += sumToAdd * RateSEKtoUSD;                    
-        //    return Balance;
-        //}
-
-        //public decimal BalanceExFromUSD(decimal sumToAdd)
-        //{
-        //    Balance += sumToAdd * RateUSDtoSEK;
-        //    return Balance;
-        //}
-
     }
 }
