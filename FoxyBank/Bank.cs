@@ -539,17 +539,7 @@ namespace FoxyBank
                 {
                     Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                       $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
-                }
-                
-            } while (amountOfMoneyToTransfer==0);
-
-            int triesLeft = 3;
-            bool succesfulTransaction = false;
-            Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med  kontonummer {transferFromAcc} till {transferToAcc}. \nVänligen mata in ditt lösenord för att genomföra transaktionen.");
-            do
-            {
-                string input = HidePassWord();
-
+                }          
                 else
                 {
                     Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
@@ -610,7 +600,6 @@ namespace FoxyBank
 
                                 succesfulTransaction = true;
                             }
-
                             else
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
@@ -623,7 +612,7 @@ namespace FoxyBank
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
                                     $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} kr.");
 
-                                succesfulTransaction = true;                                
+                                succesfulTransaction = true;
                             }
                         }
                         else
@@ -687,6 +676,7 @@ namespace FoxyBank
 
                 } while (triesLeft > 0 & !succesfulTransaction);
             }
+            
             else
             {
                 user.DisplayAllAccounts();
