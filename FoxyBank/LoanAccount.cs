@@ -7,7 +7,7 @@ namespace FoxyBank
     public class LoanAccount : BankAccount
     {
         protected decimal Interest { get; set; }
-        
+
 
         public LoanAccount(int accountNr)
         {

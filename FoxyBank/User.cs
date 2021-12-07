@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace FoxyBank
 {
@@ -22,14 +23,34 @@ namespace FoxyBank
                
         public void DisplayAllAccounts()
         {
-            foreach (BankAccount created in BankAccounts)
+            if (BankAccounts.Count == 0)
             {
-                Console.WriteLine($"Kontonamn: {created.AccountName} " +
-                                $"\nKontonummer: {created.AccountNr} " +
-                                $"\nTillgängligt belopp: {created.GetBalance()}" +
-                                $"\n");
+                Console.WriteLine("Inga tillgängliga konton.");
             }
-        }
-
+            else
+            {
+                foreach (BankAccount created in BankAccounts)
+                {
+                
+                if (created is SavingAccount)
+                {
+                    SavingAccount S = (SavingAccount)created;
+                    Console.WriteLine($"Kontonamn: {S.AccountName} " +
+                               $"\nKontonummer: {S.AccountNr} " +
+                               $"\nTillgängligt belopp: {S.GetBalance()}" +
+                                $" Ränta = { string.Format("{0:0.00}", S.GetInterest() * S.GetBalance())}" +". Räntan ligger på "+ S.GetInterest()+"%." +
+                                $"\n") ;
+                }
+                else
+                {
+                    Console.WriteLine($"Kontonamn: {created.AccountName} " +
+                                    $"\nKontonummer: {created.AccountNr} " +
+                                    $"\nTillgängligt belopp: {created.GetBalance()} {created.CurrencySign}" +
+                                    $"\n");
+                }
+              }
+            }
+        }        
     }
-}
+ }
+
