@@ -21,6 +21,5 @@ namespace FoxyBank
             this.PassWord = passWord;
 
         }
-
     }
 }
