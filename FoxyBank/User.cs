@@ -24,12 +24,23 @@ namespace FoxyBank
         {
             foreach (BankAccount created in BankAccounts)
             {
-                Console.WriteLine($"Kontonamn: {created.AccountName} " +
-                                $"\nKontonummer: {created.AccountNr} " +
-                                $"\nTillgängligt belopp: {created.GetBalance()}" +
-                                $"\n");
+                if (created is SavingAccount)
+                {
+                    SavingAccount S = (SavingAccount)created;
+                    Console.WriteLine($"Kontonamn: {S.AccountName} " +
+                               $"\nKontonummer: {S.AccountNr} " +
+                               $"\nTillgängligt belopp: {S.GetBalance()}" +
+                                $" Ränta = { string.Format("{0:0.00}", S.GetInterest() * S.GetBalance())}" +". Räntan ligger på "+ S.GetInterest()+"%." +
+                                $"\n") ;
+                }
+                else
+                {
+                    Console.WriteLine($"Kontonamn: {created.AccountName} " +
+                                    $"\nKontonummer: {created.AccountNr} " +
+                                    $"\nTillgängligt belopp: {created.GetBalance()}" +
+                                    $"\n");
+                }
             }
         }
-
     }
 }
