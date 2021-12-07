@@ -22,8 +22,5 @@ namespace FoxyBank
                 return false;
             }
         }
-
     }
-
-
 }
