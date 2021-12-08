@@ -4,12 +4,29 @@ using System.Text;
 
 namespace FoxyBank
 {
-    class LoanAccount : BankAccount
+    public class LoanAccount : BankAccount
     {
+        protected decimal Interest { get; set; }
+
 
         public LoanAccount(int accountNr)
         {
+            this.Balance = 0;
             this.AccountNr = accountNr;
+            this.Interest = 0.02M;
+        }
+
+        public LoanAccount()
+        {
+        }
+
+        public decimal GetInterest()
+        {
+            return Interest;
+        }
+        public void SetInterest(decimal interest)
+        {
+            this.Interest = interest;
         }
     }
 }
