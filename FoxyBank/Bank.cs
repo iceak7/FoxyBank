@@ -20,6 +20,7 @@ namespace FoxyBank
 
         public void StartApplication()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             Console.WriteLine("Hej välkommen till Foxy Bank.");
             Person loggedInPerson = Login();
@@ -139,10 +140,9 @@ namespace FoxyBank
                 Console.WriteLine("\nAnvändarmeny för administrator:" +
                             "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
-                            "\n3. Ändra sparränta" +
-                            "\n4. Visa log" +
-                            "\n5. Logga ut" +
-                            "\n6. Avsluta programmet");
+                            "\n3. Visa log" +
+                            "\n4. Logga ut" +
+                            "\n5. Avsluta programmet");
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
@@ -156,22 +156,18 @@ namespace FoxyBank
                         break;
 
                     case "3":
-                        //InterestRate();
+                        loggedInPerson.DisplayLog();
                         break;
 
                     case "4":
-                        loggedInPerson.DisplayLog();
+                        isRunning = false;
+                        StartApplication();
                         break;
 
                     case "5":
                         isRunning = false;
-                        StartApplication();
-
                         break;
 
-                    case "6":
-                        isRunning = false;
-                        break;
                     default:
                         Console.WriteLine("Ogiltigt val.");
                         break;
@@ -190,9 +186,10 @@ namespace FoxyBank
                 Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överför pengar" +
                         "\n3. Skapa nytt bankkonto" +
-                        "\n4. Visa log" +
-                        "\n5. Logga ut" +
-                        "\n6. Avsluta programmet");
+                        "\n4. Ta ett lån" +
+                        "\n5. Visa log" +
+                        "\n6. Logga ut" +
+                        "\n7. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
@@ -212,16 +209,20 @@ namespace FoxyBank
                         break;
 
                     case "4":
-                        loggedInPerson.DisplayLog();
+                        TakeLoan(loggedInPerson);
                         break;
 
                     case "5":
+                        loggedInPerson.DisplayLog();
+                        break;
+
+                    case "6":
                         loggedInPerson.UpdateLog("Loggat ut.");
                         isRunning = false;
                         StartApplication();
                         break;
 
-                    case "6":
+                    case "7":
                         loggedInPerson.UpdateLog("Stängt ner programmet.");
                         isRunning = false;
                         break;
@@ -356,6 +357,7 @@ namespace FoxyBank
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Lånekonto";
                     createdAccount.CurrencySign = " kr";
+                    
                 }
 
                 else if (answer == "4")
@@ -375,21 +377,22 @@ namespace FoxyBank
             } while (createdAccount == null);
             if (createdAccount is LoanAccount)
             {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                LoanAccount L1 = (LoanAccount)createdAccount;
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest());
             }
             else if (createdAccount is PersonalAccount)
             {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
             }
             else if (createdAccount is SavingAccount)
             {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
                 SavingAccount S = (SavingAccount)createdAccount;
                 Console.Write("Räntan är " + S.GetInterest() + "%");
             }
             else if (createdAccount is ForeignAccount)
             {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
             }
 
             Console.WriteLine("\nKlicka enter för att komma vidare.");
@@ -713,7 +716,7 @@ namespace FoxyBank
 
 
         }
-        public void TakeLoan(User user)
+        public bool TakeLoan(User user)
         {
             BankAccount Loanaccount = null;
             bool hasLoanAccount = false;
@@ -730,6 +733,16 @@ namespace FoxyBank
                     Loanaccount = item;
                     hasLoanAccount = true;
                 }
+                else if (item is ForeignAccount)
+                {
+                    string currency = "";
+                    if (item.CurrencySign == "$")
+                    {
+                        currency = "USD";
+                    }
+                    decimal exchangeRate = CurrencyExRate[currency];
+                    totalBalance += item.GetBalance() * exchangeRate;
+                }
                 else
                 {
                     totalBalance += item.GetBalance();
@@ -739,79 +752,164 @@ namespace FoxyBank
             decimal possibleLoan = loanLimit - Debt;
             Console.Clear();
 
-            Console.WriteLine("Ditt totala saldo är : " + totalBalance + "kr");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
+            Console.WriteLine("Ditt totala saldo är: " + totalBalance.ToString("f2") + "kr");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
             if (Debt > 0)
             {
-                Console.WriteLine("Din skuld är :" + Debt + "kr");
-                Console.WriteLine("Ditt lånetak är :" + loanLimit + "kr och du kan låna upp till " + possibleLoan + "nya kr");
+                Console.WriteLine("Din skuld är: " + Debt.ToString("f2") + "kr");
+                Console.WriteLine("Ditt lånetak är: " + loanLimit.ToString("f2") + "kr och du kan låna upp till " + possibleLoan.ToString("f2") + " nya kr");
 
             }
             else
             {
-                Console.WriteLine("Du har ingen skuld och du kan låna upp till :" + possibleLoan + "kr");
+                Console.WriteLine("Du har ingen skuld och du kan låna upp till: " + possibleLoan.ToString("f2") + "kr");
             }
 
             if (hasLoanAccount == false)
             {
-                Console.WriteLine();
+                Console.Clear();               
                 Console.WriteLine("Du har inte något lånekonto, vill du öppna ett? Ja/Nej");
+                do
+                {
+                    string input = Console.ReadLine().ToUpper();
+                    if (input == "JA")
+                    {
+                        Loanaccount = new LoanAccount(GenerateAccountNr());
+                        user.BankAccounts.Add(Loanaccount);
+                        this.BankAccounts.Add(Loanaccount.AccountNr, user.UserId);
+                        Loanaccount.AccountName = "Lånekonto";
+                        Console.WriteLine($"\nGrattis! Du har skapat ett " + Loanaccount.AccountName + " med kontonummer : " + Loanaccount.AccountNr);
+                        hasLoanAccount = true;
+                    }
+                    else if (input == "NEJ")
+                    {
+                        Console.Clear();
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Var god skriv in Ja eller Nej för att komma vidare");
+                    }
+                } while (hasLoanAccount == false);
 
-                string input = Console.ReadLine().ToUpper();
-                if (input == "JA")
+            }
+
+            Console.WriteLine("\nHur mycket pengar vill du låna?");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
+
+            decimal inputAmount = 0;
+            bool incorrectAmount = true;
+            do
+            {
+
+                string loaninput = Console.ReadLine();
+                
+                if (decimal.TryParse(loaninput, out inputAmount))
                 {
-                    Loanaccount = new LoanAccount(GenerateAccountNr());
-                    user.BankAccounts.Add(Loanaccount);
-                    this.BankAccounts.Add(Loanaccount.AccountNr, user.UserId);
-                    Loanaccount.AccountName = "Lånekonto";
-                    Console.WriteLine($"\nGrattis! Du har skapat ett " + Loanaccount.AccountName + " med kontonummer : " + Loanaccount.AccountNr);
-                    hasLoanAccount = true;
-                }
-                else if (input == "NEJ")
-                {
-                    //Tillbaks till menyn
+                    if (inputAmount > 0 && inputAmount <= possibleLoan)
+                    {
+
+                        Console.Clear();
+                        user.DisplayAllAccounts();
+                        Console.WriteLine("\nDu vill låna " + inputAmount + "kr, vilket konto vill du föra över till?");
+                        int accNum = 0;
+                        bool incorrectAccNr = true;
+                        do
+                        {
+                            string inputAcc = Console.ReadLine();
+                            if (int.TryParse(inputAcc, out accNum))
+                            {
+
+                                if (user.BankAccounts.Exists(x => (x.AccountNr == accNum && !(x is LoanAccount))))
+                                {
+                                    int tries = 3;
+                                    Console.WriteLine("\nDu vill låna: " + inputAmount + "kr och föra över till " + accNum);
+                                    Console.WriteLine("Var god skriv in ditt lösenord för att bekräfta transaktionen");
+                                    do
+                                    {
+                                        string passInput = HidePassWord();
+                                        Console.Clear();
+                                        if (user.Authentication(passInput, user.UserId))
+                                        {
+                                            Loanaccount.SubstractBalance(inputAmount);
+                                            var accountTransfer = user.BankAccounts.Find(x => x.AccountNr == accNum);
+                                            if (accountTransfer is ForeignAccount)
+                                            {
+                                                string currency = "";
+                                                if (accountTransfer.CurrencySign == "$")
+                                                {
+                                                    currency = "USD";
+                                                }
+                                                decimal exchangeRate = CurrencyExRate[currency];
+                                                accountTransfer.AddBalance(inputAmount / exchangeRate);
+                                                Console.Clear();
+                                                Console.WriteLine("Grattis! du har tagit ett lån på " + accountTransfer.CurrencySign + (inputAmount / exchangeRate).ToString("f2") + ".");
+                                                Console.WriteLine();
+                                                Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + (Loanaccount.GetBalance() * -1).ToString("f2") + "kr");
+                                            }
+                                            else
+                                            {
+                                                accountTransfer.AddBalance(inputAmount);
+                                                Console.WriteLine("Grattis! du har tagit ett lån på " + inputAmount + "kr.");
+                                                Console.WriteLine();
+                                                Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + Loanaccount.GetBalance() * -1 + "kr");
+                                            }
+
+                                            Console.WriteLine("Klicka enter för att komma tillbaks till menyn");
+                                            Console.ReadKey();
+                                            Console.Clear();
+                                            incorrectAccNr = false;
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            tries--;
+                                            if (tries > 0)
+                                            {
+                                                Console.WriteLine("\n\nFel lösenord. Försök igen");
+                                            }
+
+                                        }
+
+
+                                    } while (tries > 0);
+                                    if (tries == 0)
+                                    {
+                                        Console.WriteLine("Du skrev fel lösenord för många gånger. Klicka enter för att komma tillbaks till menyn");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                        return false;
+                                    }
+
+                                }
+
+                                else
+                                {
+                                    Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen. OBS! Du kan inte använda ditt lånekonto");
+                                }
+                            }
+
+                            else
+                            {
+                                Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen");
+                            }
+
+                        } while (incorrectAccNr); 
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ogiltig summa. Var vänlig försök igen");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Var god skriv in Ja eller Nej för att komma vidare");
+                    Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen");
                 }
-            }
-            Console.WriteLine("Hur mycket pengar vill du låna?");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
-            string loaninput = Console.ReadLine();
-            decimal inputAmount = 0;
-            if (decimal.TryParse(loaninput, out inputAmount))
-            {
-                if (inputAmount > 0 && inputAmount <= possibleLoan)
-                {
-                    user.DisplayAllAccounts();
-                    Console.WriteLine("Du vill låna " + inputAmount + "kr, vilket konto vill du föra över till?");
-                    string inputAcc = Console.ReadLine();
-                    int accNum = 0;
-                    if (int.TryParse(inputAcc, out accNum))
-                    {
-                        if (user.BankAccounts.Exists(x => (x.AccountNr == accNum && !(x is LoanAccount))))
-                        {
-                            Console.WriteLine("Du vill låna :" + inputAmount + "kr och föra över till " + accNum);
-                            Console.WriteLine("Var god skriv in ditt lösenord för att bekräfta transaktionen");
-                            string passInput = HidePassWord();
-                            if (user.Authentication(passInput, user.UserId))
-                            {
-                                Loanaccount.SubstractBalance(inputAmount);
-                                var accountTransfer = user.BankAccounts.Find(x => x.AccountNr == accNum);
-                                accountTransfer.AddBalance(inputAmount);
-                                Console.WriteLine("Grattis, du har tagit ett lån på" + inputAmount + "kr.");
-                                Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på" + Loanaccount.GetBalance() * -1 + "kr");
 
-                            }
+            } while (incorrectAmount);
 
-                        }
-
-                    }
-
-                }
-            }
-
+            return false;
         }
     }
 }

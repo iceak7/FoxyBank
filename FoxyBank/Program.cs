@@ -22,7 +22,9 @@ namespace FoxyBank
             user.BankAccounts[1].AddBalance(10000);
             ourBank.Persons.Add(user);
 
-            user.BankAccounts.Add(new ForeignAccount(30003));
+            ForeignAccount f1 = new ForeignAccount(30003);
+            f1.CurrencySign = "$";
+            user.BankAccounts.Add(f1);
             ourBank.BankAccounts.Add(30003, 2001);
             user.BankAccounts[2].AddBalance(10000);
             ourBank.Persons.Add(user);

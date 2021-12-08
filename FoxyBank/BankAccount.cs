@@ -23,7 +23,7 @@ namespace FoxyBank
 
         public bool SubstractBalance(decimal sumToSubstract)
         {
-            if (this.Balance >= sumToSubstract)
+            if (this.Balance >= sumToSubstract | this is LoanAccount)
             {
                 Balance-=sumToSubstract;
                 return true;

@@ -13,6 +13,7 @@ namespace FoxyBank
         {
             this.Balance = 0;
             this.AccountNr = accountNr;
+            this.Interest = 0.02M;
         }
 
         public LoanAccount()
@@ -22,6 +23,10 @@ namespace FoxyBank
         public decimal GetInterest()
         {
             return Interest;
+        }
+        public void SetInterest(decimal interest)
+        {
+            this.Interest = interest;
         }
     }
 }
