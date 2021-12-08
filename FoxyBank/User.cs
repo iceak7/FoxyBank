@@ -23,6 +23,7 @@ namespace FoxyBank
                
         public void DisplayAllAccounts()
         {
+            Console.Clear();
             if (BankAccounts.Count == 0)
             {
                 Console.WriteLine("Inga tillgängliga konton.");
@@ -50,6 +51,7 @@ namespace FoxyBank
                 }
               }
             }
+
         }        
     }
  }
