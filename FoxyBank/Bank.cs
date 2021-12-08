@@ -20,6 +20,7 @@ namespace FoxyBank
 
         public void StartApplication()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             Console.WriteLine("Hej välkommen till Foxy Bank.");
             Person loggedInPerson = Login();
@@ -46,7 +47,7 @@ namespace FoxyBank
                     {
                         Console.Clear();
                         Console.WriteLine("Misslyckad inloggning.");
-                        
+
 
                         return null;
                     }
@@ -64,7 +65,7 @@ namespace FoxyBank
                         A1.UpdateLog("Loggat in.");
                         char firstDigit = A1.UserId.ToString()[0];
                         if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
-                        {    
+                        {
                             RunAdminMenu((Admin)A1);
                             return null;
                         }
@@ -165,7 +166,7 @@ namespace FoxyBank
 
                     case "5":
                         isRunning = false;
-                        StartApplication();                        
+                        StartApplication();
 
                         break;
 
@@ -190,9 +191,10 @@ namespace FoxyBank
                 Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överför pengar" +
                         "\n3. Skapa nytt bankkonto" +
-                        "\n4. Visa log"+
-                        "\n5. Logga ut" +
-                        "\n6. Avsluta programmet");
+                        "\n4. Visa log" +
+                        "\n5. Sätta in pengar" +
+                        "\n6. Logga ut" +
+                        "\n7. Avsluta programmet");
 
                 string menuChoice = Console.ReadLine();
 
@@ -216,12 +218,16 @@ namespace FoxyBank
                         break;
 
                     case "5":
+                        DepositMoney(loggedInPerson);
+                        break;
+
+                    case "6":
                         loggedInPerson.UpdateLog("Loggat ut.");
                         isRunning = false;
                         StartApplication();
                         break;
 
-                    case "6":
+                    case "7":
                         loggedInPerson.UpdateLog("Stängt ner programmet.");
                         isRunning = false;
                         break;
@@ -310,7 +316,7 @@ namespace FoxyBank
             }
             return accountNr;
         }
-        
+
         public void CreateAccount(User user)
         {
             BankAccount createdAccount = null;
@@ -334,7 +340,7 @@ namespace FoxyBank
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Sparkonto";
-                    user.UpdateLog("Skapat nytt Sparkonto. Konto Nummer: "+ createdAccount.AccountNr);
+                    user.UpdateLog("Skapat nytt Sparkonto. Konto Nummer: " + createdAccount.AccountNr);
                     createdAccount.CurrencySign = " kr";
 
                 }
@@ -345,7 +351,7 @@ namespace FoxyBank
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Personkonto";
-                    user.UpdateLog("Skapat nytt Personkonto. Konto Nummer: "+ createdAccount.AccountNr);
+                    user.UpdateLog("Skapat nytt Personkonto. Konto Nummer: " + createdAccount.AccountNr);
                     createdAccount.CurrencySign = " kr";
                 }
 
@@ -385,13 +391,13 @@ namespace FoxyBank
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
                 SavingAccount S = (SavingAccount)createdAccount;
-                Console.Write("Räntan är "+S.GetInterest()+"%");
+                Console.Write("Räntan är " + S.GetInterest() + "%");
             }
             else if (createdAccount is ForeignAccount)
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
             }
-            
+
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
@@ -540,16 +546,15 @@ namespace FoxyBank
                     Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                       $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
-
                 else
                 {
                     Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                     $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
-                
-            do
-            {
-                   string input = HidePassWord(); ;
+
+                do
+                {
+                    string input = HidePassWord(); ;
 
                     if (user.Authentication(input, user.UserId))
                     {
@@ -602,7 +607,6 @@ namespace FoxyBank
 
                                 succesfulTransaction = true;
                             }
-
                             else
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
@@ -615,7 +619,7 @@ namespace FoxyBank
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
                                     $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} kr.");
 
-                                succesfulTransaction = true;                                
+                                succesfulTransaction = true;
                             }
                         }
                         else
@@ -712,8 +716,183 @@ namespace FoxyBank
             {
                 return CurrencyExRate["USD"];
             }
-        }       
+        }
+        public void DepositMoney(User user)
+        {
+            BankAccount depositAcc = null;
+            Console.Clear();
+
+            if (user.BankAccounts.Count != 0)
+            {
+                user.DisplayAllAccounts();
+
+                int depositToAcc = 0;
+                User depositToUser = null;
+                Console.WriteLine("\nVilket konto vill du sätta in pengar på? Skriv kontonumret.");
+
+                do
+                {
+                    int inputAcc = 0;
+                    if (int.TryParse(Console.ReadLine(), out inputAcc))
+                    {
+                        depositAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
+
+                        if (this.BankAccounts.ContainsKey(inputAcc))
+                        {
+
+                            if (this.BankAccounts[inputAcc] != user.UserId)
+                            {
+                                depositToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
+
+                                Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {depositToUser.FirstName} {depositToUser.LastName}." +
+                                    $"\nÄr du säker att du vill sätta in pengar på detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
+
+                                if (Console.ReadLine().ToUpper() == "JA")
+                                {
+                                    depositToAcc = inputAcc;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Vänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                                }
+                            }
+                            else
+                            {
+                                depositToAcc = inputAcc;
+                                depositToUser = user;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                    }
+                } while (depositToAcc == 0);
+
+
+                decimal amountOfMoneyToDeposit = 0;
+
+                if (depositAcc is ForeignAccount)
+                {
+                    Console.WriteLine($"\nHur mycket pengar vill du sätta in på kontonummer {depositToAcc}? Ange summan i dollar");
+                }
+                else
+                {
+                    Console.WriteLine($"\nHur mycket pengar vill du sätta in på kontonummer {depositToAcc}?");
+                }
+                do
+                {
+                    decimal inputAmount = 0;
+                    if (decimal.TryParse(Console.ReadLine(), out inputAmount))
+                    {
+                        if (inputAmount > 0)
+                        {
+                            amountOfMoneyToDeposit = inputAmount;
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Vänligen mata in en summa som är giltig att överföra. Skriv summan som ska överföras igen.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vänligen mata in en summa som är giltig att överföra. Skriv summan som ska överföras igen.");
+                    }
+
+                } while (amountOfMoneyToDeposit == 0);
+
+                int triesLeft = 3;
+                bool succesfulTransaction = false;
+
+                if (depositAcc is ForeignAccount)
+                {
+                    Console.WriteLine($"\nDu vill sätta in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}." +
+                        $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
+                }
+
+                else
+                {
+                    Console.WriteLine($"\nDu vill sätta in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}." +
+                         $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
+                }
+
+                do
+                {
+                    string input = HidePassWord(); ;
+
+                    if (user.Authentication(input, user.UserId))
+                    {
+                        if (user.UserId == depositToUser.UserId)
+                        {
+                            int indexOfDepositToAcc = user.BankAccounts.IndexOf(user.BankAccounts.Find(x => x.AccountNr == depositToAcc));
+
+                            if (depositAcc is ForeignAccount)
+                            {
+                                user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                user.UpdateLog($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot är $ {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2}.");
+
+                                succesfulTransaction = true;
+                            }
+                            else
+                            {
+                                user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                user.UpdateLog($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"Ditt nya saldo på kontot är {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2} kr.");
+
+                                succesfulTransaction = true;
+                            }
+                        }
+                        else
+                        {
+                            int indexOfTransferToAcc = depositToUser.BankAccounts.IndexOf(depositToUser.BankAccounts.Find(x => x.AccountNr == depositToAcc));
+
+                            if (depositAcc is ForeignAccount)
+                            {
+                                depositToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToDeposit);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
+                                user.UpdateLog($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+
+                                succesfulTransaction = true;
+                            }
+
+                            else
+                            {
+                                depositToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToDeposit);
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+                                Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
+                                user.UpdateLog($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+
+                                succesfulTransaction = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        triesLeft--;
+                        Console.WriteLine(triesLeft > 0 ? "\nFel lösenord. Försök igen." : "\nTransaktion misslyckades. Du skrev fel lösenord för många gånger.");
+                    }
+
+                } while (triesLeft > 0 & !succesfulTransaction);
+            }
+            Console.WriteLine("\nKlicka enter för att komma vidare.");
+            Console.ReadKey();
+            Console.Clear();
+        }
     }
 }
+   
 
 
