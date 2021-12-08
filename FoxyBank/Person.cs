@@ -29,12 +29,13 @@ namespace FoxyBank
         }
         public void DisplayLog()
         {
+            Console.Clear();
             Console.WriteLine("Visa log aktivitet");
             foreach (string item in Log)
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine("Tryck på valfritangent för att fortsätta.");
+            Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
             Console.ReadKey();
             Console.Clear();
         }

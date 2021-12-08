@@ -24,6 +24,7 @@ namespace FoxyBank
             Console.Clear();
             Console.WriteLine("Hej välkommen till Foxy Bank.");
             Person loggedInPerson = Login();
+          
 
         }
         public Person Login()
@@ -61,7 +62,8 @@ namespace FoxyBank
                 {
                     if (A1.Authentication(AnPassword, AnId))
                     {
-                        Console.WriteLine("\nDu är inloggad.");
+                        Console.Clear();
+                        Console.WriteLine("Du är inloggad.\n");
                         A1.UpdateLog("Loggat in.");
                         char firstDigit = A1.UserId.ToString()[0];
                         if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
@@ -135,7 +137,7 @@ namespace FoxyBank
 
             do
             {
-                Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
 
                 Console.WriteLine("\nAnvändarmeny för administrator:" +
                             "\n1. Skapa ny bankkund" +
@@ -157,18 +159,21 @@ namespace FoxyBank
 
                     case "3":
                         loggedInPerson.DisplayLog();
+
                         break;
 
                     case "4":
                         isRunning = false;
-                        StartApplication();
+
+                        StartApplication();                        
                         break;
 
                     case "5":
                         isRunning = false;
                         break;
-
+                    
                     default:
+                        Console.Clear();
                         Console.WriteLine("Ogiltigt val.");
                         break;
                 }
@@ -182,7 +187,7 @@ namespace FoxyBank
 
             do
             {
-                Console.WriteLine($"\nHej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
+                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
                 Console.WriteLine("\n1. Se dina konton och saldo" +
                         "\n2. Överför pengar" +
                         "\n3. Skapa nytt bankkonto" +
@@ -198,6 +203,9 @@ namespace FoxyBank
                     case "1":
                         loggedInPerson.UpdateLog("Visat alla konton.");
                         loggedInPerson.DisplayAllAccounts();
+                        Console.WriteLine("\nKlicka enter för att komma vidare.");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
 
                     case "2":
@@ -228,7 +236,8 @@ namespace FoxyBank
                         break;
 
                     default:
-                        Console.WriteLine("\nOgiltigt val.");
+                        Console.Clear();
+                        Console.WriteLine("Ogiltigt val.");
                         break;
                 }
             }
@@ -237,7 +246,7 @@ namespace FoxyBank
         public void RegisterNewUser(Admin loggedInPerson)
         {
 
-
+            Console.Clear();
             Console.WriteLine("Var god skriv in användarens förnamn");
             string firstNameInput = Console.ReadLine();
             Console.WriteLine("Var god skriv in användarens efternamn");
@@ -286,7 +295,10 @@ namespace FoxyBank
             Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
             Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
             Console.WriteLine("ID : {0}", newBankUser.UserId);
+
+            Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
+            Console.Clear();
         }
         public int GenerateAccountNr()
         {
@@ -317,13 +329,13 @@ namespace FoxyBank
             BankAccount createdAccount = null;
             Console.Clear();
 
-            Console.WriteLine("\nVad vill du öppna för konto?");
+            Console.WriteLine("Vad vill du öppna för konto?");
             do
             {
                 Console.WriteLine("\n1. Sparkonto");
-                Console.WriteLine("\n2. Personkonto");
-                Console.WriteLine("\n3. Lånekonto");
-                Console.WriteLine("\n4. Konto i Amerikanska dollar\n");
+                Console.WriteLine("2. Personkonto");
+                Console.WriteLine("3. Lånekonto");
+                Console.WriteLine("4. Konto i Amerikanska dollar\n");
 
                 string answer = Console.ReadLine();
 
@@ -388,7 +400,9 @@ namespace FoxyBank
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
                 SavingAccount S = (SavingAccount)createdAccount;
+
                 Console.Write("Räntan är " + S.GetInterest() + "%");
+
             }
             else if (createdAccount is ForeignAccount)
             {
@@ -690,6 +704,8 @@ namespace FoxyBank
         }
         public decimal CurrencyUpdate(decimal UpDatedCurr)
         {
+            Console.Clear();
+
             Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
 
             Console.WriteLine($"Vill du ändra kursen? \n1. Ja \n2. Nej");
@@ -705,12 +721,21 @@ namespace FoxyBank
                 Console.WriteLine(CurrencyExRate["USD"]);
 
                 Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
+
+                Console.WriteLine("\nKlicka enter för att komma vidare.");
+                Console.ReadKey();
+                Console.Clear();
+
                 return upDatedCurr;
 
             }
 
             else
             {
+                Console.WriteLine("\nKlicka enter för att komma vidare.");
+                Console.ReadKey();
+                Console.Clear();
+
                 return CurrencyExRate["USD"];
             }
 
@@ -759,15 +784,18 @@ namespace FoxyBank
                 Console.WriteLine("Din skuld är: " + Debt.ToString("f2") + "kr");
                 Console.WriteLine("Ditt lånetak är: " + loanLimit.ToString("f2") + "kr och du kan låna upp till " + possibleLoan.ToString("f2") + " nya kr");
 
+
             }
             else
             {
                 Console.WriteLine("Du har ingen skuld och du kan låna upp till: " + possibleLoan.ToString("f2") + "kr");
+
             }
 
             if (hasLoanAccount == false)
             {
                 Console.Clear();               
+
                 Console.WriteLine("Du har inte något lånekonto, vill du öppna ett? Ja/Nej");
                 do
                 {
@@ -798,12 +826,13 @@ namespace FoxyBank
             Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
 
             decimal inputAmount = 0;
+
             bool incorrectAmount = true;
             do
             {
 
                 string loaninput = Console.ReadLine();
-                
+
                 if (decimal.TryParse(loaninput, out inputAmount))
                 {
                     if (inputAmount > 0 && inputAmount <= possibleLoan)
@@ -813,7 +842,9 @@ namespace FoxyBank
                         user.DisplayAllAccounts();
                         Console.WriteLine("\nDu vill låna " + inputAmount + "kr, vilket konto vill du föra över till?");
                         int accNum = 0;
+
                         bool incorrectAccNr = true;
+
                         do
                         {
                             string inputAcc = Console.ReadLine();
@@ -859,6 +890,7 @@ namespace FoxyBank
                                             Console.ReadKey();
                                             Console.Clear();
                                             incorrectAccNr = false;
+
                                             return true;
                                         }
                                         else
@@ -871,7 +903,6 @@ namespace FoxyBank
 
                                         }
 
-
                                     } while (tries > 0);
                                     if (tries == 0)
                                     {
@@ -880,20 +911,16 @@ namespace FoxyBank
                                         Console.Clear();
                                         return false;
                                     }
-
                                 }
-
                                 else
                                 {
                                     Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen. OBS! Du kan inte använda ditt lånekonto");
                                 }
                             }
-
                             else
                             {
                                 Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen");
                             }
-
                         } while (incorrectAccNr); 
                         
                     }
@@ -906,9 +933,7 @@ namespace FoxyBank
                 {
                     Console.WriteLine("Inkorrekt inmatning. Var vänlig försök igen");
                 }
-
             } while (incorrectAmount);
-
             return false;
         }
     }
