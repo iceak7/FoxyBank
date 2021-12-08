@@ -10,7 +10,7 @@ namespace FoxyBank
         public int AccountNr { get; set; }
         public string AccountName { get; set; }
         public string CurrencySign { get; set; }
-     
+
         public decimal GetBalance()
         {
             return Balance;
@@ -23,9 +23,9 @@ namespace FoxyBank
 
         public bool SubstractBalance(decimal sumToSubstract)
         {
-            if (this.Balance >= sumToSubstract)
+            if (this.Balance >= sumToSubstract | this is LoanAccount)
             {
-                Balance-=sumToSubstract;
+                Balance -= sumToSubstract;
                 return true;
             }
             else
