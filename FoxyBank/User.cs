@@ -11,7 +11,6 @@ namespace FoxyBank
 
         public List<BankAccount> BankAccounts { get; set; }
 
-
         public User(string firstName, string lastName, string passWord, int userId)
         {
             this.FirstName = firstName;
@@ -52,5 +51,5 @@ namespace FoxyBank
             }
         }        
     }
- }
+}
 

@@ -540,24 +540,16 @@ namespace FoxyBank
                     Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                       $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
-                
-            } while (amountOfMoneyToTransfer==0);
-
-            int triesLeft = 3;
-            bool succesfulTransaction = false;
-            Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med  kontonummer {transferFromAcc} till {transferToAcc}. \nVänligen mata in ditt lösenord för att genomföra transaktionen.");
-            do
-            {
-                string input = HidePassWord();
 
                 else
                 {
                     Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                     $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
-                do
-                {
-                    string input = HidePassWord(); ;
+                
+            do
+            {
+                   string input = HidePassWord(); ;
 
                     if (user.Authentication(input, user.UserId))
                     {
@@ -720,7 +712,7 @@ namespace FoxyBank
             {
                 return CurrencyExRate["USD"];
             }
-        }
+        }       
     }
 }
 
