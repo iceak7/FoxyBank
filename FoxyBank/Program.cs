@@ -15,7 +15,8 @@ namespace FoxyBank
             user.BankAccounts.Add(new PersonalAccount(10000));
             ourBank.BankAccounts.Add(10000, 2001);
             user.BankAccounts[0].AddBalance(10000);
-            
+            ourBank.CurrencyExRate.Add("USD", 9.11m);
+
 
             user.BankAccounts.Add(new PersonalAccount(10001));
             ourBank.BankAccounts.Add(10001, 2001);
