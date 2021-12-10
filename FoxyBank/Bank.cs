@@ -9,13 +9,13 @@ namespace FoxyBank
     {
         public List<Person> Persons { get; set; }
         public Dictionary<int, int> BankAccounts { get; set; }
-        public Dictionary<string, decimal> CurrencyExRate { get; private set; }
+        public Dictionary<string, decimal> CurrencyExRate { get; set; }
 
         public Bank()
         {
             this.Persons = new List<Person>();
             this.BankAccounts = new Dictionary<int, int>();
-            this.CurrencyExRate = new Dictionary<string, decimal>() { { "USD", 9.11m }, { "EUR", 10.25m } };
+            this.CurrencyExRate = new Dictionary<string, decimal>();
         }
 
         public void StartApplication()
@@ -140,10 +140,9 @@ namespace FoxyBank
                 Console.WriteLine("\nAnvändarmeny för administrator:" +
                             "\n1. Skapa ny bankkund" +
                             "\n2. Ändra valutakurs" +
-                            "\n3. Ändra sparränta" +
-                            "\n4. Visa log" +
-                            "\n5. Logga ut" +
-                            "\n6. Avsluta programmet");
+                            "\n3. Visa log" +
+                            "\n4. Logga ut" +
+                            "\n5. Avsluta programmet");
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
@@ -151,26 +150,22 @@ namespace FoxyBank
                     case "1":
                         RegisterNewUser(loggedInPerson);
                         break;
-                    case "2":
-                        CurrencyUpdate(CurrencyExRate["USD"]);
-                        Console.WriteLine();
+
+                    case "2":                        
+                        loggedInPerson.CurrencyUpdate(CurrencyExRate);                       
                         break;
 
                     case "3":
-                        //InterestRate();
-                        break;
-
-                    case "4":
                         loggedInPerson.DisplayLog();
                         break;
 
-                    case "5":
+                    case "4":
                         isRunning = false;
                         StartApplication();
 
                         break;
 
-                    case "6":
+                    case "5":
                         isRunning = false;
                         break;
                     default:
@@ -696,32 +691,6 @@ namespace FoxyBank
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
-        }
-        public decimal CurrencyUpdate(decimal UpDatedCurr)
-        {
-            Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
-
-            Console.WriteLine($"Vill du ändra kursen? \n1. Ja \n2. Nej");
-
-            string input = Console.ReadLine().ToUpper();
-            if (input == "1" || input == "JA")
-            {
-                Console.Clear();
-                Console.WriteLine("Ange aktuell kurs för 1 USD till SEK: ");
-                decimal upDatedCurr = Convert.ToDecimal(Console.ReadLine());
-
-                CurrencyExRate["USD"] = upDatedCurr;
-                Console.WriteLine(CurrencyExRate["USD"]);
-
-                Console.Clear();
-
-                Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
-                return upDatedCurr;
-            }
-            else
-            {
-                return CurrencyExRate["USD"];
-            }
         }
 
         public bool TakeLoan(User user)
