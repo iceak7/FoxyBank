@@ -7,42 +7,39 @@ namespace FoxyBank
     {
         static void Main(string[] args)
         {
-            Bank ourBank = new Bank();
-            InitializeUsers(ourBank);
-            ourBank.StartApplication();
-        }
 
-        static void InitializeUsers(Bank bank)
-        {
-            bank.Persons.Add(new Admin());
+            Bank ourBank = new Bank();
+            ourBank.Persons.Add(new Admin());
 
             User user = new User("Isak", "Jensen", "Hemlis123", 2001);
             user.BankAccounts.Add(new PersonalAccount(10000));
-            bank.BankAccounts.Add(10000, 2001);
+            ourBank.BankAccounts.Add(10000, 2001);
             user.BankAccounts[0].AddBalance(10000);
-            bank.CurrencyExRate.Add("USD", 9.11m);
+            ourBank.CurrencyExRate.Add("USD", 9.11m);
 
 
             user.BankAccounts.Add(new PersonalAccount(10001));
-            bank.BankAccounts.Add(10001, 2001);
+            ourBank.BankAccounts.Add(10001, 2001);
             user.BankAccounts[1].AddBalance(10000);
-            bank.Persons.Add(user);
+            ourBank.Persons.Add(user);
 
             ForeignAccount f1 = new ForeignAccount(30003);
             f1.CurrencySign = "$";
             user.BankAccounts.Add(f1);
-            bank.BankAccounts.Add(30003, 2001);
+            ourBank.BankAccounts.Add(30003, 2001);
             user.BankAccounts[2].AddBalance(10000);
-            bank.Persons.Add(user);
+            ourBank.Persons.Add(user);
 
             User user2 = new User("Edwin", "Westerberg", "Hemlis1234", 2002);
             user2.BankAccounts.Add(new PersonalAccount(10002));
-            bank.BankAccounts.Add(10002, 2002);
+            ourBank.BankAccounts.Add(10002, 2002);
             user2.BankAccounts[0].AddBalance(10000);
-            bank.Persons.Add(user2);
+            ourBank.Persons.Add(user2);
 
-            bank.Persons.Add(new User("Mattias", "Kokkonen", "Hemlis12345", 2003));
-            bank.Persons.Add(new User("Jenny", "Lund-Kallberg", "Hemlis123456", 2005));
+            ourBank.Persons.Add(new User("Mattias", "Kokkonen", "Hemlis12345", 2003));
+            ourBank.Persons.Add(new User("Jenny", "Lund-Kallberg", "Hemlis123456", 2005));
+            ourBank.StartApplication();
+
         }
     }
 }
