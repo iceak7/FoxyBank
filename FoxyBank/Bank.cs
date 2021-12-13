@@ -415,7 +415,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     user.BankAccounts.Add(L1);
                     this.BankAccounts.Add(L1.AccountNr, user.UserId);
                     L1.AccountName = "Lånekonto";
-                    user.UpdateLog("Skapat ett " + L1.AccountName + " med kontonummer : " + L1.AccountNr + "och ränta på " + L1.GetInterest());
+                    user.UpdateLog("Skapat ett " + L1.AccountName + " med kontonummer : " + L1.AccountNr + " och ränta på " + L1.GetInterest());
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + L1.AccountName + " med kontonummer: " + L1.AccountNr + " och ränta på " + L1.GetInterest() + "%");
                     L1.CurrencySign = " kr";
                     createdAccount = L1;

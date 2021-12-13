@@ -24,30 +24,58 @@ namespace FoxyBank
         public decimal CurrencyUpdate(Dictionary<string, decimal> currency)
         {
             Console.Clear();
+            bool answer = false;
+            decimal upDatedUSD;
 
             Console.WriteLine($"Aktuell kurs för USD: {currency["USD"]}");
 
-            Console.WriteLine($"Vill du ändra kursen? \n1. Ja \n2. Nej");
-
-            string input = Console.ReadLine().ToUpper();
-            if (input == "1" || input == "JA")
+            Console.WriteLine($"\nVill du ändra kursen? \n1. Ja \n2. Nej");
+            do
             {
-                Console.Clear();
-                Console.WriteLine("Ange aktuell kurs för 1 USD till SEK: ");
-                decimal upDatedUSD = Convert.ToDecimal(Console.ReadLine());
 
-                currency["USD"] = upDatedUSD;
-                Console.Clear();
-                this.UpdateLog($"Uppdaterad kurs för USD: {currency["USD"]}");
-                Console.WriteLine($"Uppdaterad kurs för USD: {currency["USD"]}");
-                return upDatedUSD;
+                string input = Console.ReadLine().ToUpper();
+                if (input == "1" || input == "JA")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Ange dagskursen för 1 USD till SEK: ");
 
-            }
-            else
-            {
-                Console.WriteLine(currency["USD"]);
-                return currency["USD"];
-            }
+                    try
+                    {
+                        upDatedUSD = Convert.ToDecimal(Console.ReadLine());
+
+                        currency["USD"] = upDatedUSD;
+                        Console.Clear();
+
+                        this.UpdateLog($"Uppdaterad kurs för USD: {currency["USD"]}");
+                        Console.WriteLine($"Uppdaterad kurs för USD: {currency["USD"]}");
+                        answer = true;
+                        Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till menyn.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        return upDatedUSD;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("\nFelaktigt format. Kursen får endast anges i siffror och med decimaltecken (,).");
+                        Console.WriteLine("Tryck 1 för att ändra kursen. Tryck 2 för att komma tillbaks till menyn.");
+                    }
+                }
+                else if (input == "2" || input == "NEJ")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Aktuell kurs: " + currency["USD"]);
+                    Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till menyn.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    return currency["USD"];
+                }
+
+                else
+                {
+                    Console.WriteLine("\nOgiltigt svar. Tryck 1 för att ändra kursen. Tryck 2 för att komma tillbaks till menyn.");
+                }
+            } while (answer == false);
+            return 1;
         }
     }
 }
