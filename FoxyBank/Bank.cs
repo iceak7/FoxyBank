@@ -383,43 +383,55 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 if (answer == "1")
                 {
-                    createdAccount = new SavingAccount(GenerateAccountNr());
-
-                    user.BankAccounts.Add(createdAccount);
-                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-                    createdAccount.AccountName = "Sparkonto";
-                    user.UpdateLog("Skapat nytt Sparkonto. Konto Nummer: " + createdAccount.AccountNr);
-                    createdAccount.CurrencySign = " kr";
+                    
+                    SavingAccount S = new SavingAccount(GenerateAccountNr());
+                    user.BankAccounts.Add(S);
+                    this.BankAccounts.Add(S.AccountNr, user.UserId);
+                    S.AccountName = "Sparkonto";
+                    user.UpdateLog("Skapat ett " + S.AccountName + " med kontonummer : " + S.AccountNr);
+                    Console.WriteLine($"\nGrattis! Du har skapat ett " + S.AccountName + " med kontonummer: " + S.AccountNr);
+                    Console.Write("Räntan är " + S.GetInterest() + "%");
+                    S.CurrencySign = " kr";
+                    createdAccount = S;
 
                 }
 
                 else if (answer == "2")
                 {
-                    createdAccount = new PersonalAccount(GenerateAccountNr());
-                    user.BankAccounts.Add(createdAccount);
-                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-                    createdAccount.AccountName = "Personkonto";
-                    user.UpdateLog("Skapat nytt Personkonto. Konto Nummer: " + createdAccount.AccountNr);
-                    createdAccount.CurrencySign = " kr";
+                    PersonalAccount P = new PersonalAccount(GenerateAccountNr());
+                    user.BankAccounts.Add(P);
+                    this.BankAccounts.Add(P.AccountNr, user.UserId);
+                    P.AccountName = "Personkonto";
+                    user.UpdateLog("Skapat ett " + P.AccountName + " med kontonummer : " + P.AccountNr);
+                    Console.WriteLine($"\nGrattis! Du har skapat ett " + P.AccountName + " med kontonummer: " + P.AccountNr);
+                    P.CurrencySign = " kr";
+                    createdAccount = P;
                 }
 
                 else if (answer == "3")
                 {
-                    createdAccount = new LoanAccount(GenerateAccountNr());
-                    user.BankAccounts.Add(createdAccount);
-                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-                    createdAccount.AccountName = "Lånekonto";
-                    createdAccount.CurrencySign = " kr";
+                    
+                    LoanAccount L1 = new LoanAccount(GenerateAccountNr());
+                    user.BankAccounts.Add(L1);
+                    this.BankAccounts.Add(L1.AccountNr, user.UserId);
+                    L1.AccountName = "Lånekonto";
+                    user.UpdateLog("Skapat ett " + L1.AccountName + " med kontonummer : " + L1.AccountNr + "och ränta på " + L1.GetInterest());
+                    Console.WriteLine($"\nGrattis! Du har skapat ett " + L1.AccountName + " med kontonummer: " + L1.AccountNr + " och ränta på " + L1.GetInterest() + "%");
+                    L1.CurrencySign = " kr";
+                    createdAccount = L1;
                     
                 }
 
                 else if (answer == "4")
                 {
-                    createdAccount = new ForeignAccount(GenerateAccountNr());
-                    user.BankAccounts.Add(createdAccount);
-                    this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
-                    createdAccount.AccountName = "Konto i Amerikanska dollar";
-                    createdAccount.CurrencySign = "$";
+                    ForeignAccount F = new ForeignAccount(GenerateAccountNr());
+                    user.BankAccounts.Add(F);
+                    this.BankAccounts.Add(F.AccountNr, user.UserId);
+                    F.AccountName = "Konto i Amerikanska dollar";
+                    Console.WriteLine($"\nGrattis! Du har skapat ett " + F.AccountName + " med kontonummer : " + F.AccountNr);
+                    user.UpdateLog("Skapat ett " + F.AccountName + " med kontonummer : " + F.AccountNr);
+                    F.CurrencySign = "$";
+                    createdAccount = F;
                 }
 
                 else
@@ -427,32 +439,8 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Svara ett nummer från menyn.");
                 }
 
-            } while (createdAccount == null);
-            if (createdAccount is LoanAccount)
-            {
-                LoanAccount L1 = (LoanAccount)createdAccount;
-                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr + "och ränta på " + L1.GetInterest());
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest() + "%");
-            }
-            else if (createdAccount is PersonalAccount)
-            {
-                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
-            }
-            else if (createdAccount is SavingAccount)
-            {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr);
-                SavingAccount S = (SavingAccount)createdAccount;
-                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
-                Console.Write("Räntan är "+S.GetInterest()+"%");
-            }
-            else if (createdAccount is ForeignAccount)
-            {
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
-                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
-            }
-
-            Console.WriteLine("\nKlicka enter för att komma vidare.");
+            } while (createdAccount == null);         
+            Console.WriteLine("\nTryck valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
         }
@@ -821,6 +809,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         this.BankAccounts.Add(Loanaccount.AccountNr, user.UserId);
                         Loanaccount.AccountName = "Lånekonto";
                         Console.WriteLine($"\nGrattis! Du har skapat ett " + Loanaccount.AccountName + " med kontonummer : " + Loanaccount.AccountNr);
+                        user.UpdateLog("Skapat nytt lånekonto. Kontonummer: " + Loanaccount.AccountNr);
                         hasLoanAccount = true;
                     }
                     else if (input == "NEJ")
