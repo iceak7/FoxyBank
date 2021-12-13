@@ -41,7 +41,9 @@ namespace FoxyBank
                 Console.Clear();
 
                 Console.WriteLine($"Aktuell kurs för USD: {currency["USD"]}");
-                return upDatedUSD;
+                return upDatedUSD;                
+
+                this.UpdateLog($"Aktuell kurs för USD: {currency["USD"]}");
             }
             else
             {

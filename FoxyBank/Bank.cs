@@ -7,6 +7,7 @@ namespace FoxyBank
 {
     public class Bank
     {
+        #region 
         public List<Person> Persons { get; set; }
         public Dictionary<int, int> BankAccounts { get; set; }
         public Dictionary<string, decimal> CurrencyExRate { get; set; }
@@ -23,8 +24,7 @@ namespace FoxyBank
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             Console.WriteLine("Hej välkommen till Foxy Bank.");
-            Person loggedInPerson = Login();
-          
+            Person loggedInPerson = Login();          
 
         }
         public Person Login()
@@ -328,7 +328,6 @@ namespace FoxyBank
             }
             return accountNr;
         }
-
         public void CreateAccount(User user)
         {
             BankAccount createdAccount = null;
@@ -704,8 +703,7 @@ namespace FoxyBank
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
-        }
-      
+        }      
         public bool TakeLoan(User user)
         {
             BankAccount Loanaccount = null;
@@ -786,7 +784,7 @@ namespace FoxyBank
             }
 
             Console.WriteLine("\nHur mycket pengar vill du låna?");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
 
             decimal inputAmount = 0;
 
@@ -898,9 +896,7 @@ namespace FoxyBank
                 }
             } while (incorrectAmount);
             return false;
-
         }
-
         public void DepositMoney(User user)
         {
             BankAccount depositAcc = null;
@@ -1074,7 +1070,8 @@ namespace FoxyBank
             Console.WriteLine("\nKlicka enter för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
-        }
+        } 
+        #endregion
     }
 }
    
