@@ -7,7 +7,7 @@ namespace FoxyBank
 {
     public class Bank
     {
-        #region 
+        
         public List<Person> Persons { get; set; }
         public Dictionary<int, int> BankAccounts { get; set; }
         public Dictionary<string, decimal> CurrencyExRate { get; set; }
