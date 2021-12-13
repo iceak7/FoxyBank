@@ -825,7 +825,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             }
 
             Console.WriteLine("\nHur mycket pengar vill du låna?");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
 
             decimal inputAmount = 0;
 
@@ -860,8 +860,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                     Console.WriteLine("Var god skriv in ditt lösenord för att bekräfta transaktionen");
                                     do
                                     {
-                                        string passInput = HidePassWord();
-                                        Console.Clear();
+                                        string passInput = HidePassWord();                                      
                                         if (user.Authentication(passInput, user.UserId))
                                         {
                                             Loanaccount.SubstractBalance(inputAmount);
@@ -908,6 +907,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                     } while (tries > 0);
                                     if (tries == 0)
                                     {
+                                        Console.Clear();
                                         Console.WriteLine("Du skrev fel lösenord för många gånger. Klicka enter för att komma tillbaks till menyn");
                                         Console.ReadKey();
                                         Console.Clear();
