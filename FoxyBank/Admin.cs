@@ -40,6 +40,7 @@ namespace FoxyBank
                 currency["USD"] = upDatedUSD;
                 Console.Clear();
 
+                this.UpdateLog($"Aktuell kurs för USD: {currency["USD"]}");
                 Console.WriteLine($"Aktuell kurs för USD: {currency["USD"]}");
                 return upDatedUSD;
             }

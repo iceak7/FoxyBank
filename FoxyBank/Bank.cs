@@ -786,7 +786,7 @@ namespace FoxyBank
             }
 
             Console.WriteLine("\nHur mycket pengar vill du låna?");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan + "kr");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
 
             decimal inputAmount = 0;
 
@@ -822,7 +822,6 @@ namespace FoxyBank
                                     do
                                     {
                                         string passInput = HidePassWord();
-                                        Console.Clear();
                                         if (user.Authentication(passInput, user.UserId))
                                         {
                                             Loanaccount.SubstractBalance(inputAmount);
@@ -869,6 +868,7 @@ namespace FoxyBank
                                     } while (tries > 0);
                                     if (tries == 0)
                                     {
+                                        Console.Clear();
                                         Console.WriteLine("Du skrev fel lösenord för många gånger. Klicka enter för att komma tillbaks till menyn");
                                         Console.ReadKey();
                                         Console.Clear();
