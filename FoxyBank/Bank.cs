@@ -20,8 +20,45 @@ namespace FoxyBank
 
         public void StartApplication()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red; 
+            Console.WriteLine(@"                .i    7.                                                                            
+                Bi   .B                                                                             
+              iBB:  uBB                                                                             
+             1BBB  ZBBB                                                                             
+            MBBBB:gBBBB                                                                             
+           BBBBBBBQBQBQ                                                                             
+         :BBBBBBBBBBBBB1                                                                            
+        jBBBBBBBBBP  QBBQr                               ..:::..                                    
+       gBBBQBBBQBQS  RBBBBBQBBBQB.            :2QBBBBBBBBBBqJr:.                                    
+      BBQBBBQBBBBBBBBBBBBBQBBBBB1           7BBBBBBBBB1.                                            
+     qBBBBBQBBBQBBBBBBBQBBBBBBB:           BBBBBBBBQ                                                
+    .BBBBBQBQBBBQBQBBBBBBBBBB7            BBBBBBBB5                                                 
+    QBBBBBBBBBBBBBBvrs555v:              BBBBQBBBBr    ...i:i::.                                    
+    BBBBBBQBQBBBBBBP                    qBBBQBBBBBBBBBBBBBgSvr:.                                    
+    BBBQBQBBBBBBBQBQBd                  BBBBBBBBBBBBBqi                                             
+    BBQBQBQBQBBBQBBBQBBS               :QBBBBBBBBBQY                                                
+    BQBBBQBQBQBBBBBQBBBQBr             7BBBBBBBQBQJ                                                 
+    .BBBBBBBQBBBBBQBBBBBBBQ.           vBBBBBBBBQB:    .SRqU5Rgv   :7Ed2JJ    .XdDv7PPu1r.    .IKgu.
+     PBBBQBQBBBBBBBBBQBBBQBBg          7BBBBBBBBBBL  uBBB.    uBBQ.  :BBBB.   SBBr  rBBBB     :BBu  
+      EBBBQBQBQBQBBBQBBBBBBBBBU        vBBBBBBBBBBr BBBE        QBQr   :BBB7.BBi      1BQB.  jBB    
+      .BBBBBBQBQBQBQBBBBBQBBBBBBi      7BBBBBBBBBB::BBB         BBBB     vBBBE         .BBBYZBJ     
+      :BBBBBBBQBQBBBBBQBQBBBQBBBBD     vQBBBBBBBQB::BBB         QBBB     sQBBB7          ZBBB       
+      :BBBBBBQBBBQBQBBBBBBBQBBBBBBB    7BBBBBBBBBBr BBBE        BBB:   vBB  dBBB.        rBBB       
+      :BBBBBBBBBBBBBQBQBQBBBBBQBBBBB   vBBBBBBBBBB7  uQBQ.    7BBQ.  jBB7    rBBBQ.      qBBB       
+      :BBBBQBBBBBBBQBBBQBBBBBBBQBBBBB  7BBBQBBBBBB:    .gQZSSS2:   :SgE2     .I1SgKi   .vv1j5r.     
+      :BBBBBBBBBIBBBQBQBBBQBQBBBQBBBBv 7BBBBBBBBBB  .EBg.:i7UEs                      .LBQ           
+      :BBBBBBQg JBBQBQBBBQBQBBBBBQBQBQ :BBBBBBBBBE   iBB      BBZ                      BB           
+      .BBBBBBL  EBQBQBBBBBBBQBBBQBQBBB :BBBBBBQBB    rBB      BB1  vgr:UD: .IBi:IgBq   BB   XBIr.   
+      7BBQBB.   .BBBBQBQBBBQBBBQBBBBBBi.BBBBBQBQ:    iBQBBBBBBB:  .B2   BB  QBP.  sBg  BB  72:      
+     KBBBBq      iBBBBQBBBQBQBQBQBBBBBY.QBBBBBB:     rBB      SBB   :7i.QB  7B:    BB  BB1BI        
+  IEBQBBB:   idDqJBBBQBBBBBBBBBBBBBQBBS.BQBQBd       :BQ       QB:rB7   BB  LB:    BB  BB rQB:      
+KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7   .BB  BB   gBD.");
+
+            Console.ForegroundColor = ConsoleColor.Green; 
             Console.WriteLine("Hej välkommen till Foxy Bank.");
+            Console.ForegroundColor = ConsoleColor.White;
             Person loggedInPerson = Login();
 
         }
@@ -151,12 +188,12 @@ namespace FoxyBank
                         RegisterNewUser(loggedInPerson);
                         break;
                     case "2":
-                        CurrencyUpdate(CurrencyExRate["USD"]);
+                        loggedInPerson.CurrencyUpdate(CurrencyExRate);
                         Console.WriteLine();
                         break;
 
                     case "3":
-                        //InterestRate();
+                        //ChangeRate
                         break;
 
                     case "4":
@@ -334,7 +371,6 @@ namespace FoxyBank
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Sparkonto";
-                    user.UpdateLog("Skapat nytt Sparkonto. Konto Nummer: "+ createdAccount.AccountNr);
                     createdAccount.CurrencySign = " kr";
 
                 }
@@ -345,7 +381,6 @@ namespace FoxyBank
                     user.BankAccounts.Add(createdAccount);
                     this.BankAccounts.Add(createdAccount.AccountNr, user.UserId);
                     createdAccount.AccountName = "Personkonto";
-                    user.UpdateLog("Skapat nytt Personkonto. Konto Nummer: "+ createdAccount.AccountNr);
                     createdAccount.CurrencySign = " kr";
                 }
 
@@ -376,20 +411,24 @@ namespace FoxyBank
             if (createdAccount is LoanAccount)
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
             }
             else if (createdAccount is PersonalAccount)
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
             }
             else if (createdAccount is SavingAccount)
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
                 SavingAccount S = (SavingAccount)createdAccount;
+                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
                 Console.Write("Räntan är "+S.GetInterest()+"%");
             }
             else if (createdAccount is ForeignAccount)
             {
                 Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
+                user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr);
             }
             
             Console.WriteLine("\nKlicka enter för att komma vidare.");
@@ -561,7 +600,7 @@ namespace FoxyBank
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance((CurrencyExRate["USD"] * amountOfMoneyToTransfer));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                                user.UpdateLog($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
+                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
@@ -575,7 +614,7 @@ namespace FoxyBank
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance((amountOfMoneyToTransfer / CurrencyExRate["USD"]));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-
+                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
@@ -593,6 +632,7 @@ namespace FoxyBank
 
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
+                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
                                     $"$ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} " +
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
@@ -607,6 +647,7 @@ namespace FoxyBank
 
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
+                                user.UpdateLog($"Överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
                                     $"{user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} kr " +
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
@@ -624,7 +665,7 @@ namespace FoxyBank
                                 transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance((CurrencyExRate["USD"] * amountOfMoneyToTransfer));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
-
+                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}");
 
@@ -636,7 +677,7 @@ namespace FoxyBank
                                 transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance((amountOfMoneyToTransfer / CurrencyExRate["USD"]));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
-
+                                user.UpdateLog($"Överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} kr.");
 
@@ -648,7 +689,7 @@ namespace FoxyBank
                                 transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
-
+                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}.");
 
@@ -660,7 +701,7 @@ namespace FoxyBank
                                 transferToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
-
+                                user.UpdateLog($"Överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}");
 
@@ -685,7 +726,7 @@ namespace FoxyBank
             Console.ReadKey();
             Console.Clear();
         }
-        public decimal CurrencyUpdate(decimal UpDatedCurr)
+        public decimal CurrencyUpdate(decimal UpDatedCurr,Person user)
         {
             Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
 
@@ -700,7 +741,7 @@ namespace FoxyBank
 
                 CurrencyExRate["USD"] = upDatedCurr;
                 Console.WriteLine(CurrencyExRate["USD"]);
-
+                user.UpdateLog("Ändrade Kursen för USD till " + CurrencyExRate["USD"]);
                 Console.Clear();
 
                 Console.WriteLine($"Aktuell kurs för USD: {CurrencyExRate["USD"]}");
@@ -711,6 +752,7 @@ namespace FoxyBank
                 return CurrencyExRate["USD"];
             }
         }
+
     }
 }
 

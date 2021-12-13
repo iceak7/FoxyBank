@@ -19,24 +19,24 @@ namespace FoxyBank
         {
             string fileName = @".\LogInfo"+this.UserId;
             DateTime TimeToday = DateTime.Now;
-            File.AppendAllText(fileName, "\n"+TimeToday.ToString("MM/dd/yyyy HH:mm") + " " + Updates);         //(TextWriter LG = File.CreateText(fileName))
-            
-            //LG.WriteLine(TimeToday.ToString("MM/dd/yyyy HH:mm") + " " + Updates);
-
+            File.AppendAllText(fileName, "\n"+TimeToday.ToString("MM/dd/yyyy HH:mm") + " " + Updates);
             this.Log.Add(TimeToday.ToString("MM/dd/yyyy HH:mm")+" "+Updates);
             
             
         }
         public void DisplayLog()
         {
-            Console.WriteLine("Visa log aktivitet");
-            foreach (string item in Log)
+            Console.WriteLine("---Visar log aktivitet---");
+            string fileName = @".\LogInfo" + this.UserId;
+            string[] Lines = System.IO.File.ReadAllLines(fileName);
+            foreach (string ReadL in Lines)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(ReadL);
             }
-            Console.WriteLine("Tryck på valfritangent för att fortsätta.");
+            Console.WriteLine("Tryck på valfri tangent för att fortsätta.");
             Console.ReadKey();
             Console.Clear();
+
         }
         public bool Authentication(string password,int userid)
         {
