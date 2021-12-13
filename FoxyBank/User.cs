@@ -46,7 +46,7 @@ namespace FoxyBank
                         Console.WriteLine($"Kontonamn: {S.AccountName} " +
                                    $"\nKontonummer: {S.AccountNr} " +
                                    $"\nSkuld: {S.GetBalance() * -1:f2}" +
-                                    $"\n Ränta: {(S.GetInterest() * S.GetBalance()):f2}. Räntan ligger på  {S.GetInterest()} %. "+
+                                    $"\nRänta: {(S.GetInterest() * S.GetBalance()):f2}. Räntan ligger på  {S.GetInterest()} %. "+
                                     $"\n");
                     }
                     else 
