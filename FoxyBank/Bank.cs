@@ -432,7 +432,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             {
                 LoanAccount L1 = (LoanAccount)createdAccount;
                 user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr + "och ränta på " + L1.GetInterest());
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest());
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest() + "%");
             }
             else if (createdAccount is PersonalAccount)
             {
@@ -477,15 +477,23 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         fromAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
                         if (fromAcc != null)
                         {
-                            if (fromAcc.GetBalance() > 0)
+                            if (!(fromAcc is LoanAccount))
                             {
-                                transferFromAcc = fromAcc.AccountNr;
+                                if (fromAcc.GetBalance() > 0)
+                                {
+                                    transferFromAcc = fromAcc.AccountNr;
 
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Konto du valde har inte tillräckligt högt saldo. Vänligen välj ett annat konto.");
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("Konto du valde har inte tillräckligt högt saldo. Vänligen välj ett annat konto.");
+                                Console.WriteLine("Ogiltigt val. Du kan inte välja ett lånekonto. Försök igen.");
                             }
+                            
                         }
                         else
                         {
@@ -513,13 +521,18 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         {
                             Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
                         }
+                        else if (toAcc is LoanAccount)
+                        {
+                            Console.WriteLine("Ogiltigt val. Du kan inte välja ett lånekonto. Försök igen");
+                        }
                         else if (this.BankAccounts.ContainsKey(inputAcc))
                         {
 
                             if (this.BankAccounts[inputAcc] != user.UserId)
                             {
+                               
                                 transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
-
+                               
                                 Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}." +
                                     $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
 
@@ -823,9 +836,20 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 } while (hasLoanAccount == false);
 
             }
-
-            Console.WriteLine("\nHur mycket pengar vill du låna?");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
+            if (possibleLoan <= 0)
+            {
+                Console.WriteLine("\nDu kan inte låna mer pengar. Tryck valfri tangent för att komma tillbaks till menyn");
+                Console.ReadKey();
+                Console.Clear();
+                return false;
+                
+            }
+            else
+            {
+                Console.WriteLine("\nHur mycket pengar vill du låna?");
+                Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
+            }
+            
 
             decimal inputAmount = 0;
 
@@ -860,7 +884,8 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                     Console.WriteLine("Var god skriv in ditt lösenord för att bekräfta transaktionen");
                                     do
                                     {
-                                        string passInput = HidePassWord();                                      
+                                        string passInput = HidePassWord();
+                                        Console.WriteLine();
                                         if (user.Authentication(passInput, user.UserId))
                                         {
                                             Loanaccount.SubstractBalance(inputAmount);
@@ -1058,7 +1083,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                             {
                                 user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                                user.UpdateLog($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                user.UpdateLog($"Du satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot är $ {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2}.");
 
@@ -1068,7 +1093,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                             {
                                 user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                                user.UpdateLog($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                user.UpdateLog($"Du satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot är {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2} kr.");
 
@@ -1084,7 +1109,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 depositToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
-                                user.UpdateLog($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                user.UpdateLog($"Du satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
 
                                 succesfulTransaction = true;
@@ -1095,7 +1120,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 depositToUser.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
-                                user.UpdateLog($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                user.UpdateLog($"Du satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
 
                                 succesfulTransaction = true;
