@@ -432,7 +432,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             {
                 LoanAccount L1 = (LoanAccount)createdAccount;
                 user.UpdateLog("Skapat ett " + createdAccount.AccountName + " med kontonummer : " + createdAccount.AccountNr + "och ränta på " + L1.GetInterest());
-                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest());
+                Console.WriteLine($"\nGrattis! Du har skapat ett " + createdAccount.AccountName + " med kontonummer: " + createdAccount.AccountNr + " och ränta på " + L1.GetInterest() + "%");
             }
             else if (createdAccount is PersonalAccount)
             {
@@ -477,7 +477,8 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         fromAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
                         if (fromAcc != null)
                         {
-                            if(!(fromAcc is LoanAccount))
+                            if (!(fromAcc is LoanAccount))
+
                             {
                                 if (fromAcc.GetBalance() > 0)
                                 {
@@ -493,7 +494,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                             {
                                 Console.WriteLine("Ogiligt val. Du kan inte välja ett lånekonto. Försök igen.");
                             }
-
                         }
                         else
                         {
@@ -521,18 +521,17 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         {
                             Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
                         }
-                        else if(toAcc is LoanAccount)
+                        else if (toAcc is LoanAccount)
                         {
-                            Console.WriteLine("Ogiligt val. Du kan inte välja ett lånekonto. Försök igen.");
+                            Console.WriteLine("Ogiltigt val. Du kan inte välja ett lånekonto. Försök igen");
                         }
                         else if (this.BankAccounts.ContainsKey(inputAcc))
                         {
 
                             if (this.BankAccounts[inputAcc] != user.UserId)
                             {
-
                                 transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
-
+                               
                                 Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}." +
                                     $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
 
@@ -836,7 +835,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 } while (hasLoanAccount == false);
 
             }
-
             if (possibleLoan<=0)
             {
                 Console.WriteLine("\nDu kan inte låna mer pengar. Tryck valfri tangent för att komma tillbaka till menyn.");
@@ -849,8 +847,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 Console.WriteLine("\nHur mycket pengar vill du låna?");
                 Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
             }
-
-
             decimal inputAmount = 0;
 
             bool incorrectAmount = true;
