@@ -45,7 +45,7 @@ namespace FoxyBank
                         LoanAccount S = (LoanAccount)created;
                         Console.WriteLine($"Kontonamn: {S.AccountName} " +
                                    $"\nKontonummer: {S.AccountNr} " +
-                                   $"\nSkuld: {S.GetBalance() * -1:f2}" +
+                                   $"\nSkuld: {S.GetBalance() * -1:f2}" + "kr" +
                                     $"\nRänta: {(S.GetInterest() * S.GetBalance()):f2}. Räntan ligger på  {S.GetInterest()} %. "+
                                     $"\n");
                     }

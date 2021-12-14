@@ -364,7 +364,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             }
             return accountNr;
         }
-
         public void CreateAccount(User user)
         {
             BankAccount createdAccount = null;
@@ -391,7 +390,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     user.UpdateLog("Skapat ett " + S.AccountName + " med kontonummer : " + S.AccountNr);
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + S.AccountName + " med kontonummer: " + S.AccountNr);
                     Console.Write("Räntan är " + S.GetInterest() + "%");
-                    S.CurrencySign = " kr";
+                    S.CurrencySign = "kr";
                     createdAccount = S;
 
                 }
@@ -404,7 +403,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     P.AccountName = "Personkonto";
                     user.UpdateLog("Skapat ett " + P.AccountName + " med kontonummer : " + P.AccountNr);
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + P.AccountName + " med kontonummer: " + P.AccountNr);
-                    P.CurrencySign = " kr";
+                    P.CurrencySign = "kr";
                     createdAccount = P;
                 }
 
@@ -417,7 +416,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     L1.AccountName = "Lånekonto";
                     user.UpdateLog("Skapat ett " + L1.AccountName + " med kontonummer : " + L1.AccountNr + " och ränta på " + L1.GetInterest());
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + L1.AccountName + " med kontonummer: " + L1.AccountNr + " och ränta på " + L1.GetInterest() + "%");
-                    L1.CurrencySign = " kr";
+                    L1.CurrencySign = "kr";
                     createdAccount = L1;
                     
                 }
@@ -557,12 +556,12 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 if (fromAcc is ForeignAccount)
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} tillgängligt.");
+                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} tillgängligt.");
                 }
                 else
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgängligt.");
+                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} kr tillgängligt.");
                 }
                 do
                 {
@@ -636,13 +635,13 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance((amountOfMoneyToTransfer / CurrencyExRate["USD"]));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
+                                user.UpdateLog($"Överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
+                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
-                                    $"$ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} " +
+                                    $"{user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}kr" +
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
-                                    $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} kr.");
+                                    $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} $.");
 
                                 succesfulTransaction = true;
                             }
@@ -952,7 +951,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             return false;
 
         }
-
         public void DepositMoney(User user)
         {
             BankAccount depositAcc = null;
