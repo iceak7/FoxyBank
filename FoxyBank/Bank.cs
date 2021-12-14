@@ -178,7 +178,7 @@ namespace FoxyBank
             do
             {
                 Console.WriteLine($"\nInloggad som: {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
-                Console.WriteLine("\n1. Skapa ny bankkund" +
+                Console.WriteLine("\n\n1. Skapa ny bankkund" +
                             "\n\n2. Ändra valutakurs" +
                             "\n\n3. Visa log" +
                             "\n\n4. Logga ut" +
@@ -443,7 +443,7 @@ namespace FoxyBank
             Console.ReadKey();
             Console.Clear();
         }
-        public void TransferMoney(User user)
+        public bool TransferMoney(User user)
         {
             int transferFromAcc = 0;
             BankAccount fromAcc = null;
@@ -497,20 +497,24 @@ namespace FoxyBank
                 int transferToAcc = 0;
                 User transferToUser = null;
                 Console.WriteLine("\nVilket konto vill du överföra pengar till? Skriv kontonumret.");
+                Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
 
                 do
                 {
+                    string input = Console.ReadLine();
                     int inputAcc = 0;
-                    if (int.TryParse(Console.ReadLine(), out inputAcc))
+                    if (int.TryParse(input, out inputAcc))
                     {
                         toAcc = user.BankAccounts.Find(x => x.AccountNr == inputAcc);
                         if (transferFromAcc == inputAcc)
                         {
-                            Console.WriteLine("Vänligen välj ett annat konto än det du ska överför pengar ifrån.");
+                            Console.WriteLine("\nVänligen välj ett annat konto än det du ska överför pengar ifrån.");
+                            Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
                         }
                         else if (toAcc is LoanAccount)
                         {
-                            Console.WriteLine("Ogiltigt val. Du kan inte välja ett lånekonto. Försök igen");
+                            Console.WriteLine("\nOgiltigt val. Du kan inte välja ett lånekonto. Försök igen");
+                            Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
                         }
                         else if (this.BankAccounts.ContainsKey(inputAcc))
                         {
@@ -518,7 +522,7 @@ namespace FoxyBank
                             if (this.BankAccounts[inputAcc] != user.UserId)
                             {
                                 transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
-                               
+
                                 Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}." +
                                     $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Tryck på valfri tangent för att ändra kontonumret.");
 
@@ -528,7 +532,8 @@ namespace FoxyBank
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Vänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                                    Console.WriteLine("\nVänligen skriv kontonumret på kontot du vill överföra pengar till.");
+                                    Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
                                 }
                             }
                             else
@@ -539,12 +544,19 @@ namespace FoxyBank
                         }
                         else
                         {
-                            Console.WriteLine("Inget konto med det kontonummer du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                            Console.WriteLine("\nInget konto med det kontonummer du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                            Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
                         }
+                    }
+                    else if (input.ToUpper() == "AVBRYT")
+                    {
+                        Console.Clear();
+                        return false;
                     }
                     else
                     {
-                        Console.WriteLine("Vänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                        Console.WriteLine("\nVänligen mata in ett korrekt kontonummer. Vänligen testa att skriva kontonumret igen.");
+                        Console.WriteLine("Skriv \"avbryt\" för att avbryta och återvända till menyn.");
                     }
                 } while (transferToAcc == 0);
 
@@ -752,6 +764,7 @@ namespace FoxyBank
             Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
+            return true;
         }
         public bool TakeLoan(User user)
         {

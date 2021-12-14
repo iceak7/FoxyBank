@@ -15,7 +15,7 @@ namespace FoxyBank
 
         static void InitializeUsers(Bank bank)
         {
-            bank.Persons.Add(new Admin());
+            bank.Persons.Add(new Admin("Admin", "Adminsson", "Hemlis", 1000));
 
             User user = new User("Isak", "Jensen", "Hemlis123", 2001);
             user.BankAccounts.Add(new PersonalAccount(10000));
@@ -33,10 +33,10 @@ namespace FoxyBank
             user.BankAccounts[1].AccountName = "Personkonto";
             bank.Persons.Add(user);
 
-            ForeignAccount f1 = new ForeignAccount(30003);
+            ForeignAccount f1 = new ForeignAccount(10003);
             f1.CurrencySign = "$";
             user.BankAccounts.Add(f1);
-            bank.BankAccounts.Add(30003, 2001);
+            bank.BankAccounts.Add(10003, 2001);
             user.BankAccounts[2].AccountName = "Konto i Amerikanska dollar";
             user.BankAccounts[2].AddBalance(10000);
             bank.Persons.Add(user);
