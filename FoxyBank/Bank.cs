@@ -556,12 +556,12 @@ namespace FoxyBank
                 if (fromAcc is ForeignAccount)
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} tillgängligt.");
+                        $"Du har $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} tillgängligt.");
                 }
                 else
                 {
                     Console.WriteLine($"\nHur mycket pengar vill du överföra från {transferFromAcc} till {transferToAcc}? " +
-                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance()} kr tillgängligt.");
+                        $"Du har {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} kr tillgängligt.");
                 }
                 do
                 {
@@ -640,13 +640,15 @@ namespace FoxyBank
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance((amountOfMoneyToTransfer / CurrencyExRate["USD"]));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
-                                user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
-                                Console.WriteLine($"\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
+
+                                user.UpdateLog($"Överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
+                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
+                              
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
-                                    $"$ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} " +
+                                    $"{user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}kr" +
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
-                                    $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} kr.");
+                                    $"{transferToAcc} är {user.BankAccounts[indexOfTransferToAcc].GetBalance():f2} $.");
 
                                 succesfulTransaction = true;
                             }
