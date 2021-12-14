@@ -24,40 +24,34 @@ namespace FoxyBank
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red; 
-            Console.WriteLine(@"                
-                .i    7.                                                                            
-                Bi   .B                                                                             
-              iBB:  uBB                                                                             
-             1BBB  ZBBB                                                                             
-            MBBBB:gBBBB                                                                             
-           BBBBBBBQBQBQ                                                                             
-         :BBBBBBBBBBBBB1                                                                            
-        jBBBBBBBBBP  QBBQr                               ..:::..                                    
-       gBBBQBBBQBQS  RBBBBBQBBBQB.            :2QBBBBBBBBBBqJr:.                                    
-      BBQBBBQBBBBBBBBBBBBBQBBBBB1           7BBBBBBBBB1.                                            
-     qBBBBBQBBBQBBBBBBBQBBBBBBB:           BBBBBBBBQ                                                
-    .BBBBBQBQBBBQBQBBBBBBBBBB7            BBBBBBBB5                                                 
-    QBBBBBBBBBBBBBBvrs555v:              BBBBQBBBBr    ...i:i::.                                    
-    BBBBBBQBQBBBBBBP                    qBBBQBBBBBBBBBBBBBgSvr:.                                    
-    BBBQBQBBBBBBBQBQBd                  BBBBBBBBBBBBBqi                                             
-    BBQBQBQBQBBBQBBBQBBS               :QBBBBBBBBBQY                                                
-    BQBBBQBQBQBBBBBQBBBQBr             7BBBBBBBQBQJ                                                 
-    .BBBBBBBQBBBBBQBBBBBBBQ.           vBBBBBBBBQB:    .SRqU5Rgv   :7Ed2JJ    .XdDv7PPu1r.    .IKgu.
-     PBBBQBQBBBBBBBBBQBBBQBBg          7BBBBBBBBBBL  uBBB.    uBBQ.  :BBBB.   SBBr  rBBBB     :BBu  
-      EBBBQBQBQBQBBBQBBBBBBBBBU        vBBBBBBBBBBr BBBE        QBQr   :BBB7.BBi      1BQB.  jBB    
-      .BBBBBBQBQBQBQBBBBBQBBBBBBi      7BBBBBBBBBB::BBB         BBBB     vBBBE         .BBBYZBJ     
-      :BBBBBBBQBQBBBBBQBQBBBQBBBBD     vQBBBBBBBQB::BBB         QBBB     sQBBB7          ZBBB       
-      :BBBBBBQBBBQBQBBBBBBBQBBBBBBB    7BBBBBBBBBBr BBBE        BBB:   vBB  dBBB.        rBBB       
-      :BBBBBBBBBBBBBQBQBQBBBBBQBBBBB   vBBBBBBBBBB7  uQBQ.    7BBQ.  jBB7    rBBBQ.      qBBB       
-      :BBBBQBBBBBBBQBBBQBBBBBBBQBBBBB  7BBBQBBBBBB:    .gQZSSS2:   :SgE2     .I1SgKi   .vv1j5r.     
-      :BBBBBBBBBIBBBQBQBBBQBQBBBQBBBBv 7BBBBBBBBBB  .EBg.:i7UEs                      .LBQ           
-      :BBBBBBQg JBBQBQBBBQBQBBBBBQBQBQ :BBBBBBBBBE   iBB      BBZ                      BB           
-      .BBBBBBL  EBQBQBBBBBBBQBBBQBQBBB :BBBBBBQBB    rBB      BB1  vgr:UD: .IBi:IgBq   BB   XBIr.   
-      7BBQBB.   .BBBBQBQBBBQBBBQBBBBBBi.BBBBBQBQ:    iBQBBBBBBB:  .B2   BB  QBP.  sBg  BB  72:      
-     KBBBBq      iBBBBQBBBQBQBQBQBBBBBY.QBBBBBB:     rBB      SBB   :7i.QB  7B:    BB  BB1BI        
-  IEBQBBB:   idDqJBBBQBBBBBBBBBBBBBQBBS.BQBQBd       :BQ       QB:rB7   BB  LB:    BB  BB rQB:      
-KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7   .BB  BB   gBD.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(@"                                                                                                    
+               rg    B                         .iYj25dgQgZ5j7i                                      
+              dBB  rBB                     :QBBBBBBQBBQur..                                         
+             BQB2 KBBB                   .BBBBBBBBBL                                                
+           7BBBBMQBBBB                  7QBBBQBQBP                                                  
+          RBBBBBBBBBBB                 rQBBBBBBBR                                                   
+        :QBBBBBBBB. QBBd               BBBBQBQBBR.:irvJUXI2Yvi.                                     
+       SBBQBBBBBBB  EBBBBBQBBBQ.      MBQBQBBBBBQBBBBBBBPJi:..                                      
+      DBBBBQBQBBBBBBBBBBBBBBBBJ       BBBBBBBQBBBQBK:                                               
+     2BBBBBBBBBBBBBBBBQBBBBBP        iBBBBBBBBBBBg                                                  
+     QBBBBBQBQBQBBZXRBBQM1:          LBBBBBBBBBBB                                                   
+    YBQBQBBBQBBBBBP                  sBBBBBBBBQBD     ibgKUbMq.   :sPXLYv.   .v2PIr2XsvY:.   .:uUbs:
+    PBBBBBBBBBBBBBBBM.               vBBBBBBBBBBB   DBBP.   :BBBS   vQBBB    .BBR. .BQBBr     rQB5. 
+    LBBBQBQBBBBBQBBBQBQ.             LBBBBBBQBBBB :BBB.       1BBB    vBBBi 2BR      iBBQu   sBB    
+     QBQBQBQBBBBBQBBBBBBR            LBBBBBBBBBBM BQBQ         BBBB     ZBBBB          QBQQ RQK     
+     7BBBBBBBBQBBBBBBBQBBBD          jBBBBBBBBBBE BBBd         BBBQ      BBBB.          rBQBQ.      
+      LBBBBQBBBBBBBQBBBQBBBBd        YBBBBBBBBBBQ BBBB         BBB2    DBX.BBQg          BBBZ       
+       BBBQBQBBBQBQBQBQBBBQBBB5      JQBBBBBBBBBB  QBBR       BBQu   jBB.   jBQBr        BBBR       
+       BBBBQBQBQBQBBBBBQBBBBBBBB:    YBBBQBBBQBBQ    LBBj:.:KBBs  .XBBB      BBBBBr.    .BBBB.      
+       BBBBBBBQBBBBBQBQBBBQBQBBBBj   JBBBBBBBBBBJ .:..:sdMgMv     ..              .  :uB2    .      
+       BBBBQBBBBBBBQBQBBBBBBBBBQBBY  LBBBBBBBBBB.   BBr    :QBK                       DBU           
+       BBBBBBBBSBBBBBBBBBBBBQBQBQBB  LBBBBBBQBQB    BB       BBb    ...         ..    :BJ     ..    
+       BBBBBBB  BBBBBBBQBQBQBQBQBBBM 7BBBBBBBQB     BQ:    .SBZ  .BB:.7BM :gBQi5dQBS  rQJ  .BQs:    
+       BBBQBI   BBBBBBBBBBBBBBBBBBBB iBBBBBBBB:     QB1rvL5BBB.  .Q.   BB  :BB    BB  iBL sv.       
+      dQBBB.    .BBBBBBBBQBBBBBBBQBB :BBBQBBB:      BB       DBB   vL: QB  .BX    MQ. rBSBB:        
+  .vuBBBB1   :Lv:RBBQBBBBBBBBBBBBBBB.:BBBBBb        BB       UBB DB:   BQ  .Bq    MB  :Br YBB.      
+ 7BBBBBX    BBBBBQRgggMgMgMgMgggggQB  BDU.         .BB7.:::rbQL  YBDi:.PBs.rBZ    BQ: 1Q5   BBE. ");
 
             Console.ForegroundColor = ConsoleColor.Red; 
             
