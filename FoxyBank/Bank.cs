@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading;
 
 namespace FoxyBank
 {
     public class Bank
     {
+        
         public List<Person> Persons { get; set; }
         public Dictionary<int, int> BankAccounts { get; set; }
         public Dictionary<string, decimal> CurrencyExRate { get; set; }
@@ -22,45 +24,48 @@ namespace FoxyBank
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red; 
-            Console.WriteLine(@"                .i    7.                                                                            
-                Bi   .B                                                                             
-              iBB:  uBB                                                                             
-             1BBB  ZBBB                                                                             
-            MBBBB:gBBBB                                                                             
-           BBBBBBBQBQBQ                                                                             
-         :BBBBBBBBBBBBB1                                                                            
-        jBBBBBBBBBP  QBBQr                               ..:::..                                    
-       gBBBQBBBQBQS  RBBBBBQBBBQB.            :2QBBBBBBBBBBqJr:.                                    
-      BBQBBBQBBBBBBBBBBBBBQBBBBB1           7BBBBBBBBB1.                                            
-     qBBBBBQBBBQBBBBBBBQBBBBBBB:           BBBBBBBBQ                                                
-    .BBBBBQBQBBBQBQBBBBBBBBBB7            BBBBBBBB5                                                 
-    QBBBBBBBBBBBBBBvrs555v:              BBBBQBBBBr    ...i:i::.                                    
-    BBBBBBQBQBBBBBBP                    qBBBQBBBBBBBBBBBBBgSvr:.                                    
-    BBBQBQBBBBBBBQBQBd                  BBBBBBBBBBBBBqi                                             
-    BBQBQBQBQBBBQBBBQBBS               :QBBBBBBBBBQY                                                
-    BQBBBQBQBQBBBBBQBBBQBr             7BBBBBBBQBQJ                                                 
-    .BBBBBBBQBBBBBQBBBBBBBQ.           vBBBBBBBBQB:    .SRqU5Rgv   :7Ed2JJ    .XdDv7PPu1r.    .IKgu.
-     PBBBQBQBBBBBBBBBQBBBQBBg          7BBBBBBBBBBL  uBBB.    uBBQ.  :BBBB.   SBBr  rBBBB     :BBu  
-      EBBBQBQBQBQBBBQBBBBBBBBBU        vBBBBBBBBBBr BBBE        QBQr   :BBB7.BBi      1BQB.  jBB    
-      .BBBBBBQBQBQBQBBBBBQBBBBBBi      7BBBBBBBBBB::BBB         BBBB     vBBBE         .BBBYZBJ     
-      :BBBBBBBQBQBBBBBQBQBBBQBBBBD     vQBBBBBBBQB::BBB         QBBB     sQBBB7          ZBBB       
-      :BBBBBBQBBBQBQBBBBBBBQBBBBBBB    7BBBBBBBBBBr BBBE        BBB:   vBB  dBBB.        rBBB       
-      :BBBBBBBBBBBBBQBQBQBBBBBQBBBBB   vBBBBBBBBBB7  uQBQ.    7BBQ.  jBB7    rBBBQ.      qBBB       
-      :BBBBQBBBBBBBQBBBQBBBBBBBQBBBBB  7BBBQBBBBBB:    .gQZSSS2:   :SgE2     .I1SgKi   .vv1j5r.     
-      :BBBBBBBBBIBBBQBQBBBQBQBBBQBBBBv 7BBBBBBBBBB  .EBg.:i7UEs                      .LBQ           
-      :BBBBBBQg JBBQBQBBBQBQBBBBBQBQBQ :BBBBBBBBBE   iBB      BBZ                      BB           
-      .BBBBBBL  EBQBQBBBBBBBQBBBQBQBBB :BBBBBBQBB    rBB      BB1  vgr:UD: .IBi:IgBq   BB   XBIr.   
-      7BBQBB.   .BBBBQBQBBBQBBBQBBBBBBi.BBBBBQBQ:    iBQBBBBBBB:  .B2   BB  QBP.  sBg  BB  72:      
-     KBBBBq      iBBBBQBBBQBQBQBQBBBBBY.QBBBBBB:     rBB      SBB   :7i.QB  7B:    BB  BB1BI        
-  IEBQBBB:   idDqJBBBQBBBBBBBBBBBBBQBBS.BQBQBd       :BQ       QB:rB7   BB  LB:    BB  BB rQB:      
-KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7   .BB  BB   gBD.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(@"                                                                                                    
+               rg    B                         .iYj25dgQgZ5j7i                                      
+              dBB  rBB                     :QBBBBBBQBBQur..                                         
+             BQB2 KBBB                   .BBBBBBBBBL                                                
+           7BBBBMQBBBB                  7QBBBQBQBP                                                  
+          RBBBBBBBBBBB                 rQBBBBBBBR                                                   
+        :QBBBBBBBB. QBBd               BBBBQBQBBR.:irvJUXI2Yvi.                                     
+       SBBQBBBBBBB  EBBBBBQBBBQ.      MBQBQBBBBBQBBBBBBBPJi:..                                      
+      DBBBBQBQBBBBBBBBBBBBBBBBJ       BBBBBBBQBBBQBK:                                               
+     2BBBBBBBBBBBBBBBBQBBBBBP        iBBBBBBBBBBBg                                                  
+     QBBBBBQBQBQBBZXRBBQM1:          LBBBBBBBBBBB                                                   
+    YBQBQBBBQBBBBBP                  sBBBBBBBBQBD     ibgKUbMq.   :sPXLYv.   .v2PIr2XsvY:.   .:uUbs:
+    PBBBBBBBBBBBBBBBM.               vBBBBBBBBBBB   DBBP.   :BBBS   vQBBB    .BBR. .BQBBr     rQB5. 
+    LBBBQBQBBBBBQBBBQBQ.             LBBBBBBQBBBB :BBB.       1BBB    vBBBi 2BR      iBBQu   sBB    
+     QBQBQBQBBBBBQBBBBBBR            LBBBBBBBBBBM BQBQ         BBBB     ZBBBB          QBQQ RQK     
+     7BBBBBBBBQBBBBBBBQBBBD          jBBBBBBBBBBE BBBd         BBBQ      BBBB.          rBQBQ.      
+      LBBBBQBBBBBBBQBBBQBBBBd        YBBBBBBBBBBQ BBBB         BBB2    DBX.BBQg          BBBZ       
+       BBBQBQBBBQBQBQBQBBBQBBB5      JQBBBBBBBBBB  QBBR       BBQu   jBB.   jBQBr        BBBR       
+       BBBBQBQBQBQBBBBBQBBBBBBBB:    YBBBQBBBQBBQ    LBBj:.:KBBs  .XBBB      BBBBBr.    .BBBB.      
+       BBBBBBBQBBBBBQBQBBBQBQBBBBj   JBBBBBBBBBBJ .:..:sdMgMv     ..              .  :uB2    .      
+       BBBBQBBBBBBBQBQBBBBBBBBBQBBY  LBBBBBBBBBB.   BBr    :QBK                       DBU           
+       BBBBBBBBSBBBBBBBBBBBBQBQBQBB  LBBBBBBQBQB    BB       BBb    ...         ..    :BJ     ..    
+       BBBBBBB  BBBBBBBQBQBQBQBQBBBM 7BBBBBBBQB     BQ:    .SBZ  .BB:.7BM :gBQi5dQBS  rQJ  .BQs:    
+       BBBQBI   BBBBBBBBBBBBBBBBBBBB iBBBBBBBB:     QB1rvL5BBB.  .Q.   BB  :BB    BB  iBL sv.       
+      dQBBB.    .BBBBBBBBQBBBBBBBQBB :BBBQBBB:      BB       DBB   vL: QB  .BX    MQ. rBSBB:        
+  .vuBBBB1   :Lv:RBBQBBBBBBBBBBBBBBB.:BBBBBb        BB       UBB DB:   BQ  .Bq    MB  :Br YBB.      
+ 7BBBBBX    BBBBBQRgggMgMgMgMgggggQB  BDU.         .BB7.:::rbQL  YBDi:.PBs.rBZ    BQ: 1Q5   BBE. ");
 
-            Console.ForegroundColor = ConsoleColor.Green; 
-            Console.WriteLine("Hej välkommen till Foxy Bank.");
+            Console.ForegroundColor = ConsoleColor.Red; 
+            
+            Console.WriteLine("\n\t\t\t* * * * * * * * * * * * * * * * * * * * * * * * * *"+
+                             "\n\t\t\t*                                                 *" +
+                             "\n\t\t\t*          Välkommen till Foxy Bank               *" +
+                             "\n\t\t\t*                                                 *" +
+                             "\n\t\t\t* * * * * * * * * * * * * * * * * * * * * * * * * *");
+
+            Thread.Sleep(2000);
+
             Console.ForegroundColor = ConsoleColor.White;
-            Person loggedInPerson = Login();
-          
+
+            Person loggedInPerson = Login();         
 
         }
         public Person Login()
@@ -72,18 +77,18 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             {
                 do
                 {
-                    Console.WriteLine("\nSkriv användarID");
+                    Console.WriteLine("\nSkriv ditt användarID");
                     Answer = int.TryParse(Console.ReadLine(), out AnId);
                     if (Answer == false && Tries != 0)
                     {
                         Console.Clear();
-                        Console.WriteLine("Ogiltigt användarID, försök igen.");
+                        Console.WriteLine("\nOgiltigt användarID, försök igen.");
                         Tries--;
                     }
                     if (Tries == 0)
                     {
                         Console.Clear();
-                        Console.WriteLine("Misslyckad inloggning.");
+                        Console.WriteLine("\nMisslyckad inloggning.");
 
 
                         return null;
@@ -91,7 +96,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 } while (Answer == false && Tries != 0);
 
-                Console.WriteLine("Skriv in lösenord");
+                Console.WriteLine("\nSkriv in lösenord");
                 string AnPassword = HidePassWord();
 
                 foreach (Person A1 in Persons)
@@ -99,7 +104,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     if (A1.Authentication(AnPassword, AnId))
                     {
                         Console.Clear();
-                        Console.WriteLine("Du är inloggad.\n");
                         A1.UpdateLog("Loggat in.");
                         char firstDigit = A1.UserId.ToString()[0];
                         if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
@@ -173,14 +177,12 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
             do
             {
-                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
-
-                Console.WriteLine("\nAnvändarmeny för administrator:" +
-                            "\n1. Skapa ny bankkund" +
-                            "\n2. Ändra valutakurs" +
-                            "\n3. Visa log" +
-                            "\n4. Logga ut" +
-                            "\n5. Avsluta programmet");
+                Console.WriteLine($"\nInloggad som: {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+                Console.WriteLine("\n1. Skapa ny bankkund" +
+                            "\n\n2. Ändra valutakurs" +
+                            "\n\n3. Visa log" +
+                            "\n\n4. Logga ut" +
+                            "\n\n5. Avsluta programmet\n");
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
@@ -209,7 +211,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     
                     default:
                         Console.Clear();
-                        Console.WriteLine("Ogiltigt val.");
+                        Console.WriteLine("\nOgiltigt val.");
                         break;
                 }
             }
@@ -222,15 +224,15 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
             do
             {
-                Console.WriteLine($"Hej {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
-                Console.WriteLine("\n1. Se dina konton och saldo" +
-                        "\n2. Överför pengar" +
-                        "\n3. Skapa nytt bankkonto" +
-                        "\n4. Ta ett lån" +
-                        "\n5. Visa log" +
-                        "\n6. Sätta in pengar" +
-                        "\n7. Logga ut" +
-                        "\n8. Avsluta programmet");
+                Console.WriteLine($"\nInloggad som: {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+                Console.WriteLine("\n\n1. Se dina konton och saldo" +
+                        "\n\n2. Överföra pengar" +
+                        "\n\n3. Skapa nytt bankkonto" +
+                        "\n\n4. Ta ett lån" +
+                        "\n\n5. Visa log" +
+                        "\n\n6. Sätta in pengar" +
+                        "\n\n7. Logga ut" +
+                        "\n\n8. Avsluta programmet\n");
 
 
                 string menuChoice = Console.ReadLine();
@@ -240,7 +242,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     case "1":
                         loggedInPerson.UpdateLog("Visat alla konton.");
                         loggedInPerson.DisplayAllAccounts();
-                        Console.WriteLine("\nKlicka enter för att komma vidare.");
+                        Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -288,9 +290,9 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
         {
 
             Console.Clear();
-            Console.WriteLine("Var god skriv in användarens förnamn");
+            Console.WriteLine("\nVar god skriv in användarens förnamn");
             string firstNameInput = Console.ReadLine();
-            Console.WriteLine("Var god skriv in användarens efternamn");
+            Console.WriteLine("\nVar god skriv in användarens efternamn");
             string lastNameInput = Console.ReadLine();
             string passWordInput;
             bool PassHasDigit;
@@ -299,13 +301,13 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             {
                 do
                 {
-                    Console.WriteLine("\nVar god skriv in användarens lösenord, Lösenordet måste minst ha 8 bokstäver och ett nummer.");
+                    Console.WriteLine("\nVar god skriv in användarens lösenord. Lösenordet måste minst ha 8 bokstäver och en siffra.");
 
                     passWordInput = HidePassWord();
                     PassHasDigit = passWordInput.Any(char.IsDigit);
                     if (PassHasDigit == false)
                     {
-                        Console.WriteLine("\nLösenordet behöver minst ett nummer.");
+                        Console.WriteLine("\nLösenordet måste innehålla minst en siffra.");
                     }
                     if (passWordInput.Length < 8)
                     {
@@ -314,7 +316,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 } while (passWordInput.Length < 8 || PassHasDigit == false);
                 passWordCheck = passWordInput;
-
 
                 Console.WriteLine("\nSkriv lösenordet igen.");
                 passWordCheck = HidePassWord();
@@ -331,13 +332,13 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             newBankUser.UpdateLog("Ditt användar konto har skapats.");
             loggedInPerson.UpdateLog($"Skapat en ny användare. ID : {newBankUser.UserId}");
             Console.Clear();
-            Console.WriteLine("Ny användare tillagd.");
-            Console.WriteLine("Användarinfo");
+            Console.WriteLine("\nNy användare tillagd.");
+            Console.WriteLine("\nAnvändarinfo");
             Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
             Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
             Console.WriteLine("ID : {0}", newBankUser.UserId);
 
-            Console.WriteLine("\nKlicka enter för att komma vidare.");
+            Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
         }
@@ -373,12 +374,11 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             do
             {
                 Console.WriteLine("\n1. Sparkonto");
-                Console.WriteLine("2. Personkonto");
-                Console.WriteLine("3. Lånekonto");
-                Console.WriteLine("4. Konto i Amerikanska dollar\n");
+                Console.WriteLine("\n2. Personkonto");
+                Console.WriteLine("\n3. Lånekonto");
+                Console.WriteLine("\n4. Konto i Amerikanska dollar\n");
 
                 string answer = Console.ReadLine();
-
 
                 if (answer == "1")
                 {
@@ -435,7 +435,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 else
                 {
-                    Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Svara ett nummer från menyn.");
+                    Console.WriteLine("Vänligen välj vilket typ av konto du vill öppna. Ange ett nummer från menyn.");
                 }
 
             } while (createdAccount == null);         
@@ -520,7 +520,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 transferToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
                                
                                 Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {transferToUser.FirstName} {transferToUser.LastName}." +
-                                    $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
+                                    $"\nÄr du säker att du vill överföra pengar till detta konto? Svara \"Ja\" isåfall. Tryck på valfri tangent för att ändra kontonumret.");
 
                                 if (Console.ReadLine().ToUpper() == "JA")
                                 {
@@ -539,7 +539,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         }
                         else
                         {
-                            Console.WriteLine("Inget konton med det kontonumret du matade in hittades. Vänligen testa att skriva kontonumret igen.");
+                            Console.WriteLine("Inget konto med det kontonummer du matade in hittades. Vänligen testa att skriva kontonumret igen.");
                         }
                     }
                     else
@@ -588,13 +588,18 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 int triesLeft = 3;
                 bool succesfulTransaction = false;
 
-                if (toAcc is ForeignAccount)
+                if (toAcc is ForeignAccount && !(fromAcc is ForeignAccount))
                 {
                     Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                         $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
 
                 }
-                else if (fromAcc is ForeignAccount)
+                else if (fromAcc is ForeignAccount && !(toAcc is ForeignAccount))
+                {
+                    Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
+                      $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
+                }
+                else if (fromAcc is ForeignAccount && toAcc is ForeignAccount)
                 {
                     Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                       $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
@@ -623,7 +628,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
+                                Console.WriteLine($"\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
                                     $"$ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} " +
@@ -635,9 +640,11 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                             {
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance((amountOfMoneyToTransfer / CurrencyExRate["USD"]));
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
+
                                 user.UpdateLog($"Överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
+                              
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
                                     $"{user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}kr" +
                                     $"\noch ditt nya saldo på kontot med kontonummer " +
@@ -651,7 +658,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
 
-                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
+                                Console.WriteLine($"\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
@@ -666,7 +673,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 user.BankAccounts[indexOfTransferToAcc].AddBalance(amountOfMoneyToTransfer);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
 
-                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc}" +
+                                Console.WriteLine($"\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc}" +
                                     $" till {transferToAcc}.");
                                 user.UpdateLog($"Överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc}" +$" till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är " +
@@ -687,7 +694,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
                                 user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}");
 
                                 succesfulTransaction = true;
@@ -699,7 +706,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
                                 user.UpdateLog($"Överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"\nDu överförde {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2} kr.");
 
                                 succesfulTransaction = true;
@@ -711,7 +718,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
                                 user.UpdateLog($"Överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"\nDu överförde $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är $ {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}.");
 
                                 succesfulTransaction = true;
@@ -723,7 +730,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == transferToUser.UserId))] = transferToUser;
                                 user.UpdateLog($"Överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
-                                Console.WriteLine($"\n\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
+                                Console.WriteLine($"\nDu överförde {amountOfMoneyToTransfer}kr från kontot med kontonummer {transferFromAcc} till {transferToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot med kontonummer {transferFromAcc} är {user.BankAccounts[indexOfTransferFromAcc].GetBalance():f2}");
 
                                 succesfulTransaction = true;
@@ -742,7 +749,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             {
                 user.DisplayAllAccounts();
             }
-            Console.WriteLine("\nKlicka enter för att komma vidare.");
+            Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
         }
@@ -779,17 +786,17 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             decimal loanLimit = (totalBalance - Debt) * 5;
             decimal possibleLoan = loanLimit - Debt;
             Console.Clear();
-            Console.WriteLine("Ditt totala saldo är: " + totalBalance.ToString("f2") + "kr");
-            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
+            Console.WriteLine("Ditt totala saldo är: " + totalBalance.ToString("f2") + " kr.");
+            Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + " kr.");
             if (Debt > 0)
             {
                 Console.WriteLine("Din skuld är: " + Debt.ToString("f2") + "kr");
-                Console.WriteLine("Ditt lånetak är: " + loanLimit.ToString("f2") + "kr och du kan låna upp till " + possibleLoan.ToString("f2") + " nya kr");
+                Console.WriteLine("Ditt lånetak är: " + loanLimit.ToString("f2") + " kr och du kan låna upp till " + possibleLoan.ToString("f2") + " nya kr.");
 
             }
             else
             {
-                Console.WriteLine("Du har ingen skuld och du kan låna upp till: " + possibleLoan.ToString("f2") + "kr");
+                Console.WriteLine("Du har ingen skuld och du kan låna upp till: " + possibleLoan.ToString("f2") + " kr.");
 
             }
 
@@ -818,7 +825,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     }
                     else
                     {
-                        Console.WriteLine("Var god skriv in Ja eller Nej för att komma vidare");
+                        Console.WriteLine("Var god skriv in Ja eller Nej för att komma vidare.");
                     }
                 } while (hasLoanAccount == false);
 
@@ -833,7 +840,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             else
             {
                 Console.WriteLine("\nHur mycket pengar vill du låna?");
-                Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + "kr");
+                Console.WriteLine("Du kan låna upp till " + possibleLoan.ToString("f2") + " kr.");
             }
             decimal inputAmount = 0;
 
@@ -850,7 +857,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                         Console.Clear();
                         user.DisplayAllAccounts();
-                        Console.WriteLine("\nDu vill låna " + inputAmount + "kr, vilket konto vill du föra över till?");
+                        Console.WriteLine("\nDu vill låna " + inputAmount + " kr. Ange kontonumret på det konto du vill att pengarna ska placeras på.");
                         int accNum = 0;
 
                         bool incorrectAccNr = true;
@@ -864,7 +871,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 if (user.BankAccounts.Exists(x => (x.AccountNr == accNum && !(x is LoanAccount))))
                                 {
                                     int tries = 3;
-                                    Console.WriteLine("\nDu vill låna: " + inputAmount + "kr och föra över till " + accNum);
+                                    Console.WriteLine("\nDu vill låna: " + inputAmount + " kr. Pengarna placeras på kontonummer: " + accNum);
                                     Console.WriteLine("Var god skriv in ditt lösenord för att bekräfta transaktionen");
                                     do
                                     {
@@ -886,19 +893,20 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                                 Console.Clear();
                                                 Console.WriteLine("Grattis! du har tagit ett lån på " + accountTransfer.CurrencySign + (inputAmount / exchangeRate).ToString("f2") + ".");
                                                 Console.WriteLine();
-                                                Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + (Loanaccount.GetBalance() * -1).ToString("f2") + "kr");
-                                                user.UpdateLog("Ett lån har tagits på " + accountTransfer.CurrencySign + (inputAmount / exchangeRate).ToString("f2") + ". " + "Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + (Loanaccount.GetBalance() * -1).ToString("f2") + "kr");
+                                                Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + (Loanaccount.GetBalance() * -1).ToString("f2") + " kr");
+                                                user.UpdateLog("Ett lån har tagits på " + accountTransfer.CurrencySign + (inputAmount / exchangeRate).ToString("f2") + ". " + 
+                                                    "Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + (Loanaccount.GetBalance() * -1).ToString("f2") + " kr");
                                             }
                                             else
                                             {
                                                 accountTransfer.AddBalance(inputAmount);
-                                                Console.WriteLine("Grattis! du har tagit ett lån på " + inputAmount + "kr.");
+                                                Console.WriteLine("Grattis! du har tagit ett lån på " + inputAmount + " kr.");
                                                 Console.WriteLine();
                                                 Console.WriteLine("Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + Loanaccount.GetBalance() * -1 + "kr");
                                                 user.UpdateLog("Ett lån har tagits på " + inputAmount + "kr. Pengarna fördes över till " + accountTransfer.AccountNr + " och din skuld är nu på " + Loanaccount.GetBalance() * -1 + "kr");
                                             }
 
-                                            Console.WriteLine("Klicka enter för att komma tillbaks till menyn");
+                                            Console.WriteLine("Tryck på valfri tangent för att komma tillbaks till menyn");
                                             Console.ReadKey();
                                             Console.Clear();
                                             incorrectAccNr = false;
@@ -910,7 +918,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                             tries--;
                                             if (tries > 0)
                                             {
-                                                Console.WriteLine("\n\nFel lösenord. Försök igen");
+                                                Console.WriteLine("\nFel lösenord. Försök igen");
                                             }
 
                                         }
@@ -919,7 +927,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                     if (tries == 0)
                                     {
                                         Console.Clear();
-                                        Console.WriteLine("Du skrev fel lösenord för många gånger. Klicka enter för att komma tillbaks till menyn.");
+                                        Console.WriteLine("Du skrev fel lösenord för många gånger. Tryck på valfri tangent för att komma tillbaks till menyn.");
                                         user.UpdateLog("Användaren skrev fel lösenord 3 gånger vid ett försök att ta ett lån.");
                                         Console.ReadKey();
                                         Console.Clear();
@@ -949,7 +957,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 }
             } while (incorrectAmount);
             return false;
-
         }
         public void DepositMoney(User user)
         {
@@ -979,7 +986,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 depositToUser = (User)this.Persons.Find(x => x.UserId == this.BankAccounts[inputAcc]);
 
                                 Console.WriteLine($"\nKontot du valde med kontonummer {inputAcc} tillhör {depositToUser.FirstName} {depositToUser.LastName}." +
-                                    $"\nÄr du säker att du vill sätta in pengar på detta konto? Svara \"Ja\" isåfall. Klicka enter för att ändra kontonumret.");
+                                    $"\nÄr du säker att du vill sätta in pengar på detta konto? Svara \"Ja\" isåfall. Tryck valfri tangent för att ändra kontonumret.");
 
                                 if (Console.ReadLine().ToUpper() == "JA")
                                 {
@@ -1070,7 +1077,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 user.UpdateLog($"Du satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
-                                Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot är $ {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2}.");
 
                                 succesfulTransaction = true;
@@ -1080,7 +1087,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 user.BankAccounts[indexOfDepositToAcc].AddBalance(amountOfMoneyToDeposit);
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 user.UpdateLog($"Du satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
-                                Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
                                 Console.WriteLine($"Ditt nya saldo på kontot är {user.BankAccounts[indexOfDepositToAcc].GetBalance():f2} kr.");
 
                                 succesfulTransaction = true;
@@ -1096,7 +1103,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
                                 user.UpdateLog($"Du satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
-                                Console.WriteLine($"\n\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\nDu satte in $ {amountOfMoneyToDeposit} på kontot med kontonummer {depositToAcc}.");
 
                                 succesfulTransaction = true;
                             }
@@ -1107,7 +1114,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == user.UserId))] = user;
                                 Persons[Persons.IndexOf(Persons.Find(x => x.UserId == depositToUser.UserId))] = depositToUser;
                                 user.UpdateLog($"Du satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
-                                Console.WriteLine($"\n\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
+                                Console.WriteLine($"\nDu satte in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}.");
 
                                 succesfulTransaction = true;
                             }
@@ -1121,7 +1128,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 } while (triesLeft > 0 & !succesfulTransaction);
             }
-            Console.WriteLine("\nKlicka enter för att komma vidare.");
+            Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
         }

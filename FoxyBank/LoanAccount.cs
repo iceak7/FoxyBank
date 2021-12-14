@@ -8,16 +8,11 @@ namespace FoxyBank
     {
         protected decimal Interest { get; set; }
 
-
         public LoanAccount(int accountNr)
         {
             this.Balance = 0;
             this.AccountNr = accountNr;
             this.Interest = 0.02M;
-        }
-
-        public LoanAccount()
-        {
         }
 
         public decimal GetInterest()
