@@ -1,5 +1,6 @@
-﻿
-using System;
+﻿using System;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace FoxyBank
 {
@@ -44,10 +45,10 @@ namespace FoxyBank
             user2.BankAccounts.Add(new PersonalAccount(10002));
             bank.BankAccounts.Add(10002, 2002);
             user2.BankAccounts[0].AccountName = "Personkonto";
+
             user2.BankAccounts[0].CurrencySign = "kr";
             user2.BankAccounts[0].AddBalance(10000);
             bank.Persons.Add(user2);
-
             bank.Persons.Add(new User("Mattias", "Kokkonen", "Hemlis12345", 2003));
             bank.Persons.Add(new User("Jenny", "Lund-Kallberg", "Hemlis123456", 2005));
         }
