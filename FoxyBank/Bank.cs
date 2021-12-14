@@ -391,7 +391,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     user.UpdateLog("Skapat ett " + S.AccountName + " med kontonummer : " + S.AccountNr);
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + S.AccountName + " med kontonummer: " + S.AccountNr);
                     Console.Write("Räntan är " + S.GetInterest() + "%");
-                    S.CurrencySign = " kr";
+                    S.CurrencySign = "kr";
                     createdAccount = S;
 
                 }
@@ -404,7 +404,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     P.AccountName = "Personkonto";
                     user.UpdateLog("Skapat ett " + P.AccountName + " med kontonummer : " + P.AccountNr);
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + P.AccountName + " med kontonummer: " + P.AccountNr);
-                    P.CurrencySign = " kr";
+                    P.CurrencySign = "kr";
                     createdAccount = P;
                 }
 
@@ -417,7 +417,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     L1.AccountName = "Lånekonto";
                     user.UpdateLog("Skapat ett " + L1.AccountName + " med kontonummer : " + L1.AccountNr + " och ränta på " + L1.GetInterest());
                     Console.WriteLine($"\nGrattis! Du har skapat ett " + L1.AccountName + " med kontonummer: " + L1.AccountNr + " och ränta på " + L1.GetInterest() + "%");
-                    L1.CurrencySign = " kr";
+                    L1.CurrencySign = "kr";
                     createdAccount = L1;
                     
                 }
@@ -589,13 +589,18 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                 int triesLeft = 3;
                 bool succesfulTransaction = false;
 
-                if (toAcc is ForeignAccount)
+                if (toAcc is ForeignAccount && !(fromAcc is ForeignAccount))
                 {
                     Console.WriteLine($"\nDu vill överföra {amountOfMoneyToTransfer} kr från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                         $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
 
                 }
-                else if (fromAcc is ForeignAccount)
+                else if (fromAcc is ForeignAccount && !(toAcc is ForeignAccount))
+                {
+                    Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
+                      $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
+                }
+                else if (fromAcc is ForeignAccount && toAcc is ForeignAccount)
                 {
                     Console.WriteLine($"\nDu vill överföra $ {amountOfMoneyToTransfer} från kontot med kontonummer {transferFromAcc} till kontonummer {transferToAcc}." +
                       $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");

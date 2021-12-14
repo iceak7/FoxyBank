@@ -36,7 +36,7 @@ namespace FoxyBank
                         SavingAccount S = (SavingAccount)created;
                         Console.WriteLine($"Kontonamn: {S.AccountName} " +
                                    $"\nKontonummer: {S.AccountNr} " +
-                                   $"\nTillgängligt belopp: {S.GetBalance():f2}" +
+                                   $"\nTillgängligt belopp: {S.GetBalance():f2}kr" +
                                     $"\nRänta: { string.Format("{0:0.00}", S.GetInterest() * S.GetBalance()):f2}" + ". Räntan ligger på " + S.GetInterest() + "%." +
                                     $"\n");
                     }
@@ -45,8 +45,8 @@ namespace FoxyBank
                         LoanAccount S = (LoanAccount)created;
                         Console.WriteLine($"Kontonamn: {S.AccountName} " +
                                    $"\nKontonummer: {S.AccountNr} " +
-                                   $"\nSkuld: {S.GetBalance() * -1:f2}" +
-                                    $"\nRänta: {(S.GetInterest() * S.GetBalance()):f2}. Räntan ligger på  {S.GetInterest()} %. "+
+                                   $"\nSkuld: {S.GetBalance() * -1:f2}kr" +
+                                    $"\nRänta: {(S.GetInterest() * S.GetBalance()):f2}. Räntan ligger på +{S.GetInterest()} %. "+
                                     $"\n");
                     }
                     else 
