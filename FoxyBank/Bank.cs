@@ -67,7 +67,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                              "\n\t\t\t*                                                 *" +
                              "\n\t\t\t* * * * * * * * * * * * * * * * * * * * * * * * * *");
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
 
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -102,7 +102,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 } while (Answer == false && Tries != 0);
 
-                Console.WriteLine("Skriv in lösenord");
+                Console.WriteLine("\nSkriv in lösenord");
                 string AnPassword = HidePassWord();
 
                 foreach (Person A1 in Persons)
@@ -110,7 +110,6 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                     if (A1.Authentication(AnPassword, AnId))
                     {
                         Console.Clear();
-                        Console.WriteLine("\nDu är inloggad som:");
                         A1.UpdateLog("Loggat in.");
                         char firstDigit = A1.UserId.ToString()[0];
                         if (firstDigit == '1')              //All users with Admin function has an ID which starts with nr 1
@@ -184,12 +183,12 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
             do
             {
-                Console.WriteLine($"\n{loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
+                Console.WriteLine($"\nInloggad som: {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
                 Console.WriteLine("\n1. Skapa ny bankkund" +
                             "\n\n2. Ändra valutakurs" +
                             "\n\n3. Visa log" +
                             "\n\n4. Logga ut" +
-                            "\n\n5. Avsluta programmet");
+                            "\n\n5. Avsluta programmet\n");
                 string menuChoice = Console.ReadLine();
 
                 switch (menuChoice)
@@ -231,7 +230,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
             do
             {
-                Console.WriteLine($"\n{loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra:");
+                Console.WriteLine($"\nInloggad som: {loggedInPerson.FirstName} {loggedInPerson.LastName}. Vad vill du göra?");
                 Console.WriteLine("\n\n1. Se dina konton och saldo" +
                         "\n\n2. Överföra pengar" +
                         "\n\n3. Skapa nytt bankkonto" +
@@ -239,7 +238,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
                         "\n\n5. Visa log" +
                         "\n\n6. Sätta in pengar" +
                         "\n\n7. Logga ut" +
-                        "\n\n8. Avsluta programmet");
+                        "\n\n8. Avsluta programmet\n");
 
 
                 string menuChoice = Console.ReadLine();
@@ -299,7 +298,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             Console.Clear();
             Console.WriteLine("\nVar god skriv in användarens förnamn");
             string firstNameInput = Console.ReadLine();
-            Console.WriteLine("Var god skriv in användarens efternamn");
+            Console.WriteLine("\nVar god skriv in användarens efternamn");
             string lastNameInput = Console.ReadLine();
             string passWordInput;
             bool PassHasDigit;
@@ -339,13 +338,13 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
             newBankUser.UpdateLog("Ditt användar konto har skapats.");
             loggedInPerson.UpdateLog($"Skapat en ny användare. ID : {newBankUser.UserId}");
             Console.Clear();
-            Console.WriteLine("Ny användare tillagd.");
-            Console.WriteLine("Användarinfo");
+            Console.WriteLine("\nNy användare tillagd.");
+            Console.WriteLine("\nAnvändarinfo");
             Console.WriteLine("Namn : {0} {1}", newBankUser.FirstName, newBankUser.LastName);
             Console.WriteLine("Lösenord : {0}", newBankUser.PassWord);
             Console.WriteLine("ID : {0}", newBankUser.UserId);
 
-            Console.WriteLine("Tryck på valfri tangent för att komma vidare.");
+            Console.WriteLine("\nTryck på valfri tangent för att komma vidare.");
             Console.ReadKey();
             Console.Clear();
         }
@@ -862,7 +861,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                         Console.Clear();
                         user.DisplayAllAccounts();
-                        Console.WriteLine("\nDu vill låna " + inputAmount + " kr. Vilket konto ska pengarna placeras på?");
+                        Console.WriteLine("\nDu vill låna " + inputAmount + " kr. Ange kontonumret på det konto du vill att pengarna ska placeras på.");
                         int accNum = 0;
 
                         bool incorrectAccNr = true;
@@ -1063,7 +1062,7 @@ KBBBBBBI    BBBBBBBBQBQBQQQBQQQBQQQBQBU BgU:         1BBBBBBBBBX  rBE:. gBr 1B7 
 
                 else
                 {
-                    Console.WriteLine($"\n\tDu vill sätta in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}." +
+                    Console.WriteLine($"\nDu vill sätta in {amountOfMoneyToDeposit} kr på kontot med kontonummer {depositToAcc}." +
                          $"\nVänligen mata in ditt lösenord för att genomföra transaktionen.");
                 }
 

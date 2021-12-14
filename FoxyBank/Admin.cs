@@ -27,9 +27,9 @@ namespace FoxyBank
             bool answer = false;
             decimal upDatedUSD;
 
-            Console.WriteLine($"Aktuell kurs för USD: {currency["USD"]}");
+            Console.WriteLine($"\nAktuell kurs för USD: {currency["USD"]}");
 
-            Console.WriteLine($"\nVill du ändra kursen? \n1. Ja \n2. Nej");
+            Console.WriteLine($"\nVill du ändra kursen? \n\n1. Ja \n\n2. Nej\n");
             do
             {
 
@@ -37,7 +37,7 @@ namespace FoxyBank
                 if (input == "1" || input == "JA")
                 {
                     Console.Clear();
-                    Console.WriteLine("Ange dagskursen för 1 USD till SEK: ");
+                    Console.Write("\nAnge dagskursen för 1 USD till SEK: ");
 
                     try
                     {
@@ -47,7 +47,7 @@ namespace FoxyBank
                         Console.Clear();
 
                         this.UpdateLog($"Uppdaterad kurs för USD: {currency["USD"]}");
-                        Console.WriteLine($"Uppdaterad kurs för USD: {currency["USD"]}");
+                        Console.WriteLine($"\nUppdaterad kurs för USD: {currency["USD"]}");
                         answer = true;
                         Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till menyn.");
                         Console.ReadKey();
@@ -57,13 +57,13 @@ namespace FoxyBank
                     catch
                     {
                         Console.WriteLine("\nFelaktigt format. Kursen får endast anges i siffror och med decimaltecken (,).");
-                        Console.WriteLine("Tryck 1 för att ändra kursen. Tryck 2 för att komma tillbaks till menyn.");
+                        Console.WriteLine("\nTryck 1 för att ändra kursen. Tryck 2 för att komma tillbaks till menyn.");
                     }
                 }
                 else if (input == "2" || input == "NEJ")
                 {
                     Console.Clear();
-                    Console.WriteLine("Aktuell kurs: " + currency["USD"]);
+                    Console.WriteLine("\nAktuell kurs: " + currency["USD"]);
                     Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till menyn.");
                     Console.ReadKey();
                     Console.Clear();
