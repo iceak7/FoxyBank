@@ -14,11 +14,12 @@ namespace FoxyBank
             this.PassWord = "Hemlis";
             this.UserId = 1001;
         }
-        public Admin(string firstName, string lastName, string passWord)
+        public Admin(string firstName, string lastName, string passWord, int AdminId)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
             this.PassWord = passWord;
+            this.UserId = AdminId;
 
         }
         public decimal CurrencyUpdate(Dictionary<string, decimal> currency)
