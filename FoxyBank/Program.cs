@@ -39,7 +39,6 @@ namespace FoxyBank
             bank.BankAccounts.Add(10003, 2001);
             user.BankAccounts[2].AccountName = "Konto i Amerikanska dollar";
             user.BankAccounts[2].AddBalance(10000);
-            bank.Persons.Add(user);
 
             User user2 = new User("Edwin", "Westerberg", "Hemlis1234", 2002);
             user2.BankAccounts.Add(new PersonalAccount(10002));
