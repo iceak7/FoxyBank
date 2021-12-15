@@ -25,6 +25,7 @@ namespace FoxyBank
         }
         public void DisplayLog()
         {
+            Console.Clear();
             Console.WriteLine("---Visar log aktivitet---");
             string fileName = @".\LogInfo" + this.UserId;
             string[] Lines = System.IO.File.ReadAllLines(fileName);
