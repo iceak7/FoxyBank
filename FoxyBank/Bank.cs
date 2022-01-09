@@ -51,7 +51,7 @@ namespace FoxyBank
        BBBQBI   BBBBBBBBBBBBBBBBBBBB iBBBBBBBB:     QB1rvL5BBB.  .Q.   BB  :BB    BB  iBL sv.       
       dQBBB.    .BBBBBBBBQBBBBBBBQBB :BBBQBBB:      BB       DBB   vL: QB  .BX    MQ. rBSBB:        
   .vuBBBB1   :Lv:RBBQBBBBBBBBBBBBBBB.:BBBBBb        BB       UBB DB:   BQ  .Bq    MB  :Br YBB.      
- 7BBBBBX    BBBBBQRgggMgMgMgMgggggQB  BDU.         .BB7.:::rbQL  YBDi:.PBs.rBZ    BQ: 1Q5   BBE. ");
+ 7BBBBBX    BBBBBQRgggMgMgMgMgggggQB  BDU.         .BB7.:::rbQL  YBDi:.PBs.rBZ    BQ: 1Q5   BBE.  ");
 
             Console.ForegroundColor = ConsoleColor.Red; 
             
